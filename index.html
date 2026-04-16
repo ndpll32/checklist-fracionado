@@ -411,7 +411,9 @@
         }
 
         .validar input:invalid,
-        .validar select:invalid {
+        .validar select:invalid,
+        .campo-erro input,
+        .campo-erro select {
             border-color: rgba(197, 57, 57, 0.45) !important;
             background: rgba(255, 245, 245, 0.95) !important;
             box-shadow: 0 0 0 4px rgba(197, 57, 57, 0.08) !important;
@@ -806,10 +808,10 @@
 
         #pdf-render-root {
             position: fixed;
-            left: 0;
+            left: -99999px;
             top: 0;
             width: 794px;
-            opacity: 0;
+            opacity: 1;
             z-index: -1;
             pointer-events: none;
         }
@@ -1231,9 +1233,12 @@
             .hero-main,
             .dados-grid,
             #secao-caminhao .foto-wrapper,
-            #container-volumes .foto-wrapper,
-            .panel-head {
+            #container-volumes .foto-wrapper {
                 grid-template-columns: 1fr;
+            }
+
+            .panel-head,
+            .header-volume {
                 flex-direction: column;
                 align-items: stretch;
             }
@@ -1296,21 +1301,21 @@
         <section class="hero-app">
             <div class="hero-brand">
                 <div class="hero-pill">Centrosucar</div>
-                <div class="hero-caption">Relatorio fotografico de carregamento com estrutura pronta para PDF.</div>
+                <div class="hero-caption">Relatório fotográfico de carregamento com estrutura pronta para PDF.</div>
             </div>
 
             <div class="hero-main">
                 <div class="hero-copy">
-                    <h1>Checklist operacional com evidencia visual e PDF institucional.</h1>
-                    <p>Preencha os dados da operacao, registre as fotos obrigatorias e gere um documento com paginacao fixa: capa operacional na primeira pagina e volumes organizados em duplas nas paginas seguintes.</p>
+                    <h1>Checklist operacional com evidência visual e PDF institucional.</h1>
+                    <p>Preencha os dados da operação, registre as fotos obrigatórias e gere um documento com paginação fixa: capa operacional na primeira página e volumes organizados em duplas nas páginas seguintes.</p>
                 </div>
 
                 <div class="hero-guide">
                     <strong>Estrutura do PDF</strong>
                     <ul>
-                        <li><span>01</span> Pagina 1 com informacoes gerais e fotos do veiculo.</li>
-                        <li><span>02</span> Pagina 2 com Volume 1 e Volume 2.</li>
-                        <li><span>03</span> Paginas seguintes sempre com 2 volumes por folha.</li>
+                        <li><span>01</span> Página 1 com informações gerais e fotos do veículo.</li>
+                        <li><span>02</span> Página 2 com Volume 1 e Volume 2.</li>
+                        <li><span>03</span> Páginas seguintes sempre com 2 volumes por folha.</li>
                     </ul>
                 </div>
             </div>
@@ -1320,7 +1325,7 @@
             <div class="android-banner" id="android-banner">
                 <div>
                     <strong>Abra no Chrome para gerar o PDF</strong>
-                    <p>Se este link estiver aberto dentro do WhatsApp, toque no botao ao lado para abrir no Chrome do Android. Esse e o modo mais confiavel para gerar e enviar o PDF.</p>
+                    <p>Se este link estiver aberto dentro do WhatsApp, toque no botão ao lado para abrir no Chrome do Android. Esse é o modo mais confiável para gerar e enviar o PDF.</p>
                 </div>
                 <button type="button" onclick="abrirNoChromeAndroid()">Abrir no Chrome</button>
             </div>
@@ -1328,13 +1333,13 @@
             <section class="panel">
                 <div class="panel-head">
                     <div>
-                        <div class="panel-kicker">Dados da operacao</div>
-                        <h2>Informacoes do carregamento</h2>
-                        <p>Esses dados aparecem na primeira pagina do PDF e compoem o cabecalho institucional do checklist.</p>
+                        <div class="panel-kicker">Dados da operação</div>
+                        <h2>Informações do carregamento</h2>
+                        <p>Esses dados aparecem na primeira página do PDF e compõem o cabeçalho institucional do checklist.</p>
                     </div>
 
                     <div class="status-note">
-                        A quantidade informada deve bater com o numero de volumes cadastrados para o PDF ser liberado.
+                        A quantidade informada deve bater com o número de volumes cadastrados para o PDF ser liberado.
                     </div>
                 </div>
 
@@ -1355,7 +1360,7 @@
                     </div>
 
                     <div class="campo">
-                        <label for="p">Placa do veiculo *</label>
+                        <label for="p">Placa do veículo *</label>
                         <div class="input-shell"><input type="text" id="p" placeholder="ABC-1234" required></div>
                     </div>
 
@@ -1376,7 +1381,7 @@
                     </div>
 
                     <div class="campo full">
-                        <label for="nota-fiscal">Numero da nota fiscal *</label>
+                        <label for="nota-fiscal">Número da nota fiscal *</label>
                         <div class="input-shell"><input type="text" id="nota-fiscal" placeholder="Aguardando faturamento..." required></div>
                     </div>
                 </div>
@@ -1386,25 +1391,25 @@
                 <div class="header-volume">
                     <div class="volume-title-wrap">
                         <span>Etapa 1</span>
-                        <h4>Fotos do veiculo</h4>
-                        <p>Essas imagens ocupam a primeira pagina do PDF, logo apos os dados da operacao.</p>
+                        <h4>Fotos do veículo</h4>
+                        <p>Essas imagens ocupam a primeira página do PDF, logo após os dados da operação.</p>
                     </div>
                 </div>
 
                 <div class="foto-wrapper">
                     <div class="foto-col">
-                        <label>Lateral do caminhao carregado</label>
+                        <label>Lateral do caminhão carregado</label>
                         <div class="box-imagem">
-                            <span class="msg-camera"><strong>Registrar foto</strong><small>Capture a lateral completa do veiculo carregado.</small></span>
+                            <span class="msg-camera"><strong>Registrar foto</strong><small>Capture a lateral completa do veículo carregado.</small></span>
                             <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
-                            <img alt="Foto lateral do caminhao carregado">
+                            <img alt="Foto lateral do caminhão carregado">
                         </div>
                     </div>
 
                     <div class="foto-col">
                         <label>Carregamento</label>
                         <div class="box-imagem">
-                            <span class="msg-camera"><strong>Registrar foto</strong><small>Mostre a disposicao da carga no momento do carregamento.</small></span>
+                            <span class="msg-camera"><strong>Registrar foto</strong><small>Mostre a disposição da carga no momento do carregamento.</small></span>
                             <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
                             <img alt="Foto do carregamento">
                         </div>
@@ -1413,9 +1418,9 @@
                     <div class="foto-col">
                         <label>Placa</label>
                         <div class="box-imagem">
-                            <span class="msg-camera"><strong>Registrar foto</strong><small>Garanta a identificacao visual da placa do veiculo.</small></span>
+                            <span class="msg-camera"><strong>Registrar foto</strong><small>Garanta a identificação visual da placa do veículo.</small></span>
                             <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
-                            <img alt="Foto da placa do veiculo">
+                            <img alt="Foto da placa do veículo">
                         </div>
                     </div>
                 </div>
@@ -1426,7 +1431,7 @@
                     <div>
                         <div class="panel-kicker">Etapa 2</div>
                         <h3>Volumes conferidos</h3>
-                        <p>No PDF, os volumes sao organizados em pares por pagina: 1 e 2, depois 3 e 4, e assim por diante.</p>
+                        <p>No PDF, os volumes são organizados em pares por página: 1 e 2, depois 3 e 4, e assim por diante.</p>
                     </div>
                 </div>
 
@@ -1452,7 +1457,7 @@
     <div id="loading">
         <div class="loading-card">
             <strong>Gerando arquivo</strong>
-            <p>Montando a versao final com paginacao institucional, capa operacional e volumes organizados em pares.</p>
+            <p>Montando a versão final com paginação institucional, capa operacional e volumes organizados em pares.</p>
             <div class="loading-bar"></div>
         </div>
     </div>
@@ -1467,7 +1472,7 @@
             try {
                 const dados = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
                 return Array.isArray(dados) ? dados : [];
-            } catch (erro) {
+            } catch {
                 return [];
             }
         }
@@ -1479,9 +1484,7 @@
 
         function atualizarContador() {
             const span = document.getElementById('count-pendentes');
-            if (span) {
-                span.innerText = pendentes.length;
-            }
+            if (span) span.innerText = pendentes.length;
         }
 
         function escaparHTML(valor) {
@@ -1504,16 +1507,12 @@
         }
 
         function formatarDataExtensa(data = new Date()) {
-            const meses = [
-                'janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho',
-                'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
-            ];
+            const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
             const dia = String(data.getDate()).padStart(2, '0');
             const mes = meses[data.getMonth()];
             const ano = data.getFullYear();
             const hora = String(data.getHours()).padStart(2, '0');
             const minuto = String(data.getMinutes()).padStart(2, '0');
-
             return `${dia} ${mes} ${ano} - ${hora}:${minuto}`;
         }
 
@@ -1526,7 +1525,6 @@
 
         function detectarAmbientePDF() {
             const userAgent = navigator.userAgent || '';
-
             return {
                 userAgent,
                 android: /Android/i.test(userAgent),
@@ -1538,45 +1536,38 @@
 
         function obterConfiguracaoGeracaoPDF() {
             const ambiente = detectarAmbientePDF();
-
             return {
                 ...ambiente,
-                escalaCanvas: ambiente.mobile ? 1 : 1.85,
-                qualidadePDF: ambiente.mobile ? 0.8 : 0.94,
+                escalaCanvas: ambiente.mobile ? 1.35 : 1.85,
+                qualidadePDF: ambiente.mobile ? 0.82 : 0.94,
                 larguraMaximaFoto: ambiente.mobile ? 1100 : 1600,
                 alturaMaximaFoto: ambiente.mobile ? 1100 : 1600,
                 qualidadeFoto: ambiente.mobile ? 0.78 : 0.88,
-                esperaEntrePaginas: ambiente.mobile ? 140 : 40
+                esperaEntrePaginas: ambiente.mobile ? 150 : 50
             };
         }
 
         function atualizarStatusLoading(texto) {
             const status = document.querySelector('#loading .loading-card p');
-            if (status) {
-                status.innerText = texto;
-            }
+            if (status) status.innerText = texto;
         }
 
         function esperar(ms) {
-            return new Promise((resolve) => setTimeout(resolve, ms));
+            return new Promise(resolve => setTimeout(resolve, ms));
         }
 
         async function aguardarImagensCarregadas(container) {
-            const imagens = Array.from(container.querySelectorAll('img'))
-                .filter((img) => img.getAttribute('src'));
-
+            const imagens = Array.from(container.querySelectorAll('img')).filter(img => img.getAttribute('src'));
             await Promise.all(imagens.map((img) => {
                 if (img.complete && img.naturalWidth > 0) {
                     return img.decode ? img.decode().catch(() => {}) : Promise.resolve();
                 }
-
                 return new Promise((resolve) => {
                     const finalizar = () => {
                         img.removeEventListener('load', finalizar);
                         img.removeEventListener('error', finalizar);
                         resolve();
                     };
-
                     img.addEventListener('load', finalizar, { once: true });
                     img.addEventListener('error', finalizar, { once: true });
                 });
@@ -1586,18 +1577,15 @@
         function obterDependenciasPDF() {
             return {
                 html2canvasFn: window.html2canvas || null,
-                jsPDFCtor: window.jspdf && window.jspdf.jsPDF ? window.jspdf.jsPDF : null
+                jsPDFCtor: window.jspdf && window.jspdf.jsPDF ? window.jspdf.jsPDF : null,
+                html2pdfFn: window.html2pdf || null
             };
         }
 
         function abrirNoChromeAndroid() {
             const ambiente = detectarAmbientePDF();
             if (!ambiente.android) return;
-
-            if (!/^https?:/i.test(window.location.href)) {
-                return;
-            }
-
+            if (!/^https?:/i.test(window.location.href)) return;
             const urlAtual = new URL(window.location.href);
             const caminho = `${urlAtual.host}${urlAtual.pathname}${urlAtual.search}${urlAtual.hash}`;
             const intentUrl = `intent://${caminho}#Intent;scheme=${urlAtual.protocol.replace(':', '')};package=com.android.chrome;end`;
@@ -1638,11 +1626,8 @@
 
         function preencherBoxImagem(box, src) {
             const img = box.querySelector('img');
-            if (src) {
-                img.setAttribute('src', src);
-            } else {
-                img.removeAttribute('src');
-            }
+            if (src) img.setAttribute('src', src);
+            else img.removeAttribute('src');
             sincronizarCaixa(box);
         }
 
@@ -1657,10 +1642,8 @@
                         const larguraMaxima = config.larguraMaximaFoto;
                         const alturaMaxima = config.alturaMaximaFoto;
                         const escala = Math.min(1, larguraMaxima / img.width, alturaMaxima / img.height);
-
                         canvas.width = Math.round(img.width * escala);
                         canvas.height = Math.round(img.height * escala);
-
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                         resolve(canvas.toDataURL('image/jpeg', config.qualidadeFoto));
@@ -1675,23 +1658,19 @@
 
         async function preview(input) {
             if (!input.files || !input.files[0]) return;
-
             const box = input.closest('.box-imagem');
             const msg = box.querySelector('.msg-camera strong');
-
             if (msg) msg.innerText = 'Processando...';
 
             try {
                 const imagemCompacta = await comprimirImagem(input.files[0]);
                 preencherBoxImagem(box, imagemCompacta);
-            } catch (erro) {
+            } catch {
                 preencherBoxImagem(box, '');
-                alert('Nao foi possivel processar essa foto.');
+                alert('Não foi possível processar essa foto.');
             } finally {
                 const resetMsg = box.querySelector('.msg-camera strong');
-                if (resetMsg && !obterSrcBox(box)) {
-                    resetMsg.innerText = 'Registrar foto';
-                }
+                if (resetMsg && !obterSrcBox(box)) resetMsg.innerText = 'Registrar foto';
             }
         }
 
@@ -1748,9 +1727,7 @@
         }
 
         function normalizarPendente(item) {
-            if (item && item.snapshot) {
-                return item.snapshot;
-            }
+            if (item && item.snapshot) return item.snapshot;
 
             if (item && item.campos && Array.isArray(item.volumes)) {
                 return {
@@ -1762,16 +1739,16 @@
 
             return {
                 campos: {
-                    c: item.c || '',
-                    t: item.t || '',
-                    m: item.m || '',
-                    p: item.p || '',
-                    tp: item.tp || '',
-                    q: item.q || '',
-                    nf: item.nf || ''
+                    c: item?.c || '',
+                    t: item?.t || '',
+                    m: item?.m || '',
+                    p: item?.p || '',
+                    tp: item?.tp || '',
+                    q: item?.q || '',
+                    nf: item?.nf || ''
                 },
-                caminhao: extrairFotosDoHTML(item.htmlCam || ''),
-                volumes: extrairVolumesLegado(item.htmlVol || '')
+                caminhao: extrairFotosDoHTML(item?.htmlCam || ''),
+                volumes: extrairVolumesLegado(item?.htmlVol || '')
             };
         }
 
@@ -1791,8 +1768,8 @@
                 persistirPendentes();
                 alert('Checklist salvo no standby.');
                 window.location.reload();
-            } catch (erro) {
-                alert('Nao foi possivel salvar. O armazenamento do navegador pode estar cheio.');
+            } catch {
+                alert('Não foi possível salvar. O armazenamento do navegador pode estar cheio.');
             }
         }
 
@@ -1839,7 +1816,6 @@
 
         function aplicarEstadoAtual(snapshot) {
             aplicarCamposFormulario(snapshot.campos || {});
-
             document.getElementById('container-volumes').innerHTML = '';
             mudarTipoCarga(true);
 
@@ -1861,7 +1837,6 @@
         function recuperar(index) {
             const item = pendentes[index];
             if (!item) return;
-
             aplicarEstadoAtual(normalizarPendente(item));
             pendentes.splice(index, 1);
             persistirPendentes();
@@ -1874,7 +1849,7 @@
 
             document.getElementById('secao-caminhao').style.display = mostrar ? 'block' : 'none';
             document.getElementById('painel-volumes').style.display = mostrar ? 'block' : 'none';
-            document.getElementById('btn-add-vol').style.display = mostrar ? 'block' : 'none';
+            document.getElementById('btn-add-vol').style.display = mostrar ? 'block' : 'block';
 
             atualizarRotulosVolumes();
 
@@ -1894,7 +1869,7 @@
                 const titulo = volumeBox.querySelector('.volume-nome');
                 const labels = volumeBox.querySelectorAll('.foto-col label');
                 if (span) span.innerText = `Volume ${index + 1}`;
-                if (titulo) titulo.innerText = `Conferencia visual do volume ${index + 1}`;
+                if (titulo) titulo.innerText = `Conferência visual do volume ${index + 1}`;
                 if (labels[1]) labels[1].innerText = labelSecundario;
             });
         }
@@ -1915,8 +1890,8 @@
                     <div class="header-volume">
                         <div class="volume-title-wrap">
                             <span class="volume-seq">Volume ${numero}</span>
-                            <h4 class="volume-nome">Conferencia visual do volume ${numero}</h4>
-                            <p>Esses cartoes sao levados em pares para as paginas internas do PDF.</p>
+                            <h4 class="volume-nome">Conferência visual do volume ${numero}</h4>
+                            <p>Esses cartões são levados em pares para as páginas internas do PDF.</p>
                         </div>
                         <button type="button" class="btn-remover" onclick="removerVolume(this)">Remover</button>
                     </div>
@@ -1925,7 +1900,7 @@
                         <div class="foto-col">
                             <label>Foto etiqueta</label>
                             <div class="box-imagem">
-                                <span class="msg-camera"><strong>Registrar foto</strong><small>Mostre a etiqueta do volume de forma legivel.</small></span>
+                                <span class="msg-camera"><strong>Registrar foto</strong><small>Mostre a etiqueta do volume de forma legível.</small></span>
                                 <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
                                 <img alt="Foto da etiqueta do volume">
                             </div>
@@ -1934,7 +1909,7 @@
                         <div class="foto-col">
                             <label>${escaparHTML(labelSecundario)}</label>
                             <div class="box-imagem">
-                                <span class="msg-camera"><strong>Registrar foto</strong><small>Capture a evidencia visual complementar deste volume.</small></span>
+                                <span class="msg-camera"><strong>Registrar foto</strong><small>Capture a evidência visual complementar deste volume.</small></span>
                                 <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
                                 <img alt="Foto complementar do volume">
                             </div>
@@ -1970,7 +1945,7 @@
                 const span = volumeBox.querySelector('.volume-seq');
                 const titulo = volumeBox.querySelector('.volume-nome');
                 if (span) span.innerText = `Volume ${index + 1}`;
-                if (titulo) titulo.innerText = `Conferencia visual do volume ${index + 1}`;
+                if (titulo) titulo.innerText = `Conferência visual do volume ${index + 1}`;
             });
 
             document.querySelectorAll('.btn-remover').forEach((botao) => {
@@ -1995,7 +1970,7 @@
                 box.classList.add('foto-pendente');
                 const secao = box.closest('.volume-box, #secao-caminhao');
                 const titulo = secao && secao.id === 'secao-caminhao'
-                    ? 'Fotos do veiculo'
+                    ? 'Fotos do veículo'
                     : (secao ? (secao.querySelector('.volume-seq')?.innerText || 'Volume') : 'Foto');
                 const legenda = box.closest('.foto-col').querySelector('label').innerText.trim();
                 faltantes.push(`${titulo} - ${legenda}`);
@@ -2009,84 +1984,122 @@
                 document.querySelectorAll('#container-campos input[required], #container-campos select[required]')
             );
 
-            return !camposObrigatorios.some((campo) => !String(campo.value || '').trim());
+            let valido = true;
+
+            camposObrigatorios.forEach((campo) => {
+                const wrapper = campo.closest('.campo');
+                const preenchido = String(campo.value || '').trim() !== '';
+                if (wrapper) wrapper.classList.toggle('campo-erro', !preenchido);
+                if (!preenchido) valido = false;
+            });
+
+            return valido;
         }
 
         function validarQuantidadeVolumes() {
-            const qtdInformada = parseInt(document.getElementById('qtd-volumes').value, 10);
-            const qtdCadastrada = document.querySelectorAll('#container-volumes .volume-box').length;
+            const qtdInformada = parseInt(document.getElementById('qtd-volumes').value || '0', 10);
+            const qtdAtual = document.querySelectorAll('#container-volumes .volume-box').length;
 
-            if (!qtdInformada || qtdInformada < 1) {
-                alert('Informe uma quantidade de volumes valida antes de gerar o PDF.');
-                return false;
-            }
-
-            if (qtdInformada !== qtdCadastrada) {
-                alert(`A quantidade informada e ${qtdInformada}, mas existem ${qtdCadastrada} volumes cadastrados. Ajuste antes de gerar o PDF.`);
-                return false;
-            }
-
-            return true;
+            if (!qtdInformada || qtdInformada < 1) return false;
+            return qtdInformada === qtdAtual;
         }
 
-        function dividirEmGrupos(lista, tamanho) {
-            const grupos = [];
-            for (let i = 0; i < lista.length; i += tamanho) {
-                grupos.push(lista.slice(i, i + tamanho));
-            }
-            return grupos;
+        function obterDadosPDF() {
+            const campos = coletarCamposFormulario();
+            const caminhao = Array.from(document.querySelectorAll('#secao-caminhao .box-imagem')).map(obterSrcBox);
+            const volumes = coletarVolumes();
+
+            return {
+                campos,
+                caminhao,
+                volumes,
+                geradoEm: formatarDataExtensa(new Date())
+            };
         }
 
-        function renderizarFotoPDF(label, src, classeExtra = '') {
+        function montarMetaCard(titulo, valor, larga = false) {
             return `
-                <article class="pdf-photo-card ${classeExtra}">
-                    <span>${escaparHTML(label)}</span>
-                    <div class="pdf-photo-frame">
-                        <img src="${src || ''}" alt="${escaparHTML(label)}">
-                    </div>
-                </article>
+                <div class="pdf-meta-card ${larga ? 'is-wide' : ''}">
+                    <span>${escaparHTML(titulo)}</span>
+                    ${larga ? `<p>${escaparHTML(valor || '-')}</p>` : `<strong>${escaparHTML(valor || '-')}</strong>`}
+                </div>
             `;
         }
 
-        function renderizarPainelVolumePDF(label, src) {
+        function montarFotoPDF(label, src) {
             return `
-                <div class="pdf-volume-panel">
+                <div class="pdf-photo-card">
                     <span>${escaparHTML(label)}</span>
                     <div class="pdf-photo-frame">
-                        <img src="${src || ''}" alt="${escaparHTML(label)}">
+                        ${src ? `<img src="${src}" alt="${escaparHTML(label)}">` : ''}
                     </div>
                 </div>
             `;
         }
 
-        function renderizarPaginaInicialPDF(snapshot, paginaAtual, totalPaginas, geradoEm) {
-            const campos = snapshot.campos;
-
+        function montarVolumePDF(volume, tipoCarga) {
+            const labelSecundario = tipoCarga === 'Bag in Box' ? 'Foto carga' : 'Foto lacre';
             return `
+                <article class="pdf-volume-card">
+                    <div class="pdf-volume-top">
+                        <div>
+                            <h3>Volume ${volume.numero}</h3>
+                            <p>Conferência visual do volume ${volume.numero} registrada para o checklist.</p>
+                        </div>
+                        <div class="pdf-volume-badge">Volume ${volume.numero}</div>
+                    </div>
+
+                    <div class="pdf-volume-photos">
+                        <div class="pdf-volume-panel">
+                            <span>Foto etiqueta</span>
+                            <div class="pdf-photo-frame">
+                                ${volume.fotos?.[0] ? `<img src="${volume.fotos[0]}" alt="Foto etiqueta volume ${volume.numero}">` : ''}
+                            </div>
+                        </div>
+
+                        <div class="pdf-volume-panel">
+                            <span>${escaparHTML(labelSecundario)}</span>
+                            <div class="pdf-photo-frame">
+                                ${volume.fotos?.[1] ? `<img src="${volume.fotos[1]}" alt="Foto complementar volume ${volume.numero}">` : ''}
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            `;
+        }
+
+        function construirPaginasPDF() {
+            const { campos, caminhao, volumes, geradoEm } = obterDadosPDF();
+            const root = document.getElementById('pdf-render-root');
+
+            const paginas = [];
+            const totalPaginas = 1 + Math.ceil(volumes.length / 2);
+
+            paginas.push(`
                 <section class="pdf-page">
                     <div class="pdf-topline">
-                        <div class="pdf-brandline">Centrosucar | Checklist de carregamento</div>
-                        <div class="pdf-pagecount">Pagina ${paginaAtual} de ${totalPaginas}</div>
+                        <div class="pdf-brandline">Centrosucar • Checklist fotográfico</div>
+                        <div class="pdf-pagecount">Página 1 / ${totalPaginas}</div>
                     </div>
 
                     <div class="pdf-hero">
                         <div>
-                            <div class="pdf-hero-kicker">Relatorio fotografico oficial</div>
-                            <h1>Checklist institucional de carregamento</h1>
-                            <p>Documento consolidado para expedicao, conferencia visual, rastreabilidade operacional e compartilhamento com a equipe responsavel.</p>
+                            <div class="pdf-hero-kicker">Relatório operacional</div>
+                            <h1>Checklist de carregamento com evidência visual.</h1>
+                            <p>Documento gerado com os dados do carregamento, imagens do veículo e comprovação fotográfica dos volumes conferidos.</p>
                         </div>
 
                         <div class="pdf-hero-side">
                             <div class="pdf-highlight">
-                                <span>Nota fiscal</span>
-                                <strong>${escaparHTML(campos.nf || '-')}</strong>
+                                <span>Tipo de carga</span>
+                                <strong>${escaparHTML(campos.tp || '-')}</strong>
                             </div>
                             <div class="pdf-highlight">
-                                <span>Placa</span>
-                                <strong>${escaparHTML(campos.p || '-')}</strong>
+                                <span>Qtd. volumes</span>
+                                <strong>${escaparHTML(campos.q || '0')}</strong>
                             </div>
                             <div class="pdf-highlight">
-                                <span>Gerado em</span>
+                                <span>Emitido em</span>
                                 <strong>${escaparHTML(geradoEm)}</strong>
                             </div>
                         </div>
@@ -2095,307 +2108,181 @@
                     <section class="pdf-section">
                         <div class="pdf-section-head">
                             <div>
-                                <span>Resumo operacional</span>
-                                <h2>Informacoes do carregamento</h2>
+                                <span>Dados principais</span>
+                                <h2>Informações da operação</h2>
                             </div>
-                            <p>Pagina inicial reservada aos dados principais e a conferencia visual do veiculo, conforme o fluxo definido.</p>
+                            <p>Os dados abaixo compõem a identificação principal deste carregamento.</p>
                         </div>
 
                         <div class="pdf-meta-grid">
-                            <div class="pdf-meta-card">
-                                <span>Cliente</span>
-                                <p>${escaparHTML(campos.c || '-')}</p>
-                            </div>
-                            <div class="pdf-meta-card">
-                                <span>Transportadora</span>
-                                <p>${escaparHTML(campos.t || '-')}</p>
-                            </div>
-                            <div class="pdf-meta-card">
-                                <span>Motorista</span>
-                                <p>${escaparHTML(campos.m || '-')}</p>
-                            </div>
-                            <div class="pdf-meta-card">
-                                <span>Tipo de carga</span>
-                                <p>${escaparHTML(campos.tp || '-')}</p>
-                            </div>
-                            <div class="pdf-meta-card">
-                                <span>Quantidade de volumes</span>
-                                <p>${escaparHTML(campos.q || '-')}</p>
-                            </div>
-                            <div class="pdf-meta-card">
-                                <span>Placa do veiculo</span>
-                                <p>${escaparHTML(campos.p || '-')}</p>
-                            </div>
-                            <div class="pdf-meta-card is-wide">
-                                <span>Numero da nota fiscal</span>
-                                <strong>${escaparHTML(campos.nf || '-')}</strong>
-                            </div>
+                            ${montarMetaCard('Cliente', campos.c)}
+                            ${montarMetaCard('Transportadora', campos.t)}
+                            ${montarMetaCard('Motorista', campos.m)}
+                            ${montarMetaCard('Placa do veículo', campos.p)}
+                            ${montarMetaCard('Tipo de carga', campos.tp)}
+                            ${montarMetaCard('Qtd. volumes', campos.q)}
+                            ${montarMetaCard('Número da nota fiscal', campos.nf, true)}
                         </div>
                     </section>
 
                     <section class="pdf-section">
                         <div class="pdf-section-head">
                             <div>
-                                <span>Conferencia visual</span>
-                                <h2>Fotos do veiculo</h2>
+                                <span>Registro fotográfico</span>
+                                <h2>Fotos do veículo</h2>
                             </div>
-                            <p>Sequencia obrigatoria para validar a saida do carregamento com rastreabilidade visual.</p>
+                            <p>Essas imagens identificam o veículo e registram o momento do carregamento.</p>
                         </div>
 
                         <div class="pdf-truck-grid">
-                            ${renderizarFotoPDF('Lateral do caminhao carregado', snapshot.caminhao[0])}
-                            ${renderizarFotoPDF('Carregamento', snapshot.caminhao[1])}
-                            ${renderizarFotoPDF('Placa', snapshot.caminhao[2])}
+                            ${montarFotoPDF('Lateral do caminhão carregado', caminhao[0] || '')}
+                            ${montarFotoPDF('Carregamento', caminhao[1] || '')}
+                            ${montarFotoPDF('Placa', caminhao[2] || '')}
                         </div>
                     </section>
 
                     <div class="pdf-footer">
-                        <span>Documento gerado automaticamente para uso interno e conferencia operacional.</span>
+                        <span>Relatório de carregamento</span>
                         <strong>Centrosucar</strong>
                     </div>
                 </section>
-            `;
-        }
+            `);
 
-        function renderizarPaginaVolumesPDF(volumes, paginaAtual, totalPaginas, snapshot) {
-            const campos = snapshot.campos;
-            const labelSecundario = campos.tp === 'Bag in Box' ? 'Foto carga' : 'Foto lacre';
+            for (let i = 0; i < volumes.length; i += 2) {
+                const dupla = volumes.slice(i, i + 2);
+                const paginaAtual = paginas.length + 1;
 
-            return `
-                <section class="pdf-page">
-                    <div class="pdf-topline">
-                        <div class="pdf-brandline">Centrosucar | Evidencias por volume</div>
-                        <div class="pdf-pagecount">Pagina ${paginaAtual} de ${totalPaginas}</div>
-                    </div>
-
-                    <div class="pdf-page-header">
-                        <div>
-                            <h2>Volumes conferidos</h2>
-                            <p>Distribuicao fixa em pares por pagina, para leitura limpa e uniforme no PDF final.</p>
+                paginas.push(`
+                    <section class="pdf-page">
+                        <div class="pdf-topline">
+                            <div class="pdf-brandline">Centrosucar • Volumes conferidos</div>
+                            <div class="pdf-pagecount">Página ${paginaAtual} / ${totalPaginas}</div>
                         </div>
 
-                        <div class="pdf-page-tags">
-                            <div class="pdf-tag">NF ${escaparHTML(campos.nf || '-')}</div>
-                            <div class="pdf-tag">${escaparHTML(campos.tp || '-')}</div>
+                        <div class="pdf-page-header">
+                            <div>
+                                <h2>Volumes conferidos</h2>
+                                <p>Volumes organizados em pares por página para facilitar visualização e conferência operacional.</p>
+                            </div>
+                            <div class="pdf-page-tags">
+                                <div class="pdf-tag">${escaparHTML(campos.tp || '-')}</div>
+                                <div class="pdf-tag">NF ${escaparHTML(campos.nf || '-')}</div>
+                                <div class="pdf-tag">Placa ${escaparHTML(campos.p || '-')}</div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="pdf-volumes-list">
-                        ${volumes.map((volume, index) => `
-                            <article class="pdf-volume-card">
-                                <div class="pdf-volume-top">
-                                    <div>
-                                        <h3>Volume ${volume.numero || (index + 1)}</h3>
-                                        <p>Registro visual individual para conferencia da expedicao.</p>
-                                    </div>
-                                    <div class="pdf-volume-badge">Checklist visual</div>
-                                </div>
+                        <div class="pdf-volumes-list">
+                            ${dupla.map(volume => montarVolumePDF(volume, campos.tp)).join('')}
+                        </div>
 
-                                <div class="pdf-volume-photos">
-                                    ${renderizarPainelVolumePDF('Foto etiqueta', volume.fotos[0])}
-                                    ${renderizarPainelVolumePDF(labelSecundario, volume.fotos[1])}
-                                </div>
-                            </article>
-                        `).join('')}
-                    </div>
-
-                    <div class="pdf-footer">
-                        <span>Volumes organizados em blocos de 2 por pagina para evitar cortes e desalinhamentos.</span>
-                        <strong>Centrosucar</strong>
-                    </div>
-                </section>
-            `;
-        }
-
-        function montarDocumentoPDF(snapshot) {
-            const gruposVolumes = dividirEmGrupos(snapshot.volumes, 2);
-            const totalPaginas = 1 + gruposVolumes.length;
-            const geradoEm = formatarDataExtensa(new Date());
-
-            const paginas = [
-                renderizarPaginaInicialPDF(snapshot, 1, totalPaginas, geradoEm),
-                ...gruposVolumes.map((grupo, indice) => renderizarPaginaVolumesPDF(grupo, indice + 2, totalPaginas, snapshot))
-            ];
-
-            return `<div class="pdf-document">${paginas.join('')}</div>`;
-        }
-
-        async function montarPDFPaginaPorPagina(snapshot) {
-            const config = obterConfiguracaoGeracaoPDF();
-            const { html2canvasFn, jsPDFCtor } = obterDependenciasPDF();
-
-            if (!html2canvasFn || !jsPDFCtor) {
-                throw new Error('Dependencias de PDF indisponiveis.');
+                        <div class="pdf-footer">
+                            <span>Volumes ${i + 1}${dupla.length === 2 ? ` e ${i + 2}` : ''}</span>
+                            <strong>Centrosucar</strong>
+                        </div>
+                    </section>
+                `);
             }
 
-            const pdfRoot = document.getElementById('pdf-render-root');
-            pdfRoot.innerHTML = montarDocumentoPDF(snapshot);
-
-            const paginas = Array.from(pdfRoot.querySelectorAll('.pdf-page'));
-            const pdf = new jsPDFCtor({
-                unit: 'pt',
-                format: 'a4',
-                orientation: 'portrait',
-                compress: true
-            });
-
-            const larguraPagina = pdf.internal.pageSize.getWidth();
-            const alturaPagina = pdf.internal.pageSize.getHeight();
-
-            for (let index = 0; index < paginas.length; index += 1) {
-                const pagina = paginas[index];
-
-                atualizarStatusLoading(`Renderizando pagina ${index + 1} de ${paginas.length}...`);
-                await aguardarImagensCarregadas(pagina);
-                await esperar(config.esperaEntrePaginas);
-
-                const canvas = await html2canvasFn(pagina, {
-                    scale: config.escalaCanvas,
-                    useCORS: true,
-                    backgroundColor: '#EAF1EC',
-                    width: 794,
-                    height: 1123,
-                    windowWidth: 794,
-                    windowHeight: 1123,
-                    scrollX: 0,
-                    scrollY: 0,
-                    imageTimeout: 0,
-                    logging: false
-                });
-
-                const imagemPagina = canvas.toDataURL('image/jpeg', config.qualidadePDF);
-
-                if (index > 0) {
-                    pdf.addPage();
-                }
-
-                pdf.addImage(imagemPagina, 'JPEG', 0, 0, larguraPagina, alturaPagina, `pagina-${index + 1}`, 'FAST');
-
-                canvas.width = 1;
-                canvas.height = 1;
-                await esperar(config.esperaEntrePaginas);
-            }
-
-            atualizarStatusLoading('Finalizando arquivo...');
-            return pdf;
-        }
-
-        async function entregarPDF(pdf, filename) {
-            const config = obterConfiguracaoGeracaoPDF();
-            const blob = pdf.output('blob');
-            const arquivo = typeof File !== 'undefined'
-                ? new File([blob], filename, { type: 'application/pdf' })
-                : null;
-
-            if (config.mobile && arquivo && navigator.canShare) {
-                try {
-                    if (navigator.canShare({ files: [arquivo] })) {
-                        atualizarStatusLoading('Abrindo compartilhamento do PDF...');
-                        await navigator.share({
-                            title: filename,
-                            files: [arquivo]
-                        });
-                        return;
-                    }
-                } catch (erro) {
-                }
-            }
-
-            if (config.android && !config.inApp) {
-                atualizarStatusLoading('Salvando PDF na pasta Downloads...');
-                pdf.save(filename);
-                return;
-            }
-
-            const url = URL.createObjectURL(blob);
-
-            if (config.inApp) {
-                window.location.href = url;
-
-                setTimeout(() => URL.revokeObjectURL(url), 60000);
-                return;
-            }
-
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.rel = 'noopener';
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-
-            setTimeout(() => URL.revokeObjectURL(url), 60000);
+            root.innerHTML = `<div class="pdf-document">${paginas.join('')}</div>`;
+            return root;
         }
 
         async function gerarPDF() {
-            document.getElementById('container-campos').classList.add('validar');
+            const deps = obterDependenciasPDF();
+            if (!deps.html2pdfFn) {
+                alert('A biblioteca de PDF não foi carregada.');
+                return;
+            }
 
             if (!validarCamposObrigatorios()) {
-                alert('Preencha todos os campos obrigatorios antes de gerar o PDF.');
+                alert('Preencha todos os campos obrigatórios.');
                 return;
             }
 
             if (!validarQuantidadeVolumes()) {
+                alert('A quantidade de volumes informada deve ser igual à quantidade de volumes cadastrados.');
                 return;
             }
 
-            const fotosFaltantes = listarFotosFaltantes();
-            if (fotosFaltantes.length) {
-                const resumo = fotosFaltantes.slice(0, 8).join('\n- ');
-                const restante = fotosFaltantes.length > 8 ? '\n- ...' : '';
-                alert(`Tire todas as fotos obrigatorias antes de gerar o PDF.\n\nFaltando:\n- ${resumo}${restante}`);
+            const faltantes = listarFotosFaltantes();
+            if (faltantes.length) {
+                alert('Ainda faltam fotos obrigatórias:\n\n' + faltantes.join('\n'));
                 return;
             }
 
-            const snapshot = coletarEstadoAtual();
             const loading = document.getElementById('loading');
-            const pdfRoot = document.getElementById('pdf-render-root');
-            const filename = `Checklist_NF_${limparNomeArquivo(snapshot.campos.nf)}.pdf`;
-            const ambiente = detectarAmbientePDF();
-
             loading.style.display = 'block';
-            atualizarStatusLoading('Preparando paginas do PDF...');
 
             try {
-                if (document.fonts && document.fonts.ready) {
-                    await document.fonts.ready;
-                }
+                atualizarStatusLoading('Preparando as páginas do PDF...');
+                const root = construirPaginasPDF();
 
                 await esperar(120);
+                await aguardarImagensCarregadas(root);
 
-                const pdf = await montarPDFPaginaPorPagina(snapshot);
-                await entregarPDF(pdf, filename);
+                atualizarStatusLoading('Renderizando imagens e montando o PDF...');
+                const campos = coletarCamposFormulario();
+                const config = obterConfiguracaoGeracaoPDF();
+
+                const opt = {
+                    margin: 0,
+                    filename: `Checklist_${limparNomeArquivo(campos.nf || campos.p || 'sem_numero')}.pdf`,
+                    image: { type: 'jpeg', quality: config.qualidadePDF },
+                    html2canvas: {
+                        scale: config.escalaCanvas,
+                        useCORS: true,
+                        allowTaint: true,
+                        backgroundColor: '#EAF1EC',
+                        logging: false,
+                        scrollX: 0,
+                        scrollY: 0
+                    },
+                    jsPDF: {
+                        unit: 'px',
+                        format: [794, 1123],
+                        orientation: 'portrait'
+                    },
+                    pagebreak: {
+                        mode: ['css', 'legacy']
+                    }
+                };
+
+                await deps.html2pdfFn().set(opt).from(root.querySelector('.pdf-document')).save();
             } catch (erro) {
                 console.error(erro);
-
-                if (ambiente.inApp) {
-                    alert('Nao foi possivel gerar o PDF dentro do navegador interno. Abra o link no Chrome do Android e tente novamente.');
-                } else {
-                    alert('Nao foi possivel gerar o PDF. Tente novamente.');
-                }
+                alert('Não foi possível gerar o PDF. Abra no Chrome e tente novamente.');
             } finally {
-                pdfRoot.innerHTML = '';
-                loading.style.display = 'none';
-                atualizarStatusLoading('Montando a versao final com paginacao institucional, capa operacional e volumes organizados em pares.');
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('pdf-render-root').innerHTML = '';
             }
         }
 
-        document.getElementById('modal-pendentes').addEventListener('click', (evento) => {
-            if (evento.target.id === 'modal-pendentes') {
-                fecharPendentes();
+        document.getElementById('qtd-volumes').addEventListener('change', () => {
+            const qtd = parseInt(document.getElementById('qtd-volumes').value || '0', 10);
+            const container = document.getElementById('container-volumes');
+            if (!document.getElementById('tipo-carga').value || !qtd || qtd < 1) return;
+
+            let atual = container.querySelectorAll('.volume-box').length;
+            while (atual < qtd) {
+                addV(null, true);
+                atual++;
             }
+            while (atual > qtd && atual > 1) {
+                container.lastElementChild?.remove();
+                atual--;
+            }
+            reordenar();
         });
 
-        window.onload = () => {
+        window.addEventListener('load', () => {
+            atualizarContador();
+            sincronizarFotos();
+
             const ambiente = detectarAmbientePDF();
             if (ambiente.android && ambiente.inApp) {
                 document.getElementById('android-banner').style.display = 'flex';
             }
-
-            atualizarContador();
-            sincronizarFotos();
-            reordenar();
-        };
+        });
     </script>
 </body>
 </html>
