@@ -29,14 +29,17 @@
             --raio-medio: 22px;
             --raio-pequeno: 16px;
         }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         html {
             scroll-behavior: smooth;
         }
+
         body {
             min-height: 100vh;
             padding: 24px 14px 140px;
@@ -47,6 +50,7 @@
                 radial-gradient(circle at top right, rgba(17, 82, 53, 0.18), transparent 32%),
                 linear-gradient(180deg, #EEF4F0 0%, #F7FAF8 48%, #EEF3EF 100%);
         }
+
         body::before,
         body::after {
             content: '';
@@ -57,6 +61,7 @@
             filter: blur(8px);
             opacity: 0.5;
         }
+
         body::before {
             width: 220px;
             height: 220px;
@@ -64,6 +69,7 @@
             right: -60px;
             background: radial-gradient(circle, rgba(198, 154, 43, 0.25) 0%, rgba(198, 154, 43, 0) 72%);
         }
+
         body::after {
             width: 280px;
             height: 280px;
@@ -71,10 +77,12 @@
             left: -80px;
             background: radial-gradient(circle, rgba(17, 82, 53, 0.14) 0%, rgba(17, 82, 53, 0) 72%);
         }
+
         body > * {
             position: relative;
             z-index: 1;
         }
+
         #btn-abrir-pendentes {
             position: fixed;
             top: 20px;
@@ -91,10 +99,12 @@
             cursor: pointer;
             transition: transform 0.22s ease, box-shadow 0.22s ease;
         }
+
         #btn-abrir-pendentes:hover {
             transform: translateY(-1px);
             box-shadow: 0 18px 36px rgba(13, 63, 42, 0.28);
         }
+
         #count-pendentes {
             display: inline-flex;
             align-items: center;
@@ -108,6 +118,7 @@
             color: var(--branco);
             font-size: 11px;
         }
+
         #render-area {
             max-width: 980px;
             margin: 0 auto;
@@ -118,6 +129,7 @@
             box-shadow: var(--sombra-forte);
             backdrop-filter: blur(12px);
         }
+
         .hero-app {
             padding: 30px 30px 26px;
             color: var(--branco);
@@ -125,6 +137,7 @@
                 radial-gradient(circle at top right, rgba(232, 211, 155, 0.22), transparent 28%),
                 linear-gradient(135deg, var(--verde-900), var(--verde-800) 56%, #4F7A22 100%);
         }
+
         .hero-brand {
             display: flex;
             align-items: center;
@@ -132,6 +145,7 @@
             gap: 16px;
             margin-bottom: 22px;
         }
+
         .hero-pill {
             display: inline-flex;
             align-items: center;
@@ -144,6 +158,7 @@
             letter-spacing: 0.18em;
             text-transform: uppercase;
         }
+
         .hero-pill::before {
             content: '';
             width: 10px;
@@ -152,27 +167,32 @@
             background: linear-gradient(135deg, #E1BE63, #FFFFFF);
             box-shadow: 0 0 14px rgba(225, 190, 99, 0.55);
         }
+
         .hero-caption {
             font-size: 13px;
             color: rgba(255, 255, 255, 0.76);
         }
+
         .hero-main {
             display: grid;
             grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.9fr);
             gap: 22px;
             align-items: stretch;
         }
+
         .hero-copy h1 {
             font: 800 34px/1.05 'Montserrat', sans-serif;
             max-width: 520px;
             margin-bottom: 14px;
         }
+
         .hero-copy p {
             max-width: 560px;
             font-size: 16px;
             line-height: 1.55;
             color: rgba(255, 255, 255, 0.82);
         }
+
         .hero-guide {
             padding: 20px;
             border-radius: 24px;
@@ -180,6 +200,7 @@
             border: 1px solid rgba(255, 255, 255, 0.14);
             backdrop-filter: blur(10px);
         }
+
         .hero-guide strong {
             display: block;
             margin-bottom: 14px;
@@ -187,11 +208,13 @@
             letter-spacing: 0.14em;
             text-transform: uppercase;
         }
+
         .hero-guide ul {
             list-style: none;
             display: grid;
             gap: 10px;
         }
+
         .hero-guide li {
             display: flex;
             align-items: flex-start;
@@ -202,6 +225,7 @@
             font-size: 14px;
             color: rgba(255, 255, 255, 0.86);
         }
+
         .hero-guide li span {
             display: inline-flex;
             align-items: center;
@@ -213,9 +237,53 @@
             color: #FFF0C2;
             font: 700 12px/1 'Montserrat', sans-serif;
         }
+
         .content-shell {
             padding: 26px;
         }
+
+        .android-banner {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 22px;
+            padding: 18px 20px;
+            border-radius: 22px;
+            border: 1px solid rgba(198, 154, 43, 0.28);
+            background: linear-gradient(135deg, rgba(232, 211, 155, 0.32), rgba(255, 255, 255, 0.96));
+            box-shadow: 0 14px 26px rgba(13, 63, 42, 0.08);
+        }
+
+        .android-banner strong {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--verde-900);
+            font: 800 15px/1.1 'Montserrat', sans-serif;
+        }
+
+        .android-banner p {
+            color: var(--texto-suave);
+            font-size: 14px;
+            line-height: 1.45;
+        }
+
+        .android-banner button {
+            flex-shrink: 0;
+            min-width: 160px;
+            height: 48px;
+            padding: 0 18px;
+            border: none;
+            border-radius: 16px;
+            color: var(--branco);
+            background: linear-gradient(135deg, var(--verde-700), var(--verde-500));
+            box-shadow: 0 14px 24px rgba(17, 82, 53, 0.18);
+            cursor: pointer;
+            font: 700 12px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
         .panel {
             margin-bottom: 22px;
             padding: 24px;
@@ -224,9 +292,11 @@
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 248, 245, 0.98));
             box-shadow: var(--sombra-media);
         }
+
         .panel:last-child {
             margin-bottom: 0;
         }
+
         .panel-head {
             display: flex;
             align-items: center;
@@ -234,6 +304,7 @@
             gap: 18px;
             margin-bottom: 18px;
         }
+
         .panel-kicker {
             display: inline-flex;
             align-items: center;
@@ -244,6 +315,7 @@
             letter-spacing: 0.16em;
             text-transform: uppercase;
         }
+
         .panel-kicker::before {
             content: '';
             width: 26px;
@@ -251,16 +323,19 @@
             border-radius: 999px;
             background: linear-gradient(90deg, var(--dourado-500), rgba(198, 154, 43, 0));
         }
+
         .panel h2,
         .panel h3,
         .header-volume h4 {
             font-family: 'Montserrat', sans-serif;
         }
+
         .panel p {
             color: var(--texto-suave);
             font-size: 15px;
             line-height: 1.55;
         }
+
         .status-note {
             min-width: 220px;
             padding: 14px 16px;
@@ -271,28 +346,34 @@
             font-size: 14px;
             line-height: 1.35;
         }
+
         .dados-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 14px;
         }
+
         .campo {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
+
         .campo.full {
             grid-column: 1 / -1;
         }
+
         .campo label {
             color: var(--texto-suave);
             font: 700 12px/1 'Montserrat', sans-serif;
             letter-spacing: 0.08em;
             text-transform: uppercase;
         }
+
         .input-shell {
             position: relative;
         }
+
         .input-shell::before {
             content: '';
             position: absolute;
@@ -301,6 +382,7 @@
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(240, 245, 241, 0.98));
             z-index: 0;
         }
+
         .campo input:not([type="file"]),
         .campo select {
             position: relative;
@@ -316,26 +398,31 @@
             outline: none;
             transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
         }
+
         .campo input:not([type="file"]):focus,
         .campo select:focus {
             border-color: rgba(27, 106, 67, 0.28);
             box-shadow: 0 0 0 4px rgba(27, 106, 67, 0.09);
             transform: translateY(-1px);
         }
+
         .campo input::placeholder {
             color: #98A79D;
         }
+
         .validar input:invalid,
         .validar select:invalid {
             border-color: rgba(197, 57, 57, 0.45) !important;
             background: rgba(255, 245, 245, 0.95) !important;
             box-shadow: 0 0 0 4px rgba(197, 57, 57, 0.08) !important;
         }
+
         #secao-caminhao,
         .volume-box {
             position: relative;
             overflow: hidden;
         }
+
         #secao-caminhao::before,
         .volume-box::before {
             content: '';
@@ -344,19 +431,24 @@
             height: 4px;
             background: linear-gradient(90deg, var(--verde-700), var(--dourado-500));
         }
+
         .foto-wrapper {
             display: grid;
             gap: 16px;
         }
+
         #secao-caminhao .foto-wrapper {
             grid-template-columns: repeat(3, minmax(0, 1fr));
         }
+
         #container-volumes .foto-wrapper {
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
+
         .foto-col {
             min-width: 0;
         }
+
         .foto-col label {
             display: block;
             margin-bottom: 10px;
@@ -366,6 +458,7 @@
             text-transform: uppercase;
             text-align: center;
         }
+
         .box-imagem {
             position: relative;
             overflow: hidden;
@@ -378,11 +471,13 @@
             cursor: pointer;
             transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
         }
+
         .box-imagem:hover {
             transform: translateY(-2px);
             border-color: rgba(17, 82, 53, 0.46);
             box-shadow: 0 14px 28px rgba(17, 82, 53, 0.10);
         }
+
         .box-imagem input {
             position: absolute;
             inset: 0;
@@ -392,6 +487,7 @@
             cursor: pointer;
             z-index: 3;
         }
+
         .box-imagem img {
             position: absolute;
             inset: 0;
@@ -402,6 +498,7 @@
             object-fit: contain;
             background: linear-gradient(180deg, #FDFEFD 0%, #F0F4F1 100%);
         }
+
         .box-imagem::after {
             content: '';
             position: absolute;
@@ -411,6 +508,7 @@
             pointer-events: none;
             z-index: 1;
         }
+
         .msg-camera {
             position: absolute;
             inset: 0;
@@ -424,15 +522,18 @@
             text-align: center;
             color: var(--texto-suave);
         }
+
         .msg-camera strong {
             font: 700 15px/1 'Montserrat', sans-serif;
             color: var(--verde-700);
         }
+
         .msg-camera small {
             max-width: 160px;
             font-size: 13px;
             line-height: 1.35;
         }
+
         .msg-camera::before {
             content: 'FOTO';
             display: inline-flex;
@@ -448,16 +549,19 @@
             letter-spacing: 0.16em;
             text-transform: uppercase;
         }
+
         .box-imagem.com-imagem {
             border-style: solid;
             border-color: rgba(17, 82, 53, 0.20);
             background: linear-gradient(180deg, #FFFFFF 0%, #F5F8F5 100%);
         }
+
         .box-imagem.foto-pendente {
             border-color: rgba(197, 57, 57, 0.45) !important;
             background: linear-gradient(180deg, #FFF9F9 0%, #FFF0F0 100%) !important;
             box-shadow: 0 0 0 4px rgba(197, 57, 57, 0.08);
         }
+
         .header-volume {
             display: flex;
             align-items: center;
@@ -465,6 +569,7 @@
             gap: 14px;
             margin-bottom: 18px;
         }
+
         .volume-title-wrap span {
             display: inline-flex;
             align-items: center;
@@ -477,14 +582,17 @@
             letter-spacing: 0.08em;
             text-transform: uppercase;
         }
+
         .header-volume h4 {
             font-size: 20px;
             line-height: 1.1;
         }
+
         .header-volume p {
             color: var(--texto-suave);
             font-size: 14px;
         }
+
         .btn-remover {
             border: 1px solid rgba(197, 57, 57, 0.18);
             background: rgba(197, 57, 57, 0.08);
@@ -497,10 +605,12 @@
             cursor: pointer;
             transition: background 0.18s ease, transform 0.18s ease;
         }
+
         .btn-remover:hover {
             transform: translateY(-1px);
             background: rgba(197, 57, 57, 0.12);
         }
+
         .botoes-fixos {
             position: fixed;
             left: 50%;
@@ -517,6 +627,7 @@
             box-shadow: 0 18px 40px rgba(13, 63, 42, 0.18);
             backdrop-filter: blur(14px);
         }
+
         .btn {
             flex: 1;
             height: 56px;
@@ -528,25 +639,30 @@
             letter-spacing: 0.08em;
             text-transform: uppercase;
         }
+
         .btn:hover {
             transform: translateY(-2px);
         }
+
         .btn-add {
             color: var(--verde-700);
             background: linear-gradient(180deg, #FFFFFF 0%, #F4F8F5 100%);
             border: 1px solid rgba(17, 82, 53, 0.16);
             box-shadow: 0 8px 18px rgba(17, 82, 53, 0.08);
         }
+
         .btn-standby {
             color: #785708;
             background: linear-gradient(180deg, #F8EBC6 0%, #E8D39B 100%);
             box-shadow: 0 12px 24px rgba(198, 154, 43, 0.18);
         }
+
         .btn-save {
             color: var(--branco);
             background: linear-gradient(135deg, var(--verde-700), var(--verde-500));
             box-shadow: 0 16px 28px rgba(17, 82, 53, 0.22);
         }
+
         #modal-pendentes {
             display: none;
             position: fixed;
@@ -556,6 +672,7 @@
             background: rgba(8, 17, 11, 0.68);
             backdrop-filter: blur(10px);
         }
+
         .modal-conteudo {
             width: min(560px, 100%);
             margin: 42px auto 0;
@@ -565,6 +682,7 @@
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(242, 247, 243, 0.98));
             box-shadow: 0 30px 60px rgba(0, 0, 0, 0.24);
         }
+
         .modal-conteudo h3 {
             margin-bottom: 16px;
             padding-bottom: 14px;
@@ -572,11 +690,13 @@
             color: var(--verde-900);
             font: 800 22px/1.1 'Montserrat', sans-serif;
         }
+
         #lista-pendentes-corpo {
             max-height: 420px;
             overflow-y: auto;
             padding-right: 4px;
         }
+
         .pendente-card {
             margin-bottom: 12px;
             padding: 16px;
@@ -584,23 +704,27 @@
             border: 1px solid var(--borda);
             background: linear-gradient(180deg, #FFFFFF 0%, #F6FAF7 100%);
         }
+
         .pendente-card strong {
             display: block;
             color: var(--verde-900);
             font: 700 16px/1.1 'Montserrat', sans-serif;
             margin-bottom: 4px;
         }
+
         .pendente-card small {
             display: block;
             color: var(--texto-suave);
             font-size: 13px;
             line-height: 1.4;
         }
+
         .pendente-acoes {
             display: flex;
             gap: 8px;
             margin-top: 14px;
         }
+
         .pendente-acoes button {
             height: 42px;
             border: none;
@@ -609,17 +733,20 @@
             font: 700 12px/1 'Montserrat', sans-serif;
             letter-spacing: 0.05em;
         }
+
         .pendente-retomar {
             flex: 1;
             color: var(--branco);
             background: linear-gradient(135deg, var(--verde-700), var(--verde-500));
         }
+
         .pendente-excluir {
             width: 48px;
             color: var(--erro);
             background: rgba(197, 57, 57, 0.10);
             border: 1px solid rgba(197, 57, 57, 0.18);
         }
+
         #loading {
             display: none;
             position: fixed;
@@ -628,6 +755,7 @@
             background: rgba(9, 17, 12, 0.52);
             backdrop-filter: blur(8px);
         }
+
         .loading-card {
             position: absolute;
             left: 50%;
@@ -640,16 +768,19 @@
             box-shadow: 0 26px 50px rgba(0, 0, 0, 0.24);
             text-align: center;
         }
+
         .loading-card strong {
             display: block;
             margin-bottom: 6px;
             color: var(--verde-900);
             font: 800 20px/1.1 'Montserrat', sans-serif;
         }
+
         .loading-card p {
             color: var(--texto-suave);
             line-height: 1.45;
         }
+
         .loading-bar {
             height: 10px;
             margin-top: 18px;
@@ -657,6 +788,7 @@
             border-radius: 999px;
             background: rgba(17, 82, 53, 0.10);
         }
+
         .loading-bar::after {
             content: '';
             display: block;
@@ -666,21 +798,27 @@
             background: linear-gradient(90deg, var(--verde-700), var(--dourado-500));
             animation: pulse-bar 1.1s linear infinite;
         }
+
         @keyframes pulse-bar {
             from { transform: translateX(-110%); }
             to { transform: translateX(280%); }
         }
+
         #pdf-render-root {
-            position: absolute;
-            left: -20000px;
+            position: fixed;
+            left: 0;
             top: 0;
             width: 794px;
+            opacity: 0;
+            z-index: -1;
             pointer-events: none;
         }
+
         .pdf-document {
             width: 794px;
             background: #EAF1EC;
         }
+
         .pdf-page {
             position: relative;
             width: 794px;
@@ -692,9 +830,11 @@
                 linear-gradient(180deg, #F8FBF9 0%, #FFFFFF 28%, #F5F8F6 100%);
             page-break-after: always;
         }
+
         .pdf-page:last-child {
             page-break-after: auto;
         }
+
         .pdf-page::before {
             content: '';
             position: absolute;
@@ -703,12 +843,14 @@
             border: 1px solid rgba(17, 82, 53, 0.08);
             pointer-events: none;
         }
+
         .pdf-topline {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 14px;
         }
+
         .pdf-brandline {
             display: inline-flex;
             align-items: center;
@@ -718,6 +860,7 @@
             letter-spacing: 0.18em;
             text-transform: uppercase;
         }
+
         .pdf-brandline::before {
             content: '';
             width: 34px;
@@ -725,6 +868,7 @@
             border-radius: 999px;
             background: linear-gradient(90deg, var(--verde-700), rgba(17, 82, 53, 0.12));
         }
+
         .pdf-pagecount {
             display: inline-flex;
             align-items: center;
@@ -736,6 +880,7 @@
             letter-spacing: 0.12em;
             text-transform: uppercase;
         }
+
         .pdf-hero {
             position: relative;
             display: grid;
@@ -750,6 +895,7 @@
                 linear-gradient(135deg, var(--verde-900), var(--verde-800) 60%, #4F7A22 100%);
             box-shadow: 0 22px 40px rgba(13, 63, 42, 0.18);
         }
+
         .pdf-hero-kicker {
             display: inline-flex;
             align-items: center;
@@ -763,28 +909,33 @@
             letter-spacing: 0.16em;
             text-transform: uppercase;
         }
+
         .pdf-hero h1 {
             max-width: 420px;
             margin-bottom: 12px;
             font: 800 30px/1.04 'Montserrat', sans-serif;
         }
+
         .pdf-hero p {
             max-width: 420px;
             font-size: 15px;
             line-height: 1.5;
             color: rgba(255, 255, 255, 0.82);
         }
+
         .pdf-hero-side {
             display: grid;
             gap: 10px;
             align-content: start;
         }
+
         .pdf-highlight {
             padding: 14px 16px;
             border-radius: 18px;
             background: rgba(255, 255, 255, 0.10);
             border: 1px solid rgba(255, 255, 255, 0.14);
         }
+
         .pdf-highlight span {
             display: block;
             margin-bottom: 6px;
@@ -793,10 +944,12 @@
             letter-spacing: 0.14em;
             text-transform: uppercase;
         }
+
         .pdf-highlight strong {
             display: block;
             font: 700 16px/1.2 'Montserrat', sans-serif;
         }
+
         .pdf-section {
             margin-bottom: 20px;
             padding: 18px;
@@ -805,9 +958,11 @@
             background: rgba(255, 255, 255, 0.88);
             box-shadow: 0 14px 28px rgba(13, 63, 42, 0.06);
         }
+
         .pdf-section:last-of-type {
             margin-bottom: 0;
         }
+
         .pdf-section-head {
             display: flex;
             align-items: flex-end;
@@ -815,6 +970,7 @@
             gap: 14px;
             margin-bottom: 16px;
         }
+
         .pdf-section-head span {
             display: inline-flex;
             align-items: center;
@@ -825,6 +981,7 @@
             letter-spacing: 0.16em;
             text-transform: uppercase;
         }
+
         .pdf-section-head span::before {
             content: '';
             width: 22px;
@@ -832,10 +989,12 @@
             border-radius: 999px;
             background: linear-gradient(90deg, var(--dourado-500), rgba(198, 154, 43, 0.12));
         }
+
         .pdf-section-head h2 {
             color: var(--verde-900);
             font: 800 20px/1.06 'Montserrat', sans-serif;
         }
+
         .pdf-section-head p {
             color: var(--texto-suave);
             font-size: 13px;
@@ -843,11 +1002,13 @@
             max-width: 280px;
             text-align: right;
         }
+
         .pdf-meta-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 12px;
         }
+
         .pdf-meta-card {
             min-height: 86px;
             padding: 14px 16px;
@@ -855,6 +1016,7 @@
             border: 1px solid rgba(17, 82, 53, 0.08);
             background: linear-gradient(180deg, #FFFFFF 0%, #F5F8F6 100%);
         }
+
         .pdf-meta-card.is-wide {
             grid-column: 1 / -1;
             min-height: 96px;
@@ -862,6 +1024,7 @@
                 radial-gradient(circle at right top, rgba(232, 211, 155, 0.16), transparent 28%),
                 linear-gradient(135deg, rgba(17, 82, 53, 0.06), rgba(255, 255, 255, 0.98));
         }
+
         .pdf-meta-card span {
             display: block;
             margin-bottom: 8px;
@@ -870,28 +1033,33 @@
             letter-spacing: 0.14em;
             text-transform: uppercase;
         }
+
         .pdf-meta-card strong {
             display: block;
             color: var(--grafite);
             font: 700 18px/1.24 'Montserrat', sans-serif;
         }
+
         .pdf-meta-card p {
             color: var(--grafite);
             font-size: 16px;
             line-height: 1.38;
             font-weight: 600;
         }
+
         .pdf-truck-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 14px;
         }
+
         .pdf-photo-card {
             padding: 12px;
             border-radius: 20px;
             border: 1px solid rgba(17, 82, 53, 0.08);
             background: linear-gradient(180deg, #FFFFFF 0%, #F5F8F6 100%);
         }
+
         .pdf-photo-card span {
             display: block;
             margin-bottom: 10px;
@@ -901,6 +1069,7 @@
             letter-spacing: 0.12em;
             text-transform: uppercase;
         }
+
         .pdf-photo-frame {
             overflow: hidden;
             display: flex;
@@ -913,12 +1082,14 @@
                 #F2F6F3;
             border: 1px solid rgba(17, 82, 53, 0.10);
         }
+
         .pdf-photo-frame img {
             width: 100%;
             height: 100%;
             object-fit: contain;
             background: linear-gradient(180deg, #FBFDFC 0%, #EFF4F0 100%);
         }
+
         .pdf-page-header {
             display: flex;
             align-items: flex-start;
@@ -928,21 +1099,25 @@
             padding: 10px 2px 16px;
             border-bottom: 1px solid rgba(17, 82, 53, 0.12);
         }
+
         .pdf-page-header h2 {
             margin-bottom: 8px;
             color: var(--verde-900);
             font: 800 24px/1.04 'Montserrat', sans-serif;
         }
+
         .pdf-page-header p {
             color: var(--texto-suave);
             font-size: 13px;
             line-height: 1.45;
         }
+
         .pdf-page-tags {
             display: grid;
             gap: 8px;
             min-width: 190px;
         }
+
         .pdf-tag {
             display: inline-flex;
             align-items: center;
@@ -956,10 +1131,12 @@
             letter-spacing: 0.10em;
             text-transform: uppercase;
         }
+
         .pdf-volumes-list {
             display: grid;
             gap: 16px;
         }
+
         .pdf-volume-card {
             padding: 18px;
             border-radius: 26px;
@@ -969,6 +1146,7 @@
                 linear-gradient(180deg, #FFFFFF 0%, #F6F9F7 100%);
             box-shadow: 0 16px 30px rgba(13, 63, 42, 0.08);
         }
+
         .pdf-volume-top {
             display: flex;
             align-items: center;
@@ -976,15 +1154,18 @@
             gap: 12px;
             margin-bottom: 14px;
         }
+
         .pdf-volume-top h3 {
             color: var(--verde-900);
             font: 800 20px/1.05 'Montserrat', sans-serif;
         }
+
         .pdf-volume-top p {
             margin-top: 6px;
             color: var(--texto-suave);
             font-size: 13px;
         }
+
         .pdf-volume-badge {
             display: inline-flex;
             align-items: center;
@@ -998,17 +1179,20 @@
             letter-spacing: 0.12em;
             text-transform: uppercase;
         }
+
         .pdf-volume-photos {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 14px;
         }
+
         .pdf-volume-panel {
             padding: 12px;
             border-radius: 20px;
             border: 1px solid rgba(17, 82, 53, 0.08);
             background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(241, 246, 242, 0.96));
         }
+
         .pdf-volume-panel span {
             display: block;
             margin-bottom: 10px;
@@ -1018,9 +1202,11 @@
             letter-spacing: 0.12em;
             text-transform: uppercase;
         }
+
         .pdf-volume-panel .pdf-photo-frame {
             height: 220px;
         }
+
         .pdf-footer {
             position: absolute;
             left: 36px;
@@ -1033,12 +1219,14 @@
             color: var(--texto-suave);
             font-size: 11px;
         }
+
         .pdf-footer strong {
             color: var(--verde-700);
             font: 700 11px/1 'Montserrat', sans-serif;
             letter-spacing: 0.10em;
             text-transform: uppercase;
         }
+
         @media (max-width: 860px) {
             .hero-main,
             .dados-grid,
@@ -1049,33 +1237,48 @@
                 flex-direction: column;
                 align-items: stretch;
             }
+
             .status-note {
                 min-width: 0;
             }
+
+            .android-banner {
+                align-items: stretch;
+            }
+
+            .android-banner button {
+                width: 100%;
+            }
         }
+
         @media (max-width: 680px) {
             body {
                 padding: 16px 10px 130px;
             }
+
             #btn-abrir-pendentes {
                 top: 12px;
                 right: 10px;
             }
+
             .hero-app,
             .content-shell,
             .panel,
             .modal-conteudo {
                 padding: 20px;
             }
+
             .hero-copy h1 {
                 font-size: 28px;
             }
+
             .botoes-fixos {
                 width: calc(100% - 12px);
                 padding: 10px;
                 gap: 10px;
                 border-radius: 22px;
             }
+
             .btn {
                 height: 52px;
                 font-size: 11px;
@@ -1084,59 +1287,78 @@
     </style>
 </head>
 <body>
+
     <button type="button" id="btn-abrir-pendentes" onclick="abrirPendentes()">
         PENDENTES <span id="count-pendentes">0</span>
     </button>
+
     <main id="render-area">
         <section class="hero-app">
             <div class="hero-brand">
                 <div class="hero-pill">Centrosucar</div>
-                <div class="hero-caption">Relatório fotográfico de carregamento com estrutura pronta para PDF.</div>
+                <div class="hero-caption">Relatorio fotografico de carregamento com estrutura pronta para PDF.</div>
             </div>
+
             <div class="hero-main">
                 <div class="hero-copy">
-                    <h1>Checklist operacional com evidência visual e PDF institucional.</h1>
-                    <p>Preencha os dados da operação, registre as fotos obrigatórias e gere um documento com paginação fixa: capa operacional na primeira página e volumes organizados em duplas nas páginas seguintes.</p>
+                    <h1>Checklist operacional com evidencia visual e PDF institucional.</h1>
+                    <p>Preencha os dados da operacao, registre as fotos obrigatorias e gere um documento com paginacao fixa: capa operacional na primeira pagina e volumes organizados em duplas nas paginas seguintes.</p>
                 </div>
+
                 <div class="hero-guide">
                     <strong>Estrutura do PDF</strong>
                     <ul>
-                        <li><span>01</span> Página 1 com informações gerais e fotos do veículo.</li>
-                        <li><span>02</span> Página 2 com Volume 1 e Volume 2.</li>
-                        <li><span>03</span> Páginas seguintes sempre com 2 volumes por folha.</li>
+                        <li><span>01</span> Pagina 1 com informacoes gerais e fotos do veiculo.</li>
+                        <li><span>02</span> Pagina 2 com Volume 1 e Volume 2.</li>
+                        <li><span>03</span> Paginas seguintes sempre com 2 volumes por folha.</li>
                     </ul>
                 </div>
             </div>
         </section>
+
         <div class="content-shell">
+            <div class="android-banner" id="android-banner">
+                <div>
+                    <strong>Abra no Chrome para gerar o PDF</strong>
+                    <p>Se este link estiver aberto dentro do WhatsApp, toque no botao ao lado para abrir no Chrome do Android. Esse e o modo mais confiavel para gerar e enviar o PDF.</p>
+                </div>
+                <button type="button" onclick="abrirNoChromeAndroid()">Abrir no Chrome</button>
+            </div>
+
             <section class="panel">
                 <div class="panel-head">
                     <div>
-                        <div class="panel-kicker">Dados da operação</div>
-                        <h2>Informações do carregamento</h2>
-                        <p>Esses dados aparecem na primeira página do PDF e compõem o cabeçalho institucional do checklist.</p>
+                        <div class="panel-kicker">Dados da operacao</div>
+                        <h2>Informacoes do carregamento</h2>
+                        <p>Esses dados aparecem na primeira pagina do PDF e compoem o cabecalho institucional do checklist.</p>
                     </div>
+
                     <div class="status-note">
-                        A quantidade informada deve bater com o número de volumes cadastrados para o PDF ser liberado.
+                        A quantidade informada deve bater com o numero de volumes cadastrados para o PDF ser liberado.
                     </div>
                 </div>
+
                 <div class="dados-grid" id="container-campos">
                     <div class="campo">
                         <label for="c">Cliente *</label>
                         <div class="input-shell"><input type="text" id="c" placeholder="Nome do cliente" required></div>
                     </div>
+
                     <div class="campo">
                         <label for="t">Transportadora *</label>
                         <div class="input-shell"><input type="text" id="t" placeholder="Nome da transportadora" required></div>
                     </div>
+
                     <div class="campo">
                         <label for="m">Motorista *</label>
                         <div class="input-shell"><input type="text" id="m" placeholder="Nome completo" required></div>
                     </div>
+
                     <div class="campo">
-                        <label for="p">Placa do veículo *</label>
+                        <label for="p">Placa do veiculo *</label>
                         <div class="input-shell"><input type="text" id="p" placeholder="ABC-1234" required></div>
                     </div>
+
                     <div class="campo">
                         <label for="tipo-carga">Tipo de carga *</label>
                         <div class="input-shell">
@@ -1147,68 +1369,78 @@
                             </select>
                         </div>
                     </div>
+
                     <div class="campo">
                         <label for="qtd-volumes">Qtd. volumes *</label>
                         <div class="input-shell"><input type="number" id="qtd-volumes" min="1" placeholder="Ex: 10" required></div>
                     </div>
+
                     <div class="campo full">
-                        <label for="nota-fiscal">Nº da nota fiscal *</label>
+                        <label for="nota-fiscal">Numero da nota fiscal *</label>
                         <div class="input-shell"><input type="text" id="nota-fiscal" placeholder="Aguardando faturamento..." required></div>
                     </div>
                 </div>
             </section>
+
             <section id="secao-caminhao" class="panel" style="display:none;">
                 <div class="header-volume">
                     <div class="volume-title-wrap">
                         <span>Etapa 1</span>
-                        <h4>Fotos do veículo</h4>
-                        <p>Essas imagens ocupam a primeira página do PDF, logo após os dados da operação.</p>
+                        <h4>Fotos do veiculo</h4>
+                        <p>Essas imagens ocupam a primeira pagina do PDF, logo apos os dados da operacao.</p>
                     </div>
                 </div>
+
                 <div class="foto-wrapper">
                     <div class="foto-col">
-                        <label>Lateral do caminhão carregado</label>
+                        <label>Lateral do caminhao carregado</label>
                         <div class="box-imagem">
-                            <span class="msg-camera"><strong>Registrar foto</strong><small>Capture a lateral completa do veículo carregado.</small></span>
+                            <span class="msg-camera"><strong>Registrar foto</strong><small>Capture a lateral completa do veiculo carregado.</small></span>
                             <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
-                            <img alt="Foto lateral do caminhão carregado">
+                            <img alt="Foto lateral do caminhao carregado">
                         </div>
                     </div>
+
                     <div class="foto-col">
                         <label>Carregamento</label>
                         <div class="box-imagem">
-                            <span class="msg-camera"><strong>Registrar foto</strong><small>Mostre a disposição da carga no momento do carregamento.</small></span>
+                            <span class="msg-camera"><strong>Registrar foto</strong><small>Mostre a disposicao da carga no momento do carregamento.</small></span>
                             <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
                             <img alt="Foto do carregamento">
                         </div>
                     </div>
+
                     <div class="foto-col">
                         <label>Placa</label>
                         <div class="box-imagem">
-                            <span class="msg-camera"><strong>Registrar foto</strong><small>Garanta a identificação visual da placa do veículo.</small></span>
+                            <span class="msg-camera"><strong>Registrar foto</strong><small>Garanta a identificacao visual da placa do veiculo.</small></span>
                             <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
-                            <img alt="Foto da placa do veículo">
+                            <img alt="Foto da placa do veiculo">
                         </div>
                     </div>
                 </div>
             </section>
+
             <section class="panel" id="painel-volumes" style="display:none;">
                 <div class="panel-head">
                     <div>
                         <div class="panel-kicker">Etapa 2</div>
                         <h3>Volumes conferidos</h3>
-                        <p>No PDF, os volumes são organizados em pares por página: 1 e 2, depois 3 e 4, e assim por diante.</p>
+                        <p>No PDF, os volumes sao organizados em pares por pagina: 1 e 2, depois 3 e 4, e assim por diante.</p>
                     </div>
                 </div>
+
                 <div id="container-volumes"></div>
             </section>
         </div>
     </main>
+
     <div class="botoes-fixos">
         <button type="button" class="btn btn-add" id="btn-add-vol" onclick="addV()" style="display:none;">Adicionar volume</button>
         <button type="button" class="btn btn-standby" onclick="salvarParaDepois()">Standby (NF)</button>
-        <button type="button" class="btn btn-save" onclick="gerarPDF()">Gerar PDF</button>
+        <button type="button" class="btn btn-save" onclick="gerarPDF()">Gerar / enviar PDF</button>
     </div>
+
     <div id="modal-pendentes">
         <div class="modal-conteudo">
             <h3>Aguardando nota fiscal</h3>
@@ -1216,17 +1448,21 @@
             <button type="button" class="btn btn-add" style="width:100%; margin-top:14px;" onclick="fecharPendentes()">Fechar</button>
         </div>
     </div>
+
     <div id="loading">
         <div class="loading-card">
-            <strong>Gerando PDF</strong>
-            <p>Montando a versão final com paginação institucional, capa operacional e volumes organizados em pares.</p>
+            <strong>Gerando arquivo</strong>
+            <p>Montando a versao final com paginacao institucional, capa operacional e volumes organizados em pares.</p>
             <div class="loading-bar"></div>
         </div>
     </div>
+
     <div id="pdf-render-root" aria-hidden="true"></div>
+
     <script>
         const STORAGE_KEY = 'checklists_pendentes';
         let pendentes = carregarPendentes();
+
         function carregarPendentes() {
             try {
                 const dados = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
@@ -1235,16 +1471,19 @@
                 return [];
             }
         }
+
         function persistirPendentes() {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(pendentes));
             atualizarContador();
         }
+
         function atualizarContador() {
             const span = document.getElementById('count-pendentes');
             if (span) {
                 span.innerText = pendentes.length;
             }
         }
+
         function escaparHTML(valor) {
             return String(valor || '')
                 .replace(/&/g, '&amp;')
@@ -1253,6 +1492,7 @@
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#39;');
         }
+
         function formatarDataHora(data = new Date()) {
             return new Intl.DateTimeFormat('pt-BR', {
                 day: '2-digit',
@@ -1262,32 +1502,122 @@
                 minute: '2-digit'
             }).format(data);
         }
+
         function formatarDataExtensa(data = new Date()) {
-            return new Intl.DateTimeFormat('pt-BR', {
-                day: '2-digit',
-                month: 'long',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            }).format(data);
+            const meses = [
+                'janeiro', 'fevereiro', 'marco', 'abril', 'maio', 'junho',
+                'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
+            ];
+            const dia = String(data.getDate()).padStart(2, '0');
+            const mes = meses[data.getMonth()];
+            const ano = data.getFullYear();
+            const hora = String(data.getHours()).padStart(2, '0');
+            const minuto = String(data.getMinutes()).padStart(2, '0');
+
+            return `${dia} ${mes} ${ano} - ${hora}:${minuto}`;
         }
+
         function limparNomeArquivo(valor) {
             return String(valor || 'sem_numero')
                 .trim()
                 .replace(/[\\/:*?"<>|]+/g, '-')
                 .replace(/\s+/g, '_');
         }
+
+        function detectarAmbientePDF() {
+            const userAgent = navigator.userAgent || '';
+
+            return {
+                userAgent,
+                android: /Android/i.test(userAgent),
+                mobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent),
+                inApp: /WhatsApp|FBAN|FBAV|Instagram|Line|wv\)|WebView/i.test(userAgent),
+                ios: /iPhone|iPad|iPod/i.test(userAgent)
+            };
+        }
+
+        function obterConfiguracaoGeracaoPDF() {
+            const ambiente = detectarAmbientePDF();
+
+            return {
+                ...ambiente,
+                escalaCanvas: ambiente.mobile ? 1 : 1.85,
+                qualidadePDF: ambiente.mobile ? 0.8 : 0.94,
+                larguraMaximaFoto: ambiente.mobile ? 1100 : 1600,
+                alturaMaximaFoto: ambiente.mobile ? 1100 : 1600,
+                qualidadeFoto: ambiente.mobile ? 0.78 : 0.88,
+                esperaEntrePaginas: ambiente.mobile ? 140 : 40
+            };
+        }
+
+        function atualizarStatusLoading(texto) {
+            const status = document.querySelector('#loading .loading-card p');
+            if (status) {
+                status.innerText = texto;
+            }
+        }
+
+        function esperar(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms));
+        }
+
+        async function aguardarImagensCarregadas(container) {
+            const imagens = Array.from(container.querySelectorAll('img'))
+                .filter((img) => img.getAttribute('src'));
+
+            await Promise.all(imagens.map((img) => {
+                if (img.complete && img.naturalWidth > 0) {
+                    return img.decode ? img.decode().catch(() => {}) : Promise.resolve();
+                }
+
+                return new Promise((resolve) => {
+                    const finalizar = () => {
+                        img.removeEventListener('load', finalizar);
+                        img.removeEventListener('error', finalizar);
+                        resolve();
+                    };
+
+                    img.addEventListener('load', finalizar, { once: true });
+                    img.addEventListener('error', finalizar, { once: true });
+                });
+            }));
+        }
+
+        function obterDependenciasPDF() {
+            return {
+                html2canvasFn: window.html2canvas || null,
+                jsPDFCtor: window.jspdf && window.jspdf.jsPDF ? window.jspdf.jsPDF : null
+            };
+        }
+
+        function abrirNoChromeAndroid() {
+            const ambiente = detectarAmbientePDF();
+            if (!ambiente.android) return;
+
+            if (!/^https?:/i.test(window.location.href)) {
+                return;
+            }
+
+            const urlAtual = new URL(window.location.href);
+            const caminho = `${urlAtual.host}${urlAtual.pathname}${urlAtual.search}${urlAtual.hash}`;
+            const intentUrl = `intent://${caminho}#Intent;scheme=${urlAtual.protocol.replace(':', '')};package=com.android.chrome;end`;
+            window.location.href = intentUrl;
+        }
+
         function obterLabelSecundario() {
             return document.getElementById('tipo-carga').value === 'Bag in Box' ? 'Foto carga' : 'Foto lacre';
         }
+
         function obterSrcBox(box) {
             const img = box.querySelector('img');
             return img ? (img.getAttribute('src') || '') : '';
         }
+
         function sincronizarCaixa(box) {
             const msg = box.querySelector('.msg-camera');
             const img = box.querySelector('img');
             const src = obterSrcBox(box);
+
             if (src) {
                 img.style.display = 'block';
                 if (msg) msg.style.display = 'none';
@@ -1301,9 +1631,11 @@
                 box.classList.remove('foto-pendente');
             }
         }
+
         function sincronizarFotos(root = document) {
             root.querySelectorAll('.box-imagem').forEach(sincronizarCaixa);
         }
+
         function preencherBoxImagem(box, src) {
             const img = box.querySelector('img');
             if (src) {
@@ -1313,21 +1645,25 @@
             }
             sincronizarCaixa(box);
         }
+
         async function comprimirImagem(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.onload = (evento) => {
                     const img = new Image();
                     img.onload = () => {
+                        const config = obterConfiguracaoGeracaoPDF();
                         const canvas = document.createElement('canvas');
-                        const larguraMaxima = 1600;
-                        const alturaMaxima = 1600;
+                        const larguraMaxima = config.larguraMaximaFoto;
+                        const alturaMaxima = config.alturaMaximaFoto;
                         const escala = Math.min(1, larguraMaxima / img.width, alturaMaxima / img.height);
+
                         canvas.width = Math.round(img.width * escala);
                         canvas.height = Math.round(img.height * escala);
+
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.88));
+                        resolve(canvas.toDataURL('image/jpeg', config.qualidadeFoto));
                     };
                     img.onerror = reject;
                     img.src = evento.target.result;
@@ -1336,17 +1672,21 @@
                 reader.readAsDataURL(file);
             });
         }
+
         async function preview(input) {
             if (!input.files || !input.files[0]) return;
+
             const box = input.closest('.box-imagem');
             const msg = box.querySelector('.msg-camera strong');
+
             if (msg) msg.innerText = 'Processando...';
+
             try {
                 const imagemCompacta = await comprimirImagem(input.files[0]);
                 preencherBoxImagem(box, imagemCompacta);
             } catch (erro) {
                 preencherBoxImagem(box, '');
-                alert('Não foi possível processar essa foto.');
+                alert('Nao foi possivel processar essa foto.');
             } finally {
                 const resetMsg = box.querySelector('.msg-camera strong');
                 if (resetMsg && !obterSrcBox(box)) {
@@ -1354,6 +1694,7 @@
                 }
             }
         }
+
         function coletarCamposFormulario() {
             return {
                 c: document.getElementById('c').value.trim(),
@@ -1365,6 +1706,7 @@
                 nf: document.getElementById('nota-fiscal').value.trim()
             };
         }
+
         function aplicarCamposFormulario(campos = {}) {
             document.getElementById('c').value = campos.c || '';
             document.getElementById('t').value = campos.t || '';
@@ -1374,12 +1716,14 @@
             document.getElementById('qtd-volumes').value = campos.q || '';
             document.getElementById('nota-fiscal').value = campos.nf || '';
         }
+
         function coletarVolumes() {
             return Array.from(document.querySelectorAll('#container-volumes .volume-box')).map((volumeBox, index) => ({
                 numero: index + 1,
                 fotos: Array.from(volumeBox.querySelectorAll('.box-imagem')).map(obterSrcBox)
             }));
         }
+
         function coletarEstadoAtual() {
             return {
                 campos: coletarCamposFormulario(),
@@ -1387,11 +1731,13 @@
                 volumes: coletarVolumes()
             };
         }
+
         function extrairFotosDoHTML(html = '') {
             const temp = document.createElement('div');
             temp.innerHTML = html;
             return Array.from(temp.querySelectorAll('.box-imagem img')).map((img) => img.getAttribute('src') || '');
         }
+
         function extrairVolumesLegado(html = '') {
             const temp = document.createElement('div');
             temp.innerHTML = html;
@@ -1400,10 +1746,12 @@
                 fotos: Array.from(volumeBox.querySelectorAll('.box-imagem img')).map((img) => img.getAttribute('src') || '')
             }));
         }
+
         function normalizarPendente(item) {
             if (item && item.snapshot) {
                 return item.snapshot;
             }
+
             if (item && item.campos && Array.isArray(item.volumes)) {
                 return {
                     campos: item.campos,
@@ -1411,6 +1759,7 @@
                     volumes: item.volumes || []
                 };
             }
+
             return {
                 campos: {
                     c: item.c || '',
@@ -1425,12 +1774,14 @@
                 volumes: extrairVolumesLegado(item.htmlVol || '')
             };
         }
+
         function salvarParaDepois() {
             const snapshot = coletarEstadoAtual();
             if (!snapshot.campos.p) {
                 alert('Digite a placa antes de salvar no standby.');
                 return;
             }
+
             try {
                 pendentes.unshift({
                     id: Date.now(),
@@ -1441,11 +1792,13 @@
                 alert('Checklist salvo no standby.');
                 window.location.reload();
             } catch (erro) {
-                alert('Não foi possível salvar. O armazenamento do navegador pode estar cheio.');
+                alert('Nao foi possivel salvar. O armazenamento do navegador pode estar cheio.');
             }
         }
+
         function abrirPendentes() {
             const corpo = document.getElementById('lista-pendentes-corpo');
+
             if (!pendentes.length) {
                 corpo.innerHTML = '<p style="text-align:center; color:#617066; padding:24px 10px;">Nenhum checklist aguardando nota fiscal.</p>';
             } else {
@@ -1455,11 +1808,12 @@
                     const placa = escaparHTML(campos.p || '-');
                     const nf = escaparHTML(campos.nf || 'Sem NF');
                     const volumes = Array.isArray(snapshot.volumes) ? snapshot.volumes.length : 0;
+
                     return `
                         <div class="pendente-card">
                             <strong>Placa ${placa}</strong>
                             <small>NF: ${nf}</small>
-                            <small>${escaparHTML(item.dt || '')} • Volumes cadastrados: ${volumes}</small>
+                            <small>${escaparHTML(item.dt || '')} - Volumes cadastrados: ${volumes}</small>
                             <div class="pendente-acoes">
                                 <button type="button" class="pendente-retomar" onclick="recuperar(${index})">Retomar</button>
                                 <button type="button" class="pendente-excluir" onclick="excluirItem(${index})">X</button>
@@ -1468,55 +1822,71 @@
                     `;
                 }).join('');
             }
+
             document.getElementById('modal-pendentes').style.display = 'block';
         }
+
         function fecharPendentes() {
             document.getElementById('modal-pendentes').style.display = 'none';
         }
+
         function excluirItem(index) {
             if (!confirm('Deseja excluir este checklist pendente?')) return;
             pendentes.splice(index, 1);
             persistirPendentes();
             abrirPendentes();
         }
+
         function aplicarEstadoAtual(snapshot) {
             aplicarCamposFormulario(snapshot.campos || {});
+
             document.getElementById('container-volumes').innerHTML = '';
             mudarTipoCarga(true);
+
             if (Array.isArray(snapshot.caminhao)) {
                 document.querySelectorAll('#secao-caminhao .box-imagem').forEach((box, index) => {
                     preencherBoxImagem(box, snapshot.caminhao[index] || '');
                 });
             }
+
             if (Array.isArray(snapshot.volumes) && snapshot.volumes.length) {
                 document.getElementById('container-volumes').innerHTML = '';
                 snapshot.volumes.forEach((volume) => addV(volume, true));
             }
+
             reordenar();
             sincronizarFotos();
         }
+
         function recuperar(index) {
             const item = pendentes[index];
             if (!item) return;
+
             aplicarEstadoAtual(normalizarPendente(item));
             pendentes.splice(index, 1);
             persistirPendentes();
             fecharPendentes();
         }
+
         function mudarTipoCarga(interno = false) {
             const tipo = document.getElementById('tipo-carga').value;
             const mostrar = tipo !== '';
+
             document.getElementById('secao-caminhao').style.display = mostrar ? 'block' : 'none';
             document.getElementById('painel-volumes').style.display = mostrar ? 'block' : 'none';
             document.getElementById('btn-add-vol').style.display = mostrar ? 'block' : 'none';
+
             atualizarRotulosVolumes();
+
             if (mostrar && !document.querySelector('#container-volumes .volume-box')) {
                 addV(null, true);
             }
+
             if (!mostrar && !interno) {
                 document.getElementById('container-volumes').innerHTML = '';
             }
         }
+
         function atualizarRotulosVolumes() {
             const labelSecundario = obterLabelSecundario();
             document.querySelectorAll('#container-volumes .volume-box').forEach((volumeBox, index) => {
@@ -1524,42 +1894,47 @@
                 const titulo = volumeBox.querySelector('.volume-nome');
                 const labels = volumeBox.querySelectorAll('.foto-col label');
                 if (span) span.innerText = `Volume ${index + 1}`;
-                if (titulo) titulo.innerText = `Conferência visual do volume ${index + 1}`;
+                if (titulo) titulo.innerText = `Conferencia visual do volume ${index + 1}`;
                 if (labels[1]) labels[1].innerText = labelSecundario;
             });
         }
+
         function addV(volumeData = null, silencioso = false) {
             const tipo = document.getElementById('tipo-carga').value;
             if (!tipo && !silencioso) {
                 alert('Selecione o tipo de carga primeiro.');
                 return;
             }
+
             const container = document.getElementById('container-volumes');
             const numero = container.querySelectorAll('.volume-box').length + 1;
             const labelSecundario = obterLabelSecundario();
+
             const html = `
                 <div class="volume-box panel">
                     <div class="header-volume">
                         <div class="volume-title-wrap">
                             <span class="volume-seq">Volume ${numero}</span>
-                            <h4 class="volume-nome">Conferência visual do volume ${numero}</h4>
-                            <p>Esses cartões são levados em pares para as páginas internas do PDF.</p>
+                            <h4 class="volume-nome">Conferencia visual do volume ${numero}</h4>
+                            <p>Esses cartoes sao levados em pares para as paginas internas do PDF.</p>
                         </div>
                         <button type="button" class="btn-remover" onclick="removerVolume(this)">Remover</button>
                     </div>
+
                     <div class="foto-wrapper">
                         <div class="foto-col">
                             <label>Foto etiqueta</label>
                             <div class="box-imagem">
-                                <span class="msg-camera"><strong>Registrar foto</strong><small>Mostre a etiqueta do volume de forma legível.</small></span>
+                                <span class="msg-camera"><strong>Registrar foto</strong><small>Mostre a etiqueta do volume de forma legivel.</small></span>
                                 <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
                                 <img alt="Foto da etiqueta do volume">
                             </div>
                         </div>
+
                         <div class="foto-col">
                             <label>${escaparHTML(labelSecundario)}</label>
                             <div class="box-imagem">
-                                <span class="msg-camera"><strong>Registrar foto</strong><small>Capture a evidência visual complementar deste volume.</small></span>
+                                <span class="msg-camera"><strong>Registrar foto</strong><small>Capture a evidencia visual complementar deste volume.</small></span>
                                 <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
                                 <img alt="Foto complementar do volume">
                             </div>
@@ -1567,16 +1942,20 @@
                     </div>
                 </div>
             `;
+
             container.insertAdjacentHTML('beforeend', html);
             const novoVolume = container.lastElementChild;
+
             if (volumeData && Array.isArray(volumeData.fotos)) {
                 novoVolume.querySelectorAll('.box-imagem').forEach((box, index) => {
                     preencherBoxImagem(box, volumeData.fotos[index] || '');
                 });
             }
+
             reordenar();
             sincronizarFotos(novoVolume);
         }
+
         function removerVolume(botao) {
             const volume = botao.closest('.volume-box');
             if (volume) {
@@ -1584,57 +1963,72 @@
                 reordenar();
             }
         }
+
         function reordenar() {
             const volumes = Array.from(document.querySelectorAll('#container-volumes .volume-box'));
             volumes.forEach((volumeBox, index) => {
                 const span = volumeBox.querySelector('.volume-seq');
                 const titulo = volumeBox.querySelector('.volume-nome');
                 if (span) span.innerText = `Volume ${index + 1}`;
-                if (titulo) titulo.innerText = `Conferência visual do volume ${index + 1}`;
+                if (titulo) titulo.innerText = `Conferencia visual do volume ${index + 1}`;
             });
+
             document.querySelectorAll('.btn-remover').forEach((botao) => {
                 botao.style.display = volumes.length > 1 ? 'inline-flex' : 'none';
             });
+
             atualizarRotulosVolumes();
         }
+
         function listarFotosFaltantes() {
             const boxesVisiveis = Array.from(document.querySelectorAll('#render-area .box-imagem'))
                 .filter((box) => box.offsetParent !== null);
+
             const faltantes = [];
+
             boxesVisiveis.forEach((box) => {
                 if (obterSrcBox(box)) {
                     box.classList.remove('foto-pendente');
                     return;
                 }
+
                 box.classList.add('foto-pendente');
                 const secao = box.closest('.volume-box, #secao-caminhao');
                 const titulo = secao && secao.id === 'secao-caminhao'
-                    ? 'Fotos do veículo'
+                    ? 'Fotos do veiculo'
                     : (secao ? (secao.querySelector('.volume-seq')?.innerText || 'Volume') : 'Foto');
                 const legenda = box.closest('.foto-col').querySelector('label').innerText.trim();
                 faltantes.push(`${titulo} - ${legenda}`);
             });
+
             return faltantes;
         }
+
         function validarCamposObrigatorios() {
             const camposObrigatorios = Array.from(
                 document.querySelectorAll('#container-campos input[required], #container-campos select[required]')
             );
+
             return !camposObrigatorios.some((campo) => !String(campo.value || '').trim());
         }
+
         function validarQuantidadeVolumes() {
             const qtdInformada = parseInt(document.getElementById('qtd-volumes').value, 10);
             const qtdCadastrada = document.querySelectorAll('#container-volumes .volume-box').length;
+
             if (!qtdInformada || qtdInformada < 1) {
-                alert('Informe uma quantidade de volumes válida antes de gerar o PDF.');
+                alert('Informe uma quantidade de volumes valida antes de gerar o PDF.');
                 return false;
             }
+
             if (qtdInformada !== qtdCadastrada) {
-                alert(`A quantidade informada é ${qtdInformada}, mas existem ${qtdCadastrada} volumes cadastrados. Ajuste antes de gerar o PDF.`);
+                alert(`A quantidade informada e ${qtdInformada}, mas existem ${qtdCadastrada} volumes cadastrados. Ajuste antes de gerar o PDF.`);
                 return false;
             }
+
             return true;
         }
+
         function dividirEmGrupos(lista, tamanho) {
             const grupos = [];
             for (let i = 0; i < lista.length; i += tamanho) {
@@ -1642,6 +2036,7 @@
             }
             return grupos;
         }
+
         function renderizarFotoPDF(label, src, classeExtra = '') {
             return `
                 <article class="pdf-photo-card ${classeExtra}">
@@ -1652,6 +2047,7 @@
                 </article>
             `;
         }
+
         function renderizarPainelVolumePDF(label, src) {
             return `
                 <div class="pdf-volume-panel">
@@ -1662,20 +2058,24 @@
                 </div>
             `;
         }
+
         function renderizarPaginaInicialPDF(snapshot, paginaAtual, totalPaginas, geradoEm) {
             const campos = snapshot.campos;
+
             return `
                 <section class="pdf-page">
                     <div class="pdf-topline">
-                        <div class="pdf-brandline">Centrosucar • Checklist de carregamento</div>
-                        <div class="pdf-pagecount">Página ${paginaAtual} de ${totalPaginas}</div>
+                        <div class="pdf-brandline">Centrosucar | Checklist de carregamento</div>
+                        <div class="pdf-pagecount">Pagina ${paginaAtual} de ${totalPaginas}</div>
                     </div>
+
                     <div class="pdf-hero">
                         <div>
-                            <div class="pdf-hero-kicker">Relatório fotográfico oficial</div>
+                            <div class="pdf-hero-kicker">Relatorio fotografico oficial</div>
                             <h1>Checklist institucional de carregamento</h1>
-                            <p>Documento consolidado para expedição, conferência visual, rastreabilidade operacional e compartilhamento com a equipe responsável.</p>
+                            <p>Documento consolidado para expedicao, conferencia visual, rastreabilidade operacional e compartilhamento com a equipe responsavel.</p>
                         </div>
+
                         <div class="pdf-hero-side">
                             <div class="pdf-highlight">
                                 <span>Nota fiscal</span>
@@ -1691,14 +2091,16 @@
                             </div>
                         </div>
                     </div>
+
                     <section class="pdf-section">
                         <div class="pdf-section-head">
                             <div>
                                 <span>Resumo operacional</span>
-                                <h2>Informações do carregamento</h2>
+                                <h2>Informacoes do carregamento</h2>
                             </div>
-                            <p>Página inicial reservada aos dados principais e à conferência visual do veículo, conforme o fluxo definido.</p>
+                            <p>Pagina inicial reservada aos dados principais e a conferencia visual do veiculo, conforme o fluxo definido.</p>
                         </div>
+
                         <div class="pdf-meta-grid">
                             <div class="pdf-meta-card">
                                 <span>Cliente</span>
@@ -1721,65 +2123,74 @@
                                 <p>${escaparHTML(campos.q || '-')}</p>
                             </div>
                             <div class="pdf-meta-card">
-                                <span>Placa do veículo</span>
+                                <span>Placa do veiculo</span>
                                 <p>${escaparHTML(campos.p || '-')}</p>
                             </div>
                             <div class="pdf-meta-card is-wide">
-                                <span>Número da nota fiscal</span>
+                                <span>Numero da nota fiscal</span>
                                 <strong>${escaparHTML(campos.nf || '-')}</strong>
                             </div>
                         </div>
                     </section>
+
                     <section class="pdf-section">
                         <div class="pdf-section-head">
                             <div>
-                                <span>Conferência visual</span>
-                                <h2>Fotos do veículo</h2>
+                                <span>Conferencia visual</span>
+                                <h2>Fotos do veiculo</h2>
                             </div>
-                            <p>Sequência obrigatória para validar a saída do carregamento com rastreabilidade visual.</p>
+                            <p>Sequencia obrigatoria para validar a saida do carregamento com rastreabilidade visual.</p>
                         </div>
+
                         <div class="pdf-truck-grid">
-                            ${renderizarFotoPDF('Lateral do caminhão carregado', snapshot.caminhao[0])}
+                            ${renderizarFotoPDF('Lateral do caminhao carregado', snapshot.caminhao[0])}
                             ${renderizarFotoPDF('Carregamento', snapshot.caminhao[1])}
                             ${renderizarFotoPDF('Placa', snapshot.caminhao[2])}
                         </div>
                     </section>
+
                     <div class="pdf-footer">
-                        <span>Documento gerado automaticamente para uso interno e conferência operacional.</span>
+                        <span>Documento gerado automaticamente para uso interno e conferencia operacional.</span>
                         <strong>Centrosucar</strong>
                     </div>
                 </section>
             `;
         }
+
         function renderizarPaginaVolumesPDF(volumes, paginaAtual, totalPaginas, snapshot) {
             const campos = snapshot.campos;
             const labelSecundario = campos.tp === 'Bag in Box' ? 'Foto carga' : 'Foto lacre';
+
             return `
                 <section class="pdf-page">
                     <div class="pdf-topline">
-                        <div class="pdf-brandline">Centrosucar • Evidências por volume</div>
-                        <div class="pdf-pagecount">Página ${paginaAtual} de ${totalPaginas}</div>
+                        <div class="pdf-brandline">Centrosucar | Evidencias por volume</div>
+                        <div class="pdf-pagecount">Pagina ${paginaAtual} de ${totalPaginas}</div>
                     </div>
+
                     <div class="pdf-page-header">
                         <div>
                             <h2>Volumes conferidos</h2>
-                            <p>Distribuição fixa em pares por página, para leitura limpa e uniforme no PDF final.</p>
+                            <p>Distribuicao fixa em pares por pagina, para leitura limpa e uniforme no PDF final.</p>
                         </div>
+
                         <div class="pdf-page-tags">
                             <div class="pdf-tag">NF ${escaparHTML(campos.nf || '-')}</div>
                             <div class="pdf-tag">${escaparHTML(campos.tp || '-')}</div>
                         </div>
                     </div>
+
                     <div class="pdf-volumes-list">
                         ${volumes.map((volume, index) => `
                             <article class="pdf-volume-card">
                                 <div class="pdf-volume-top">
                                     <div>
                                         <h3>Volume ${volume.numero || (index + 1)}</h3>
-                                        <p>Registro visual individual para conferência da expedição.</p>
+                                        <p>Registro visual individual para conferencia da expedicao.</p>
                                     </div>
                                     <div class="pdf-volume-badge">Checklist visual</div>
                                 </div>
+
                                 <div class="pdf-volume-photos">
                                     ${renderizarPainelVolumePDF('Foto etiqueta', volume.fotos[0])}
                                     ${renderizarPainelVolumePDF(labelSecundario, volume.fotos[1])}
@@ -1787,79 +2198,200 @@
                             </article>
                         `).join('')}
                     </div>
+
                     <div class="pdf-footer">
-                        <span>Volumes organizados em blocos de 2 por página para evitar cortes e desalinhamentos.</span>
+                        <span>Volumes organizados em blocos de 2 por pagina para evitar cortes e desalinhamentos.</span>
                         <strong>Centrosucar</strong>
                     </div>
                 </section>
             `;
         }
+
         function montarDocumentoPDF(snapshot) {
             const gruposVolumes = dividirEmGrupos(snapshot.volumes, 2);
             const totalPaginas = 1 + gruposVolumes.length;
             const geradoEm = formatarDataExtensa(new Date());
+
             const paginas = [
                 renderizarPaginaInicialPDF(snapshot, 1, totalPaginas, geradoEm),
                 ...gruposVolumes.map((grupo, indice) => renderizarPaginaVolumesPDF(grupo, indice + 2, totalPaginas, snapshot))
             ];
+
             return `<div class="pdf-document">${paginas.join('')}</div>`;
         }
-        async function gerarPDF() {
-            document.getElementById('container-campos').classList.add('validar');
-            if (!validarCamposObrigatorios()) {
-                alert('Preencha todos os campos obrigatórios antes de gerar o PDF.');
+
+        async function montarPDFPaginaPorPagina(snapshot) {
+            const config = obterConfiguracaoGeracaoPDF();
+            const { html2canvasFn, jsPDFCtor } = obterDependenciasPDF();
+
+            if (!html2canvasFn || !jsPDFCtor) {
+                throw new Error('Dependencias de PDF indisponiveis.');
+            }
+
+            const pdfRoot = document.getElementById('pdf-render-root');
+            pdfRoot.innerHTML = montarDocumentoPDF(snapshot);
+
+            const paginas = Array.from(pdfRoot.querySelectorAll('.pdf-page'));
+            const pdf = new jsPDFCtor({
+                unit: 'pt',
+                format: 'a4',
+                orientation: 'portrait',
+                compress: true
+            });
+
+            const larguraPagina = pdf.internal.pageSize.getWidth();
+            const alturaPagina = pdf.internal.pageSize.getHeight();
+
+            for (let index = 0; index < paginas.length; index += 1) {
+                const pagina = paginas[index];
+
+                atualizarStatusLoading(`Renderizando pagina ${index + 1} de ${paginas.length}...`);
+                await aguardarImagensCarregadas(pagina);
+                await esperar(config.esperaEntrePaginas);
+
+                const canvas = await html2canvasFn(pagina, {
+                    scale: config.escalaCanvas,
+                    useCORS: true,
+                    backgroundColor: '#EAF1EC',
+                    width: 794,
+                    height: 1123,
+                    windowWidth: 794,
+                    windowHeight: 1123,
+                    scrollX: 0,
+                    scrollY: 0,
+                    imageTimeout: 0,
+                    logging: false
+                });
+
+                const imagemPagina = canvas.toDataURL('image/jpeg', config.qualidadePDF);
+
+                if (index > 0) {
+                    pdf.addPage();
+                }
+
+                pdf.addImage(imagemPagina, 'JPEG', 0, 0, larguraPagina, alturaPagina, `pagina-${index + 1}`, 'FAST');
+
+                canvas.width = 1;
+                canvas.height = 1;
+                await esperar(config.esperaEntrePaginas);
+            }
+
+            atualizarStatusLoading('Finalizando arquivo...');
+            return pdf;
+        }
+
+        async function entregarPDF(pdf, filename) {
+            const config = obterConfiguracaoGeracaoPDF();
+            const blob = pdf.output('blob');
+            const arquivo = typeof File !== 'undefined'
+                ? new File([blob], filename, { type: 'application/pdf' })
+                : null;
+
+            if (config.mobile && arquivo && navigator.canShare) {
+                try {
+                    if (navigator.canShare({ files: [arquivo] })) {
+                        atualizarStatusLoading('Abrindo compartilhamento do PDF...');
+                        await navigator.share({
+                            title: filename,
+                            files: [arquivo]
+                        });
+                        return;
+                    }
+                } catch (erro) {
+                }
+            }
+
+            if (config.android && !config.inApp) {
+                atualizarStatusLoading('Salvando PDF na pasta Downloads...');
+                pdf.save(filename);
                 return;
             }
+
+            const url = URL.createObjectURL(blob);
+
+            if (config.inApp) {
+                window.location.href = url;
+
+                setTimeout(() => URL.revokeObjectURL(url), 60000);
+                return;
+            }
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            link.rel = 'noopener';
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            setTimeout(() => URL.revokeObjectURL(url), 60000);
+        }
+
+        async function gerarPDF() {
+            document.getElementById('container-campos').classList.add('validar');
+
+            if (!validarCamposObrigatorios()) {
+                alert('Preencha todos os campos obrigatorios antes de gerar o PDF.');
+                return;
+            }
+
             if (!validarQuantidadeVolumes()) {
                 return;
             }
+
             const fotosFaltantes = listarFotosFaltantes();
             if (fotosFaltantes.length) {
                 const resumo = fotosFaltantes.slice(0, 8).join('\n- ');
                 const restante = fotosFaltantes.length > 8 ? '\n- ...' : '';
-                alert(`Tire todas as fotos obrigatórias antes de gerar o PDF.\n\nFaltando:\n- ${resumo}${restante}`);
+                alert(`Tire todas as fotos obrigatorias antes de gerar o PDF.\n\nFaltando:\n- ${resumo}${restante}`);
                 return;
             }
+
             const snapshot = coletarEstadoAtual();
             const loading = document.getElementById('loading');
             const pdfRoot = document.getElementById('pdf-render-root');
+            const filename = `Checklist_NF_${limparNomeArquivo(snapshot.campos.nf)}.pdf`;
+            const ambiente = detectarAmbientePDF();
+
             loading.style.display = 'block';
-            pdfRoot.innerHTML = montarDocumentoPDF(snapshot);
+            atualizarStatusLoading('Preparando paginas do PDF...');
+
             try {
                 if (document.fonts && document.fonts.ready) {
                     await document.fonts.ready;
                 }
-                await new Promise((resolve) => setTimeout(resolve, 180));
-                const documento = pdfRoot.querySelector('.pdf-document');
-                await html2pdf().set({
-                    margin: 0,
-                    filename: `Checklist_NF_${limparNomeArquivo(snapshot.campos.nf)}.pdf`,
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: {
-                        scale: 2,
-                        useCORS: true,
-                        backgroundColor: '#EAF1EC',
-                        windowWidth: 794,
-                        scrollX: 0,
-                        scrollY: 0
-                    },
-                    jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' },
-                    pagebreak: { mode: ['css'] }
-                }).from(documento).save();
+
+                await esperar(120);
+
+                const pdf = await montarPDFPaginaPorPagina(snapshot);
+                await entregarPDF(pdf, filename);
             } catch (erro) {
                 console.error(erro);
-                alert('Não foi possível gerar o PDF. Tente novamente.');
+
+                if (ambiente.inApp) {
+                    alert('Nao foi possivel gerar o PDF dentro do navegador interno. Abra o link no Chrome do Android e tente novamente.');
+                } else {
+                    alert('Nao foi possivel gerar o PDF. Tente novamente.');
+                }
             } finally {
                 pdfRoot.innerHTML = '';
                 loading.style.display = 'none';
+                atualizarStatusLoading('Montando a versao final com paginacao institucional, capa operacional e volumes organizados em pares.');
             }
         }
+
         document.getElementById('modal-pendentes').addEventListener('click', (evento) => {
             if (evento.target.id === 'modal-pendentes') {
                 fecharPendentes();
             }
         });
+
         window.onload = () => {
+            const ambiente = detectarAmbientePDF();
+            if (ambiente.android && ambiente.inApp) {
+                document.getElementById('android-banner').style.display = 'flex';
+            }
+
             atualizarContador();
             sincronizarFotos();
             reordenar();
