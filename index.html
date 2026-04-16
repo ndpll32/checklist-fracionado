@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checklist - Centrosucar</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --verde-centro: #005A32;
+            --verde-destaque: #2E7D32;
+            --verde-fundo: #F2F7F4;
+            --texto-escuro: #1A251D;
+            --texto-mutado: #5C6E62;
+            --borda: #E0E6E2;
+            --erro: #D32F2F;
+            --dourado: #F9A825;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body:not(.modo-pdf) {
+            background: #F4F7F6;
+            padding: 20px 10px 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--texto-escuro);
+        }
+
+        #render-area {
+            width: 100%;
+            max-width: 800px;
+            background: #FFFFFF;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid var(--verde-fundo);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            color: var(--verde-centro);
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        body:not(.modo-pdf) .dados-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .campo {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .campo label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--texto-mutado);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        body:not(.modo-pdf) input:not([type="file"]),
+        body:not(.modo-pdf) select {
+            width: 100%;
+            padding: 15px !important;
+            border: 1px solid var(--borda);
+            background: #FAFAFA;
+            border-radius: 8px;
+            font-size: 16px;
+            color: var(--texto-escuro);
+            transition: all 0.3s;
+        }
+
+        body.modo-pdf input:not([type="file"]),
+        body.modo-pdf select {
+            width: 100%;
+            padding: 12px !important;
+            border: 1px solid var(--borda);
+            background: #FFFFFF;
+            border-radius: 8px;
+            font-size: 15px;
+            color: var(--texto-escuro);
+        }
+
+        body:not(.modo-pdf) input:focus,
+        body:not(.modo-pdf) select:focus {
+            border-color: var(--verde-destaque);
+            background: #FFFFFF;
+            outline: none;
+        }
+
+        .volume-box {
+            border: 1px solid var(--borda);
+            padding: 25px;
+            margin-bottom: 30px;
+            background: #FFFFFF;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            break-inside: avoid-page;
+            page-break-inside: avoid;
+        }
+
+        .volume-box::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background: var(--verde-centro);
+            border-radius: 12px 0 0 12px;
+        }
+
+        .header-volume {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--verde-fundo);
+            padding-bottom: 10px;
+            gap: 12px;
+        }
+
+        .header-volume h4 {
+            font-size: 16px;
+            color: var(--texto-escuro);
+        }
+
+        .foto-wrapper {
+            display: grid;
+            gap: 12px;
+            align-items: start;
+        }
+
+        #secao-caminhao .foto-wrapper {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        #container-volumes .foto-wrapper {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .foto-col {
+            min-width: 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .foto-col label {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--texto-mutado);
+            display: block;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .box-imagem {
+            width: 100%;
+            min-height: 200px;
+            border: 2px dashed #C0C8D0;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: #FAFCFD;
+            transition: 0.3s;
+            break-inside: avoid-page;
+            page-break-inside: avoid;
+        }
+
+        body:not(.modo-pdf) .box-imagem {
+            cursor: pointer;
+        }
+
+        body:not(.modo-pdf) .box-imagem:hover {
+            border-color: var(--verde-destaque);
+            background: var(--verde-fundo);
+        }
+
+        .box-imagem img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: none;
+            background: white;
+            z-index: 5;
+        }
+
+        .box-imagem input {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .msg-camera {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--texto-mutado);
+            padding: 12px;
+        }
+
+        .box-imagem.com-imagem {
+            border-style: solid;
+            border-color: var(--verde-destaque);
+            background: #FFFFFF;
+        }
+
+        .box-imagem.foto-pendente {
+            border-color: var(--erro) !important;
+            background: #FFF0F0 !important;
+        }
+
+        #btn-abrir-pendentes {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: var(--verde-centro);
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #count-pendentes {
+            background: var(--dourado);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 50%;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+
+        .botoes-fixos {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 600px;
+            display: flex;
+            gap: 15px;
+            z-index: 999;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: 0.3s;
+        }
+
+        .btn-add {
+            background: white;
+            border: 2px solid var(--verde-destaque);
+            color: var(--verde-destaque);
+        }
+
+        .btn-standby {
+            background: var(--dourado);
+            color: white;
+            box-shadow: 0 4px 10px rgba(249, 168, 37, 0.3);
+        }
+
+        .btn-save {
+            background: var(--verde-destaque);
+            color: white;
+            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+        }
+
+        #modal-pendentes {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 10000;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-conteudo {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 500px;
+            margin: 60px auto;
+            color: black;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        #loading {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            z-index: 10001;
+        }
+
+        .validar input:invalid,
+        .validar select:invalid {
+            border: 2px solid var(--erro) !important;
+            background-color: #FFF0F0 !important;
+        }
+
+        body.modo-pdf {
+            background: white !important;
+            padding: 0 !important;
+            display: block !important;
+        }
+
+        body.modo-pdf #render-area {
+            width: 760px !important;
+            max-width: 760px !important;
+            margin: 0 auto !important;
+            padding: 20px !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+            background: white !important;
+        }
+
+        body.modo-pdf .header {
+            margin-bottom: 20px !important;
+            padding-bottom: 16px !important;
+        }
+
+        body.modo-pdf .volume-box {
+            border: 1px solid #B8C5BC !important;
+            box-shadow: none !important;
+            padding: 18px !important;
+            margin-bottom: 20px !important;
+        }
+
+        body.modo-pdf .volume-box::before {
+            display: none !important;
+        }
+
+        body.modo-pdf .foto-wrapper,
+        body.modo-pdf .foto-col,
+        body.modo-pdf .box-imagem {
+            break-inside: avoid-page !important;
+            page-break-inside: avoid !important;
+        }
+
+        body.modo-pdf .box-imagem {
+            min-height: 170px !important;
+            border-style: solid !important;
+        }
+
+        body.modo-pdf .btn-remover,
+        body.modo-pdf button,
+        body.modo-pdf .msg-camera,
+        body.modo-pdf input[type="file"] {
+            display: none !important;
+        }
+
+        body.modo-pdf #data-hora-pdf {
+            display: block !important;
+        }
+
+        @media (max-width: 700px) {
+            #secao-caminhao .foto-wrapper,
+            #container-volumes .foto-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            #btn-abrir-pendentes {
+                right: 10px;
+                top: 10px;
+            }
+
+            .botoes-fixos {
+                width: calc(100% - 20px);
+                gap: 10px;
+                padding: 12px;
+                border-radius: 18px;
+            }
+
+            .btn {
+                padding: 14px 10px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button type="button" id="btn-abrir-pendentes" onclick="abrirPendentes()">
+        📋 PENDENTES <span id="count-pendentes">0</span>
+    </button>
+
+    <div id="render-area">
+        <div class="header">
+            <h2>Checklist de Carregamento</h2>
+        </div>
+
+        <div id="data-hora-pdf" style="display: none; text-align: center; margin-bottom: 25px; font-weight: bold; color: var(--verde-centro); background: var(--verde-fundo); padding: 10px; border-radius: 8px;"></div>
+
+        <div class="dados-container" id="container-campos">
+            <div class="campo"><label>CLIENTE *</label><input type="text" id="c" placeholder="Nome do Cliente" required></div>
+            <div class="campo"><label>TRANSPORTADORA *</label><input type="text" id="t" placeholder="Nome da Transportadora" required></div>
+            <div class="campo"><label>MOTORISTA *</label><input type="text" id="m" placeholder="Nome Completo" required></div>
+            <div class="campo"><label>PLACA DO VEÍCULO *</label><input type="text" id="p" placeholder="ABC-1234" required></div>
+            <div class="campo">
+                <label>TIPO DE CARGA *</label>
+                <select id="tipo-carga" onchange="mudarTipoCarga()" required>
+                    <option value="">Selecione o formato...</option>
+                    <option value="Tambor / Container">Tambor / Container</option>
+                    <option value="Bag in Box">Bag in Box</option>
+                </select>
+            </div>
+            <div class="campo"><label>QTD. VOLUMES *</label><input type="number" id="qtd-volumes" placeholder="Ex: 10" required></div>
+            <div class="campo"><label>Nº DA NOTA FISCAL *</label><input type="text" id="nota-fiscal" placeholder="Aguardando faturamento..." required></div>
+        </div>
+
+        <div id="secao-caminhao" class="volume-box" style="display: none; border: 2px solid var(--verde-centro);">
+            <div class="header-volume" style="border-bottom: none;">
+                <h4 style="color: var(--verde-centro); font-weight: 700;">FOTOS DO VEÍCULO</h4>
+            </div>
+            <div class="foto-wrapper">
+                <div class="foto-col">
+                    <label>LATERAL DO CAMINHÃO CARREGADO</label>
+                    <div class="box-imagem">
+                        <span class="msg-camera">📷 Tocar para Foto</span>
+                        <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
+                        <img alt="Pré-visualização da foto lateral do caminhão">
+                    </div>
+                </div>
+                <div class="foto-col">
+                    <label>CARREGAMENTO</label>
+                    <div class="box-imagem">
+                        <span class="msg-camera">📷 Tocar para Foto</span>
+                        <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
+                        <img alt="Pré-visualização da foto do carregamento">
+                    </div>
+                </div>
+                <div class="foto-col">
+                    <label>PLACA</label>
+                    <div class="box-imagem">
+                        <span class="msg-camera">📷 Tocar para Foto</span>
+                        <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
+                        <img alt="Pré-visualização da foto da placa">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="container-volumes"></div>
+    </div>
+
+    <div id="loading">⌛ Gerando PDF Oficial...</div>
+
+    <div class="botoes-fixos">
+        <button type="button" class="btn btn-add" id="btn-add-vol" onclick="addV()" style="display:none;">ADICIONAR VOLUME</button>
+        <button type="button" class="btn btn-standby" onclick="salvarParaDepois()">STANDBY (NF)</button>
+        <button type="button" class="btn btn-save" onclick="gerarPDF()">GERAR PDF</button>
+    </div>
+
+    <div id="modal-pendentes">
+        <div class="modal-conteudo">
+            <h3 style="color: var(--verde-centro); border-bottom: 2px solid var(--borda); padding-bottom: 10px; margin-bottom: 15px;">Aguardando Nota Fiscal</h3>
+            <div id="lista-pendentes-corpo" style="max-height: 350px; overflow-y: auto;"></div>
+            <button onclick="document.getElementById('modal-pendentes').style.display='none'" style="width:100%; padding:15px; border-radius: 8px; border: 1px solid #ccc; font-weight: bold; background: white; margin-top: 15px; cursor: pointer;">FECHAR</button>
+        </div>
+    </div>
+
+    <script>
+        let pendentes = carregarPendentes();
+
+        function carregarPendentes() {
+            try {
+                const dados = JSON.parse(localStorage.getItem('checklists_pendentes') || '[]');
+                return Array.isArray(dados) ? dados : [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function persistirPendentes() {
+            localStorage.setItem('checklists_pendentes', JSON.stringify(pendentes));
+            atualizarContador();
+        }
+
+        function atualizarContador() {
+            const span = document.getElementById('count-pendentes');
+            if (span) {
+                span.innerText = pendentes.length;
+            }
+        }
+
+        function escaparHTML(valor) {
+            return String(valor || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function obterLabelDinamico() {
+            return document.getElementById('tipo-carga').value === 'Bag in Box' ? 'FOTO CARGA' : 'FOTO LACRE';
+        }
+
+        function obterSrcBox(box) {
+            const img = box.querySelector('img');
+            return img ? (img.getAttribute('src') || '') : '';
+        }
+
+        function sincronizarEstadoFotos(root = document) {
+            root.querySelectorAll('.box-imagem').forEach((box) => {
+                const msg = box.querySelector('.msg-camera');
+                const img = box.querySelector('img');
+
+                if (msg && !box.dataset.placeholder) {
+                    box.dataset.placeholder = msg.textContent.trim();
+                }
+
+                if (obterSrcBox(box)) {
+                    img.style.display = 'block';
+                    if (msg) msg.style.display = 'none';
+                    box.classList.add('com-imagem');
+                    box.classList.remove('foto-pendente');
+                } else {
+                    img.removeAttribute('src');
+                    img.style.display = 'none';
+                    if (msg) {
+                        msg.style.display = '';
+                        msg.textContent = box.dataset.placeholder || '📷 Foto';
+                    }
+                    box.classList.remove('com-imagem');
+                    box.classList.remove('foto-pendente');
+                }
+            });
+        }
+
+        function preencherBoxImagem(box, src) {
+            const msg = box.querySelector('.msg-camera');
+            const img = box.querySelector('img');
+
+            if (msg && !box.dataset.placeholder) {
+                box.dataset.placeholder = msg.textContent.trim();
+            }
+
+            if (src) {
+                img.setAttribute('src', src);
+                img.style.display = 'block';
+                if (msg) msg.style.display = 'none';
+                box.classList.add('com-imagem');
+                box.classList.remove('foto-pendente');
+            } else {
+                img.removeAttribute('src');
+                img.style.display = 'none';
+                if (msg) {
+                    msg.style.display = '';
+                    msg.textContent = box.dataset.placeholder || '📷 Foto';
+                }
+                box.classList.remove('com-imagem');
+                box.classList.remove('foto-pendente');
+            }
+        }
+
+        async function comprimirImagem(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 1600;
+                        const MAX_HEIGHT = 1600;
+                        const scale = Math.min(1, MAX_WIDTH / img.width, MAX_HEIGHT / img.height);
+
+                        canvas.width = Math.round(img.width * scale);
+                        canvas.height = Math.round(img.height * scale);
+
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.85));
+                    };
+                    img.onerror = reject;
+                };
+                reader.onerror = reject;
+            });
+        }
+
+        async function preview(input) {
+            if (!input.files || !input.files[0]) return;
+
+            const box = input.closest('.box-imagem');
+            const msg = box.querySelector('.msg-camera');
+
+            if (msg) msg.textContent = '⌛ Carregando...';
+
+            try {
+                const imagemCompacta = await comprimirImagem(input.files[0]);
+                preencherBoxImagem(box, imagemCompacta);
+            } catch (e) {
+                preencherBoxImagem(box, '');
+                alert('Não foi possível processar essa foto.');
+            }
+        }
+
+        function coletarCamposFormulario() {
+            return {
+                c: document.getElementById('c').value.trim(),
+                t: document.getElementById('t').value.trim(),
+                m: document.getElementById('m').value.trim(),
+                p: document.getElementById('p').value.trim(),
+                tp: document.getElementById('tipo-carga').value,
+                q: document.getElementById('qtd-volumes').value.trim(),
+                nf: document.getElementById('nota-fiscal').value.trim()
+            };
+        }
+
+        function aplicarCamposFormulario(campos) {
+            document.getElementById('c').value = campos.c || '';
+            document.getElementById('t').value = campos.t || '';
+            document.getElementById('m').value = campos.m || '';
+            document.getElementById('p').value = campos.p || '';
+            document.getElementById('tipo-carga').value = campos.tp || '';
+            document.getElementById('qtd-volumes').value = campos.q || '';
+            document.getElementById('nota-fiscal').value = campos.nf || '';
+        }
+
+        function coletarFotosSecao(selector) {
+            return Array.from(document.querySelectorAll(selector)).map(obterSrcBox);
+        }
+
+        function preencherFotosSecao(selector, fotos) {
+            const boxes = document.querySelectorAll(selector);
+            boxes.forEach((box, index) => preencherBoxImagem(box, (fotos && fotos[index]) || ''));
+        }
+
+        function coletarVolumes() {
+            return Array.from(document.querySelectorAll('#container-volumes .volume-box')).map((volume) => ({
+                fotos: Array.from(volume.querySelectorAll('.box-imagem')).map(obterSrcBox)
+            }));
+        }
+
+        function salvarParaDepois() {
+            const campos = coletarCamposFormulario();
+
+            if (!campos.p) {
+                alert('Digite a PLACA!');
+                return;
+            }
+
+            const dados = {
+                id: Date.now(),
+                dt: new Date().toLocaleString('pt-BR'),
+                campos,
+                caminhao: coletarFotosSecao('#secao-caminhao .box-imagem'),
+                volumes: coletarVolumes()
+            };
+
+            try {
+                pendentes.unshift(dados);
+                persistirPendentes();
+                alert('✅ Salvo no Standby!');
+                window.location.reload();
+            } catch (e) {
+                alert('⚠️ Memória cheia!');
+            }
+        }
+
+        function abrirPendentes() {
+            const corpo = document.getElementById('lista-pendentes-corpo');
+
+            if (pendentes.length === 0) {
+                corpo.innerHTML = '<p style="text-align:center;color:gray;padding:20px;">Vazio</p>';
+            } else {
+                corpo.innerHTML = pendentes.map((item, index) => {
+                    const campos = item.campos || item;
+                    const placa = escaparHTML(campos.p || '-');
+                    const nf = escaparHTML(campos.nf || 'Sem NF');
+                    const volumes = Array.isArray(item.volumes)
+                        ? item.volumes.length
+                        : (item.htmlVol ? (item.htmlVol.match(/class="volume-box"/g) || []).length : 0);
+
+                    return `
+                        <div style="background:#f9f9f9; border:1px solid #ddd; padding:12px; border-radius:8px; margin-bottom:10px;">
+                            <strong>Placa: ${placa}</strong><br>
+                            <small>NF: ${nf}</small><br>
+                            <small>${escaparHTML(item.dt || '')} | Volumes: ${volumes}</small>
+                            <div style="margin-top:10px; display:flex; gap:5px;">
+                                <button onclick="recuperar(${index})" style="flex:1; background:#2E7D32; color:white; border:none; padding:8px; border-radius:5px;">RETOMAR</button>
+                                <button onclick="excluirItem(${index})" style="background:#D32F2F; color:white; border:none; padding:8px 12px; border-radius:5px;">X</button>
+                            </div>
+                        </div>`;
+                }).join('');
+            }
+
+            document.getElementById('modal-pendentes').style.display = 'block';
+        }
+
+        function excluirItem(index) {
+            if (!confirm('Excluir?')) return;
+
+            pendentes.splice(index, 1);
+            persistirPendentes();
+            abrirPendentes();
+        }
+
+        function restaurarPendenteEstruturado(item) {
+            aplicarCamposFormulario(item.campos || {});
+            document.getElementById('container-volumes').innerHTML = '';
+            mudarTipoCarga();
+
+            if (Array.isArray(item.volumes) && item.volumes.length) {
+                document.getElementById('container-volumes').innerHTML = '';
+                item.volumes.forEach((volume) => addV(volume));
+            }
+
+            preencherFotosSecao('#secao-caminhao .box-imagem', item.caminhao || []);
+            atualizarRotulosVolumes();
+            reordenar();
+            sincronizarEstadoFotos();
+        }
+
+        function restaurarPendenteLegado(item) {
+            aplicarCamposFormulario(item);
+            document.getElementById('secao-caminhao').innerHTML = item.htmlCam || document.getElementById('secao-caminhao').innerHTML;
+            document.getElementById('container-volumes').innerHTML = item.htmlVol || '';
+            mudarTipoCarga();
+            atualizarRotulosVolumes();
+            reordenar();
+            sincronizarEstadoFotos();
+        }
+
+        function recuperar(index) {
+            const item = pendentes[index];
+            if (!item) return;
+
+            if (item.campos) {
+                restaurarPendenteEstruturado(item);
+            } else {
+                restaurarPendenteLegado(item);
+            }
+
+            pendentes.splice(index, 1);
+            persistirPendentes();
+            document.getElementById('modal-pendentes').style.display = 'none';
+        }
+
+        function atualizarRotulosVolumes() {
+            const labelDinamico = obterLabelDinamico();
+            document.querySelectorAll('#container-volumes .volume-box').forEach((volumeBox) => {
+                const labels = volumeBox.querySelectorAll('.foto-col label');
+                if (labels[1]) labels[1].innerText = labelDinamico;
+            });
+        }
+
+        function mudarTipoCarga() {
+            const tipo = document.getElementById('tipo-carga').value;
+            const mostrar = tipo !== '';
+
+            document.getElementById('secao-caminhao').style.display = mostrar ? 'block' : 'none';
+            document.getElementById('btn-add-vol').style.display = mostrar ? 'block' : 'none';
+
+            if (!mostrar) return;
+
+            atualizarRotulosVolumes();
+
+            if (!document.querySelector('#container-volumes .volume-box')) {
+                addV();
+            }
+        }
+
+        function addV(volumeData) {
+            const tipo = document.getElementById('tipo-carga').value;
+            if (!tipo) {
+                alert('Selecione o TIPO DE CARGA primeiro.');
+                return;
+            }
+
+            const container = document.getElementById('container-volumes');
+            const num = container.querySelectorAll('.volume-box').length + 1;
+            const labelDinamico = obterLabelDinamico();
+
+            const html = `
+                <div class="volume-box">
+                    <div class="header-volume">
+                        <h4>Volume ${num}</h4>
+                        ${num > 1 ? '<button type="button" class="btn-remover" onclick="this.closest(\'.volume-box\').remove(); reordenar();" style="color:red; background:none; border:none;">REMOVER</button>' : ''}
+                    </div>
+                    <div class="foto-wrapper">
+                        <div class="foto-col">
+                            <label>FOTO ETIQUETA</label>
+                            <div class="box-imagem">
+                                <span class="msg-camera">📷 Foto</span>
+                                <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
+                                <img alt="Pré-visualização da foto da etiqueta">
+                            </div>
+                        </div>
+                        <div class="foto-col">
+                            <label>${labelDinamico}</label>
+                            <div class="box-imagem">
+                                <span class="msg-camera">📷 Foto</span>
+                                <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
+                                <img alt="Pré-visualização da segunda foto do volume">
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+
+            container.insertAdjacentHTML('beforeend', html);
+            const volumeBox = container.lastElementChild;
+
+            if (volumeData && Array.isArray(volumeData.fotos)) {
+                const boxes = volumeBox.querySelectorAll('.box-imagem');
+                boxes.forEach((box, index) => preencherBoxImagem(box, volumeData.fotos[index] || ''));
+            }
+
+            sincronizarEstadoFotos(volumeBox);
+            reordenar();
+        }
+
+        function reordenar() {
+            document.querySelectorAll('#container-volumes .volume-box').forEach((volumeBox, index) => {
+                const titulo = volumeBox.querySelector('h4');
+                if (titulo) titulo.innerText = `Volume ${index + 1}`;
+            });
+        }
+
+        function listarFotosFaltantes() {
+            const boxesVisiveis = Array.from(document.querySelectorAll('#render-area .box-imagem'))
+                .filter((box) => box.offsetParent !== null);
+
+            const faltantes = [];
+
+            boxesVisiveis.forEach((box) => {
+                if (obterSrcBox(box)) {
+                    box.classList.remove('foto-pendente');
+                    return;
+                }
+
+                box.classList.add('foto-pendente');
+                const secao = box.closest('.volume-box');
+                const titulo = secao ? secao.querySelector('h4').innerText.trim() : 'Foto';
+                const legenda = box.closest('.foto-col').querySelector('label').innerText.trim();
+                faltantes.push(`${titulo} - ${legenda}`);
+            });
+
+            return faltantes;
+        }
+
+        function prepararCamposParaPDF(element) {
+            element.querySelectorAll('input:not([type="file"]), select').forEach((campo) => {
+                if (campo.tagName === 'SELECT') {
+                    Array.from(campo.options).forEach((option) => {
+                        option.selected = option.value === campo.value;
+                    });
+                } else {
+                    campo.setAttribute('value', campo.value);
+                }
+            });
+        }
+
+        function finalizarPDF() {
+            document.body.classList.remove('modo-pdf');
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('data-hora-pdf').style.display = 'none';
+        }
+
+        function gerarPDF() {
+            const element = document.getElementById('render-area');
+            const loading = document.getElementById('loading');
+            const info = document.getElementById('data-hora-pdf');
+            const nf = document.getElementById('nota-fiscal').value.trim();
+
+            document.getElementById('container-campos').classList.add('validar');
+
+            const camposObrigatorios = Array.from(
+                document.querySelectorAll('#container-campos input[required], #container-campos select[required]')
+            );
+
+            const faltamDados = camposObrigatorios.some((campo) => !String(campo.value || '').trim());
+            if (faltamDados) {
+                alert('Preencha os campos em vermelho!');
+                return;
+            }
+
+            const fotosFaltantes = listarFotosFaltantes();
+            if (fotosFaltantes.length) {
+                const preview = fotosFaltantes.slice(0, 6).join('\n- ');
+                const sufixo = fotosFaltantes.length > 6 ? '\n- ...' : '';
+                alert(`Tire todas as fotos obrigatórias antes de gerar o PDF.\n\nFaltando:\n- ${preview}${sufixo}`);
+                return;
+            }
+
+            window.scrollTo(0, 0);
+            loading.style.display = 'block';
+            info.innerText = `Gerado em: ${new Date().toLocaleString('pt-BR')}`;
+            info.style.display = 'block';
+
+            document.body.classList.add('modo-pdf');
+            prepararCamposParaPDF(element);
+
+            const opcoes = {
+                margin: [6, 6, 8, 6],
+                filename: `Checklist_NF_${nf || 'sem_numero'}.pdf`,
+                image: { type: 'jpeg', quality: 0.95 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    scrollX: 0,
+                    scrollY: 0,
+                    windowWidth: 760,
+                    backgroundColor: '#FFFFFF'
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: {
+                    mode: ['css', 'legacy'],
+                    avoid: '.volume-box, .foto-wrapper, .foto-col, .box-imagem'
+                }
+            };
+
+            setTimeout(() => {
+                html2pdf().set(opcoes).from(element).save()
+                    .then(finalizarPDF)
+                    .catch(() => {
+                        finalizarPDF();
+                        alert('Não foi possível gerar o PDF.');
+                    });
+            }, 250);
+        }
+
+        window.onload = () => {
+            atualizarContador();
+            sincronizarEstadoFotos();
+        };
+    </script>
+</body>
+</html>
