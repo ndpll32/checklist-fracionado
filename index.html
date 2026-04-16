@@ -3,543 +3,1248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checklist - Centrosucar</title>
+    <title>Checklist de Carregamento - Centrosucar</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --verde-centro: #005A32;
-            --verde-destaque: #2E7D32;
-            --verde-fundo: #F2F7F4;
-            --texto-escuro: #1A251D;
-            --texto-mutado: #5C6E62;
-            --borda: #E0E6E2;
-            --erro: #D32F2F;
-            --dourado: #F9A825;
+            --verde-900: #0D3F2A;
+            --verde-800: #115235;
+            --verde-700: #1B6A43;
+            --verde-500: #2E7D32;
+            --verde-100: #EAF3ED;
+            --verde-050: #F4F8F5;
+            --dourado-500: #C69A2B;
+            --dourado-300: #E8D39B;
+            --grafite: #1F2A23;
+            --texto-suave: #617066;
+            --borda: #D9E3DC;
+            --branco: #FFFFFF;
+            --erro: #C53939;
+            --sombra-forte: 0 30px 60px rgba(13, 63, 42, 0.14);
+            --sombra-media: 0 18px 32px rgba(13, 63, 42, 0.10);
+            --raio-grande: 28px;
+            --raio-medio: 22px;
+            --raio-pequeno: 16px;
         }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Roboto', sans-serif;
         }
-
-        body:not(.modo-pdf) {
-            background: #F4F7F6;
-            padding: 20px 10px 120px;
-            display: flex;
-            flex-direction: column;
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            min-height: 100vh;
+            padding: 24px 14px 140px;
+            color: var(--grafite);
+            font-family: 'Source Sans 3', sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(198, 154, 43, 0.14), transparent 34%),
+                radial-gradient(circle at top right, rgba(17, 82, 53, 0.18), transparent 32%),
+                linear-gradient(180deg, #EEF4F0 0%, #F7FAF8 48%, #EEF3EF 100%);
+        }
+        body::before,
+        body::after {
+            content: '';
+            position: fixed;
+            z-index: 0;
+            pointer-events: none;
+            border-radius: 999px;
+            filter: blur(8px);
+            opacity: 0.5;
+        }
+        body::before {
+            width: 220px;
+            height: 220px;
+            top: 22px;
+            right: -60px;
+            background: radial-gradient(circle, rgba(198, 154, 43, 0.25) 0%, rgba(198, 154, 43, 0) 72%);
+        }
+        body::after {
+            width: 280px;
+            height: 280px;
+            bottom: -80px;
+            left: -80px;
+            background: radial-gradient(circle, rgba(17, 82, 53, 0.14) 0%, rgba(17, 82, 53, 0) 72%);
+        }
+        body > * {
+            position: relative;
+            z-index: 1;
+        }
+        #btn-abrir-pendentes {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 20;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: linear-gradient(135deg, rgba(13, 63, 42, 0.95), rgba(27, 106, 67, 0.92));
+            color: var(--branco);
+            padding: 12px 18px;
+            border-radius: 999px;
+            font: 700 13px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.04em;
+            box-shadow: 0 16px 30px rgba(13, 63, 42, 0.25);
+            cursor: pointer;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+        }
+        #btn-abrir-pendentes:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 36px rgba(13, 63, 42, 0.28);
+        }
+        #count-pendentes {
+            display: inline-flex;
             align-items: center;
-            color: var(--texto-escuro);
+            justify-content: center;
+            min-width: 22px;
+            height: 22px;
+            margin-left: 8px;
+            padding: 0 7px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--dourado-500), #E1BE63);
+            color: var(--branco);
+            font-size: 11px;
         }
-
         #render-area {
-            width: 100%;
-            max-width: 800px;
-            background: #FFFFFF;
-            padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+            max-width: 980px;
             margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.68);
+            border-radius: 34px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: var(--sombra-forte);
+            backdrop-filter: blur(12px);
         }
-
-        .header {
-            text-align: center;
-            border-bottom: 2px solid var(--verde-fundo);
-            padding-bottom: 20px;
-            margin-bottom: 25px;
+        .hero-app {
+            padding: 30px 30px 26px;
+            color: var(--branco);
+            background:
+                radial-gradient(circle at top right, rgba(232, 211, 155, 0.22), transparent 28%),
+                linear-gradient(135deg, var(--verde-900), var(--verde-800) 56%, #4F7A22 100%);
         }
-
-        .header h2 {
-            color: var(--verde-centro);
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 1px;
+        .hero-brand {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            font: 700 11px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.18em;
             text-transform: uppercase;
         }
-
-        body:not(.modo-pdf) .dados-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 20px;
+        .hero-pill::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #E1BE63, #FFFFFF);
+            box-shadow: 0 0 14px rgba(225, 190, 99, 0.55);
         }
-
+        .hero-caption {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.76);
+        }
+        .hero-main {
+            display: grid;
+            grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.9fr);
+            gap: 22px;
+            align-items: stretch;
+        }
+        .hero-copy h1 {
+            font: 800 34px/1.05 'Montserrat', sans-serif;
+            max-width: 520px;
+            margin-bottom: 14px;
+        }
+        .hero-copy p {
+            max-width: 560px;
+            font-size: 16px;
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.82);
+        }
+        .hero-guide {
+            padding: 20px;
+            border-radius: 24px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(10px);
+        }
+        .hero-guide strong {
+            display: block;
+            margin-bottom: 14px;
+            font: 700 13px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .hero-guide ul {
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+        .hero-guide li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 11px 12px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.86);
+        }
+        .hero-guide li span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            background: rgba(232, 211, 155, 0.20);
+            color: #FFF0C2;
+            font: 700 12px/1 'Montserrat', sans-serif;
+        }
+        .content-shell {
+            padding: 26px;
+        }
+        .panel {
+            margin-bottom: 22px;
+            padding: 24px;
+            border-radius: 28px;
+            border: 1px solid var(--borda);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 248, 245, 0.98));
+            box-shadow: var(--sombra-media);
+        }
+        .panel:last-child {
+            margin-bottom: 0;
+        }
+        .panel-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+        .panel-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: var(--verde-700);
+            font: 700 11px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+        .panel-kicker::before {
+            content: '';
+            width: 26px;
+            height: 2px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--dourado-500), rgba(198, 154, 43, 0));
+        }
+        .panel h2,
+        .panel h3,
+        .header-volume h4 {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .panel p {
+            color: var(--texto-suave);
+            font-size: 15px;
+            line-height: 1.55;
+        }
+        .status-note {
+            min-width: 220px;
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: var(--verde-050);
+            border: 1px solid rgba(17, 82, 53, 0.10);
+            color: var(--texto-suave);
+            font-size: 14px;
+            line-height: 1.35;
+        }
+        .dados-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
         .campo {
             display: flex;
             flex-direction: column;
+            gap: 8px;
         }
-
+        .campo.full {
+            grid-column: 1 / -1;
+        }
         .campo label {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--texto-mutado);
-            margin-bottom: 8px;
+            color: var(--texto-suave);
+            font: 700 12px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
         }
-
-        body:not(.modo-pdf) input:not([type="file"]),
-        body:not(.modo-pdf) select {
-            width: 100%;
-            padding: 15px !important;
-            border: 1px solid var(--borda);
-            background: #FAFAFA;
-            border-radius: 8px;
-            font-size: 16px;
-            color: var(--texto-escuro);
-            transition: all 0.3s;
-        }
-
-        body.modo-pdf input:not([type="file"]),
-        body.modo-pdf select {
-            width: 100%;
-            padding: 12px !important;
-            border: 1px solid var(--borda);
-            background: #FFFFFF;
-            border-radius: 8px;
-            font-size: 15px;
-            color: var(--texto-escuro);
-        }
-
-        body:not(.modo-pdf) input:focus,
-        body:not(.modo-pdf) select:focus {
-            border-color: var(--verde-destaque);
-            background: #FFFFFF;
-            outline: none;
-        }
-
-        .volume-box {
-            border: 1px solid var(--borda);
-            padding: 25px;
-            margin-bottom: 30px;
-            background: #FFFFFF;
-            border-radius: 12px;
+        .input-shell {
             position: relative;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-            break-inside: avoid-page;
-            page-break-inside: avoid;
         }
-
+        .input-shell::before {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            border-radius: 16px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(240, 245, 241, 0.98));
+            z-index: 0;
+        }
+        .campo input:not([type="file"]),
+        .campo select {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 54px;
+            padding: 0 16px;
+            border-radius: 16px;
+            border: 1px solid transparent;
+            background: transparent;
+            color: var(--grafite);
+            font: 600 16px/1 'Source Sans 3', sans-serif;
+            outline: none;
+            transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+        }
+        .campo input:not([type="file"]):focus,
+        .campo select:focus {
+            border-color: rgba(27, 106, 67, 0.28);
+            box-shadow: 0 0 0 4px rgba(27, 106, 67, 0.09);
+            transform: translateY(-1px);
+        }
+        .campo input::placeholder {
+            color: #98A79D;
+        }
+        .validar input:invalid,
+        .validar select:invalid {
+            border-color: rgba(197, 57, 57, 0.45) !important;
+            background: rgba(255, 245, 245, 0.95) !important;
+            box-shadow: 0 0 0 4px rgba(197, 57, 57, 0.08) !important;
+        }
+        #secao-caminhao,
+        .volume-box {
+            position: relative;
+            overflow: hidden;
+        }
+        #secao-caminhao::before,
         .volume-box::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 5px;
-            background: var(--verde-centro);
-            border-radius: 12px 0 0 12px;
+            inset: 0 0 auto;
+            height: 4px;
+            background: linear-gradient(90deg, var(--verde-700), var(--dourado-500));
         }
-
-        .header-volume {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid var(--verde-fundo);
-            padding-bottom: 10px;
-            gap: 12px;
-        }
-
-        .header-volume h4 {
-            font-size: 16px;
-            color: var(--texto-escuro);
-        }
-
         .foto-wrapper {
             display: grid;
-            gap: 12px;
-            align-items: start;
+            gap: 16px;
         }
-
         #secao-caminhao .foto-wrapper {
             grid-template-columns: repeat(3, minmax(0, 1fr));
         }
-
         #container-volumes .foto-wrapper {
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
-
         .foto-col {
             min-width: 0;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
         }
-
         .foto-col label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--texto-mutado);
             display: block;
             margin-bottom: 10px;
+            color: var(--texto-suave);
+            font: 700 11px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
+            text-align: center;
         }
-
         .box-imagem {
-            width: 100%;
-            min-height: 200px;
-            border: 2px dashed #C0C8D0;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             position: relative;
             overflow: hidden;
-            background: #FAFCFD;
-            transition: 0.3s;
-            break-inside: avoid-page;
-            page-break-inside: avoid;
-        }
-
-        body:not(.modo-pdf) .box-imagem {
+            min-height: 212px;
+            border-radius: 22px;
+            border: 1px dashed rgba(17, 82, 53, 0.28);
+            background:
+                radial-gradient(circle at top right, rgba(198, 154, 43, 0.12), transparent 25%),
+                linear-gradient(180deg, #F8FBF9 0%, #EEF5F0 100%);
             cursor: pointer;
+            transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
         }
-
-        body:not(.modo-pdf) .box-imagem:hover {
-            border-color: var(--verde-destaque);
-            background: var(--verde-fundo);
+        .box-imagem:hover {
+            transform: translateY(-2px);
+            border-color: rgba(17, 82, 53, 0.46);
+            box-shadow: 0 14px 28px rgba(17, 82, 53, 0.10);
         }
-
+        .box-imagem input {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 3;
+        }
         .box-imagem img {
             position: absolute;
             inset: 0;
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            z-index: 2;
             display: none;
-            background: white;
-            z-index: 5;
+            object-fit: contain;
+            background: linear-gradient(180deg, #FDFEFD 0%, #F0F4F1 100%);
         }
-
-        .box-imagem input {
+        .box-imagem::after {
+            content: '';
+            position: absolute;
+            inset: 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .msg-camera {
             position: absolute;
             inset: 0;
-            opacity: 0;
-            cursor: pointer;
-            z-index: 10;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 22px;
+            text-align: center;
+            color: var(--texto-suave);
         }
-
-        .msg-camera {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--texto-mutado);
-            padding: 12px;
+        .msg-camera strong {
+            font: 700 15px/1 'Montserrat', sans-serif;
+            color: var(--verde-700);
         }
-
+        .msg-camera small {
+            max-width: 160px;
+            font-size: 13px;
+            line-height: 1.35;
+        }
+        .msg-camera::before {
+            content: 'FOTO';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 70px;
+            height: 30px;
+            padding: 0 12px;
+            border-radius: 999px;
+            background: rgba(17, 82, 53, 0.08);
+            color: var(--verde-700);
+            font: 700 10px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
         .box-imagem.com-imagem {
             border-style: solid;
-            border-color: var(--verde-destaque);
-            background: #FFFFFF;
+            border-color: rgba(17, 82, 53, 0.20);
+            background: linear-gradient(180deg, #FFFFFF 0%, #F5F8F5 100%);
         }
-
         .box-imagem.foto-pendente {
-            border-color: var(--erro) !important;
-            background: #FFF0F0 !important;
+            border-color: rgba(197, 57, 57, 0.45) !important;
+            background: linear-gradient(180deg, #FFF9F9 0%, #FFF0F0 100%) !important;
+            box-shadow: 0 0 0 4px rgba(197, 57, 57, 0.08);
         }
-
-        #btn-abrir-pendentes {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            background: var(--verde-centro);
-            color: white;
-            border: none;
-            padding: 12px 18px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 13px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        .header-volume {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+        .volume-title-wrap span {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            border-radius: 999px;
+            background: rgba(17, 82, 53, 0.08);
+            color: var(--verde-700);
+            font: 700 11px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .header-volume h4 {
+            font-size: 20px;
+            line-height: 1.1;
+        }
+        .header-volume p {
+            color: var(--texto-suave);
+            font-size: 14px;
+        }
+        .btn-remover {
+            border: 1px solid rgba(197, 57, 57, 0.18);
+            background: rgba(197, 57, 57, 0.08);
+            color: var(--erro);
+            height: 42px;
+            padding: 0 14px;
+            border-radius: 14px;
+            font: 700 12px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.06em;
             cursor: pointer;
-            transition: 0.3s;
+            transition: background 0.18s ease, transform 0.18s ease;
         }
-
-        #count-pendentes {
-            background: var(--dourado);
-            color: white;
-            padding: 3px 8px;
-            border-radius: 50%;
-            font-size: 12px;
-            margin-left: 5px;
+        .btn-remover:hover {
+            transform: translateY(-1px);
+            background: rgba(197, 57, 57, 0.12);
         }
-
         .botoes-fixos {
             position: fixed;
-            bottom: 25px;
             left: 50%;
+            bottom: 22px;
             transform: translateX(-50%);
-            width: 95%;
-            max-width: 600px;
+            z-index: 15;
             display: flex;
-            gap: 15px;
-            z-index: 999;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px 20px;
-            border-radius: 50px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            backdrop-filter: blur(10px);
+            gap: 12px;
+            width: min(920px, calc(100% - 20px));
+            padding: 14px;
+            border-radius: 28px;
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            background: rgba(255, 255, 255, 0.82);
+            box-shadow: 0 18px 40px rgba(13, 63, 42, 0.18);
+            backdrop-filter: blur(14px);
         }
-
         .btn {
             flex: 1;
-            padding: 16px;
+            height: 56px;
             border: none;
-            border-radius: 30px;
-            font-weight: 700;
-            font-size: 13px;
+            border-radius: 18px;
             cursor: pointer;
-            letter-spacing: 0.5px;
-            transition: 0.3s;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+            font: 700 13px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
         }
-
+        .btn:hover {
+            transform: translateY(-2px);
+        }
         .btn-add {
-            background: white;
-            border: 2px solid var(--verde-destaque);
-            color: var(--verde-destaque);
+            color: var(--verde-700);
+            background: linear-gradient(180deg, #FFFFFF 0%, #F4F8F5 100%);
+            border: 1px solid rgba(17, 82, 53, 0.16);
+            box-shadow: 0 8px 18px rgba(17, 82, 53, 0.08);
         }
-
         .btn-standby {
-            background: var(--dourado);
-            color: white;
-            box-shadow: 0 4px 10px rgba(249, 168, 37, 0.3);
+            color: #785708;
+            background: linear-gradient(180deg, #F8EBC6 0%, #E8D39B 100%);
+            box-shadow: 0 12px 24px rgba(198, 154, 43, 0.18);
         }
-
         .btn-save {
-            background: var(--verde-destaque);
-            color: white;
-            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+            color: var(--branco);
+            background: linear-gradient(135deg, var(--verde-700), var(--verde-500));
+            box-shadow: 0 16px 28px rgba(17, 82, 53, 0.22);
         }
-
         #modal-pendentes {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 10000;
+            inset: 0;
+            z-index: 25;
             padding: 20px;
-            backdrop-filter: blur(5px);
+            background: rgba(8, 17, 11, 0.68);
+            backdrop-filter: blur(10px);
         }
-
         .modal-conteudo {
-            background: white;
-            padding: 30px;
-            border-radius: 16px;
-            max-width: 500px;
-            margin: 60px auto;
-            color: black;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            width: min(560px, 100%);
+            margin: 42px auto 0;
+            padding: 28px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.60);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(242, 247, 243, 0.98));
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.24);
         }
-
+        .modal-conteudo h3 {
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--borda);
+            color: var(--verde-900);
+            font: 800 22px/1.1 'Montserrat', sans-serif;
+        }
+        #lista-pendentes-corpo {
+            max-height: 420px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .pendente-card {
+            margin-bottom: 12px;
+            padding: 16px;
+            border-radius: 20px;
+            border: 1px solid var(--borda);
+            background: linear-gradient(180deg, #FFFFFF 0%, #F6FAF7 100%);
+        }
+        .pendente-card strong {
+            display: block;
+            color: var(--verde-900);
+            font: 700 16px/1.1 'Montserrat', sans-serif;
+            margin-bottom: 4px;
+        }
+        .pendente-card small {
+            display: block;
+            color: var(--texto-suave);
+            font-size: 13px;
+            line-height: 1.4;
+        }
+        .pendente-acoes {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+        }
+        .pendente-acoes button {
+            height: 42px;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font: 700 12px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.05em;
+        }
+        .pendente-retomar {
+            flex: 1;
+            color: var(--branco);
+            background: linear-gradient(135deg, var(--verde-700), var(--verde-500));
+        }
+        .pendente-excluir {
+            width: 48px;
+            color: var(--erro);
+            background: rgba(197, 57, 57, 0.10);
+            border: 1px solid rgba(197, 57, 57, 0.18);
+        }
         #loading {
             display: none;
             position: fixed;
-            top: 50%;
+            inset: 0;
+            z-index: 30;
+            background: rgba(9, 17, 12, 0.52);
+            backdrop-filter: blur(8px);
+        }
+        .loading-card {
+            position: absolute;
             left: 50%;
+            top: 50%;
             transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-            z-index: 10001;
+            width: min(360px, calc(100% - 30px));
+            padding: 24px;
+            border-radius: 24px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(242, 247, 243, 0.98));
+            box-shadow: 0 26px 50px rgba(0, 0, 0, 0.24);
+            text-align: center;
         }
-
-        .validar input:invalid,
-        .validar select:invalid {
-            border: 2px solid var(--erro) !important;
-            background-color: #FFF0F0 !important;
+        .loading-card strong {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--verde-900);
+            font: 800 20px/1.1 'Montserrat', sans-serif;
         }
-
-        body.modo-pdf {
-            background: white !important;
-            padding: 0 !important;
-            display: block !important;
+        .loading-card p {
+            color: var(--texto-suave);
+            line-height: 1.45;
         }
-
-        body.modo-pdf #render-area {
-            width: 760px !important;
-            max-width: 760px !important;
-            margin: 0 auto !important;
-            padding: 20px !important;
-            border-radius: 0 !important;
-            box-shadow: none !important;
-            background: white !important;
+        .loading-bar {
+            height: 10px;
+            margin-top: 18px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: rgba(17, 82, 53, 0.10);
         }
-
-        body.modo-pdf .header {
-            margin-bottom: 20px !important;
-            padding-bottom: 16px !important;
+        .loading-bar::after {
+            content: '';
+            display: block;
+            width: 40%;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, var(--verde-700), var(--dourado-500));
+            animation: pulse-bar 1.1s linear infinite;
         }
-
-        body.modo-pdf .volume-box {
-            border: 1px solid #B8C5BC !important;
-            box-shadow: none !important;
-            padding: 18px !important;
-            margin-bottom: 20px !important;
+        @keyframes pulse-bar {
+            from { transform: translateX(-110%); }
+            to { transform: translateX(280%); }
         }
-
-        body.modo-pdf .volume-box::before {
-            display: none !important;
+        #pdf-render-root {
+            position: absolute;
+            left: -20000px;
+            top: 0;
+            width: 794px;
+            pointer-events: none;
         }
-
-        body.modo-pdf .foto-wrapper,
-        body.modo-pdf .foto-col,
-        body.modo-pdf .box-imagem {
-            break-inside: avoid-page !important;
-            page-break-inside: avoid !important;
+        .pdf-document {
+            width: 794px;
+            background: #EAF1EC;
         }
-
-        body.modo-pdf .box-imagem {
-            min-height: 170px !important;
-            border-style: solid !important;
+        .pdf-page {
+            position: relative;
+            width: 794px;
+            height: 1123px;
+            padding: 34px 36px 28px;
+            overflow: hidden;
+            background:
+                radial-gradient(circle at top right, rgba(232, 211, 155, 0.18), transparent 24%),
+                linear-gradient(180deg, #F8FBF9 0%, #FFFFFF 28%, #F5F8F6 100%);
+            page-break-after: always;
         }
-
-        body.modo-pdf .btn-remover,
-        body.modo-pdf button,
-        body.modo-pdf .msg-camera,
-        body.modo-pdf input[type="file"] {
-            display: none !important;
+        .pdf-page:last-child {
+            page-break-after: auto;
         }
-
-        body.modo-pdf #data-hora-pdf {
-            display: block !important;
+        .pdf-page::before {
+            content: '';
+            position: absolute;
+            inset: 18px;
+            border-radius: 30px;
+            border: 1px solid rgba(17, 82, 53, 0.08);
+            pointer-events: none;
         }
-
-        @media (max-width: 700px) {
+        .pdf-topline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .pdf-brandline {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--verde-700);
+            font: 700 10px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+        .pdf-brandline::before {
+            content: '';
+            width: 34px;
+            height: 2px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--verde-700), rgba(17, 82, 53, 0.12));
+        }
+        .pdf-pagecount {
+            display: inline-flex;
+            align-items: center;
+            padding: 9px 14px;
+            border-radius: 999px;
+            background: rgba(17, 82, 53, 0.08);
+            color: var(--verde-700);
+            font: 700 10px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .pdf-hero {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(0, 1.35fr) 250px;
+            gap: 18px;
+            margin-bottom: 22px;
+            padding: 24px;
+            border-radius: 30px;
+            color: #FFFFFF;
+            background:
+                radial-gradient(circle at top right, rgba(232, 211, 155, 0.22), transparent 24%),
+                linear-gradient(135deg, var(--verde-900), var(--verde-800) 60%, #4F7A22 100%);
+            box-shadow: 0 22px 40px rgba(13, 63, 42, 0.18);
+        }
+        .pdf-hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            font: 700 10px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+        .pdf-hero h1 {
+            max-width: 420px;
+            margin-bottom: 12px;
+            font: 800 30px/1.04 'Montserrat', sans-serif;
+        }
+        .pdf-hero p {
+            max-width: 420px;
+            font-size: 15px;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.82);
+        }
+        .pdf-hero-side {
+            display: grid;
+            gap: 10px;
+            align-content: start;
+        }
+        .pdf-highlight {
+            padding: 14px 16px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.10);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+        }
+        .pdf-highlight span {
+            display: block;
+            margin-bottom: 6px;
+            color: rgba(255, 255, 255, 0.72);
+            font: 700 9px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .pdf-highlight strong {
+            display: block;
+            font: 700 16px/1.2 'Montserrat', sans-serif;
+        }
+        .pdf-section {
+            margin-bottom: 20px;
+            padding: 18px;
+            border-radius: 24px;
+            border: 1px solid rgba(17, 82, 53, 0.10);
+            background: rgba(255, 255, 255, 0.88);
+            box-shadow: 0 14px 28px rgba(13, 63, 42, 0.06);
+        }
+        .pdf-section:last-of-type {
+            margin-bottom: 0;
+        }
+        .pdf-section-head {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        .pdf-section-head span {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 7px;
+            color: var(--verde-700);
+            font: 700 9px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+        .pdf-section-head span::before {
+            content: '';
+            width: 22px;
+            height: 2px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--dourado-500), rgba(198, 154, 43, 0.12));
+        }
+        .pdf-section-head h2 {
+            color: var(--verde-900);
+            font: 800 20px/1.06 'Montserrat', sans-serif;
+        }
+        .pdf-section-head p {
+            color: var(--texto-suave);
+            font-size: 13px;
+            line-height: 1.45;
+            max-width: 280px;
+            text-align: right;
+        }
+        .pdf-meta-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .pdf-meta-card {
+            min-height: 86px;
+            padding: 14px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(17, 82, 53, 0.08);
+            background: linear-gradient(180deg, #FFFFFF 0%, #F5F8F6 100%);
+        }
+        .pdf-meta-card.is-wide {
+            grid-column: 1 / -1;
+            min-height: 96px;
+            background:
+                radial-gradient(circle at right top, rgba(232, 211, 155, 0.16), transparent 28%),
+                linear-gradient(135deg, rgba(17, 82, 53, 0.06), rgba(255, 255, 255, 0.98));
+        }
+        .pdf-meta-card span {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--texto-suave);
+            font: 700 9px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .pdf-meta-card strong {
+            display: block;
+            color: var(--grafite);
+            font: 700 18px/1.24 'Montserrat', sans-serif;
+        }
+        .pdf-meta-card p {
+            color: var(--grafite);
+            font-size: 16px;
+            line-height: 1.38;
+            font-weight: 600;
+        }
+        .pdf-truck-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .pdf-photo-card {
+            padding: 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(17, 82, 53, 0.08);
+            background: linear-gradient(180deg, #FFFFFF 0%, #F5F8F6 100%);
+        }
+        .pdf-photo-card span {
+            display: block;
+            margin-bottom: 10px;
+            text-align: center;
+            color: var(--texto-suave);
+            font: 700 9px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .pdf-photo-frame {
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 196px;
+            border-radius: 16px;
+            background:
+                linear-gradient(180deg, rgba(17, 82, 53, 0.06), rgba(17, 82, 53, 0.03)),
+                #F2F6F3;
+            border: 1px solid rgba(17, 82, 53, 0.10);
+        }
+        .pdf-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: linear-gradient(180deg, #FBFDFC 0%, #EFF4F0 100%);
+        }
+        .pdf-page-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 18px;
+            padding: 10px 2px 16px;
+            border-bottom: 1px solid rgba(17, 82, 53, 0.12);
+        }
+        .pdf-page-header h2 {
+            margin-bottom: 8px;
+            color: var(--verde-900);
+            font: 800 24px/1.04 'Montserrat', sans-serif;
+        }
+        .pdf-page-header p {
+            color: var(--texto-suave);
+            font-size: 13px;
+            line-height: 1.45;
+        }
+        .pdf-page-tags {
+            display: grid;
+            gap: 8px;
+            min-width: 190px;
+        }
+        .pdf-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 34px;
+            padding: 0 14px;
+            border-radius: 999px;
+            background: rgba(17, 82, 53, 0.08);
+            color: var(--verde-700);
+            font: 700 10px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.10em;
+            text-transform: uppercase;
+        }
+        .pdf-volumes-list {
+            display: grid;
+            gap: 16px;
+        }
+        .pdf-volume-card {
+            padding: 18px;
+            border-radius: 26px;
+            border: 1px solid rgba(17, 82, 53, 0.10);
+            background:
+                radial-gradient(circle at top right, rgba(232, 211, 155, 0.10), transparent 22%),
+                linear-gradient(180deg, #FFFFFF 0%, #F6F9F7 100%);
+            box-shadow: 0 16px 30px rgba(13, 63, 42, 0.08);
+        }
+        .pdf-volume-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+        .pdf-volume-top h3 {
+            color: var(--verde-900);
+            font: 800 20px/1.05 'Montserrat', sans-serif;
+        }
+        .pdf-volume-top p {
+            margin-top: 6px;
+            color: var(--texto-suave);
+            font-size: 13px;
+        }
+        .pdf-volume-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 34px;
+            padding: 0 14px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, rgba(17, 82, 53, 0.09), rgba(198, 154, 43, 0.12));
+            color: var(--verde-700);
+            font: 700 10px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .pdf-volume-photos {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+        .pdf-volume-panel {
+            padding: 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(17, 82, 53, 0.08);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(241, 246, 242, 0.96));
+        }
+        .pdf-volume-panel span {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--texto-suave);
+            text-align: center;
+            font: 700 9px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .pdf-volume-panel .pdf-photo-frame {
+            height: 220px;
+        }
+        .pdf-footer {
+            position: absolute;
+            left: 36px;
+            right: 36px;
+            bottom: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            color: var(--texto-suave);
+            font-size: 11px;
+        }
+        .pdf-footer strong {
+            color: var(--verde-700);
+            font: 700 11px/1 'Montserrat', sans-serif;
+            letter-spacing: 0.10em;
+            text-transform: uppercase;
+        }
+        @media (max-width: 860px) {
+            .hero-main,
+            .dados-grid,
             #secao-caminhao .foto-wrapper,
-            #container-volumes .foto-wrapper {
+            #container-volumes .foto-wrapper,
+            .panel-head {
                 grid-template-columns: 1fr;
+                flex-direction: column;
+                align-items: stretch;
             }
-
+            .status-note {
+                min-width: 0;
+            }
+        }
+        @media (max-width: 680px) {
+            body {
+                padding: 16px 10px 130px;
+            }
             #btn-abrir-pendentes {
+                top: 12px;
                 right: 10px;
-                top: 10px;
             }
-
+            .hero-app,
+            .content-shell,
+            .panel,
+            .modal-conteudo {
+                padding: 20px;
+            }
+            .hero-copy h1 {
+                font-size: 28px;
+            }
             .botoes-fixos {
-                width: calc(100% - 20px);
+                width: calc(100% - 12px);
+                padding: 10px;
                 gap: 10px;
-                padding: 12px;
-                border-radius: 18px;
+                border-radius: 22px;
             }
-
             .btn {
-                padding: 14px 10px;
-                font-size: 12px;
+                height: 52px;
+                font-size: 11px;
             }
         }
     </style>
 </head>
 <body>
-
     <button type="button" id="btn-abrir-pendentes" onclick="abrirPendentes()">
-        📋 PENDENTES <span id="count-pendentes">0</span>
+        PENDENTES <span id="count-pendentes">0</span>
     </button>
-
-    <div id="render-area">
-        <div class="header">
-            <h2>Checklist de Carregamento</h2>
-        </div>
-
-        <div id="data-hora-pdf" style="display: none; text-align: center; margin-bottom: 25px; font-weight: bold; color: var(--verde-centro); background: var(--verde-fundo); padding: 10px; border-radius: 8px;"></div>
-
-        <div class="dados-container" id="container-campos">
-            <div class="campo"><label>CLIENTE *</label><input type="text" id="c" placeholder="Nome do Cliente" required></div>
-            <div class="campo"><label>TRANSPORTADORA *</label><input type="text" id="t" placeholder="Nome da Transportadora" required></div>
-            <div class="campo"><label>MOTORISTA *</label><input type="text" id="m" placeholder="Nome Completo" required></div>
-            <div class="campo"><label>PLACA DO VEÍCULO *</label><input type="text" id="p" placeholder="ABC-1234" required></div>
-            <div class="campo">
-                <label>TIPO DE CARGA *</label>
-                <select id="tipo-carga" onchange="mudarTipoCarga()" required>
-                    <option value="">Selecione o formato...</option>
-                    <option value="Tambor / Container">Tambor / Container</option>
-                    <option value="Bag in Box">Bag in Box</option>
-                </select>
+    <main id="render-area">
+        <section class="hero-app">
+            <div class="hero-brand">
+                <div class="hero-pill">Centrosucar</div>
+                <div class="hero-caption">Relatório fotográfico de carregamento com estrutura pronta para PDF.</div>
             </div>
-            <div class="campo"><label>QTD. VOLUMES *</label><input type="number" id="qtd-volumes" placeholder="Ex: 10" required></div>
-            <div class="campo"><label>Nº DA NOTA FISCAL *</label><input type="text" id="nota-fiscal" placeholder="Aguardando faturamento..." required></div>
-        </div>
-
-        <div id="secao-caminhao" class="volume-box" style="display: none; border: 2px solid var(--verde-centro);">
-            <div class="header-volume" style="border-bottom: none;">
-                <h4 style="color: var(--verde-centro); font-weight: 700;">FOTOS DO VEÍCULO</h4>
-            </div>
-            <div class="foto-wrapper">
-                <div class="foto-col">
-                    <label>LATERAL DO CAMINHÃO CARREGADO</label>
-                    <div class="box-imagem">
-                        <span class="msg-camera">📷 Tocar para Foto</span>
-                        <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
-                        <img alt="Pré-visualização da foto lateral do caminhão">
-                    </div>
+            <div class="hero-main">
+                <div class="hero-copy">
+                    <h1>Checklist operacional com evidência visual e PDF institucional.</h1>
+                    <p>Preencha os dados da operação, registre as fotos obrigatórias e gere um documento com paginação fixa: capa operacional na primeira página e volumes organizados em duplas nas páginas seguintes.</p>
                 </div>
-                <div class="foto-col">
-                    <label>CARREGAMENTO</label>
-                    <div class="box-imagem">
-                        <span class="msg-camera">📷 Tocar para Foto</span>
-                        <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
-                        <img alt="Pré-visualização da foto do carregamento">
-                    </div>
-                </div>
-                <div class="foto-col">
-                    <label>PLACA</label>
-                    <div class="box-imagem">
-                        <span class="msg-camera">📷 Tocar para Foto</span>
-                        <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
-                        <img alt="Pré-visualização da foto da placa">
-                    </div>
+                <div class="hero-guide">
+                    <strong>Estrutura do PDF</strong>
+                    <ul>
+                        <li><span>01</span> Página 1 com informações gerais e fotos do veículo.</li>
+                        <li><span>02</span> Página 2 com Volume 1 e Volume 2.</li>
+                        <li><span>03</span> Páginas seguintes sempre com 2 volumes por folha.</li>
+                    </ul>
                 </div>
             </div>
+        </section>
+        <div class="content-shell">
+            <section class="panel">
+                <div class="panel-head">
+                    <div>
+                        <div class="panel-kicker">Dados da operação</div>
+                        <h2>Informações do carregamento</h2>
+                        <p>Esses dados aparecem na primeira página do PDF e compõem o cabeçalho institucional do checklist.</p>
+                    </div>
+                    <div class="status-note">
+                        A quantidade informada deve bater com o número de volumes cadastrados para o PDF ser liberado.
+                    </div>
+                </div>
+                <div class="dados-grid" id="container-campos">
+                    <div class="campo">
+                        <label for="c">Cliente *</label>
+                        <div class="input-shell"><input type="text" id="c" placeholder="Nome do cliente" required></div>
+                    </div>
+                    <div class="campo">
+                        <label for="t">Transportadora *</label>
+                        <div class="input-shell"><input type="text" id="t" placeholder="Nome da transportadora" required></div>
+                    </div>
+                    <div class="campo">
+                        <label for="m">Motorista *</label>
+                        <div class="input-shell"><input type="text" id="m" placeholder="Nome completo" required></div>
+                    </div>
+                    <div class="campo">
+                        <label for="p">Placa do veículo *</label>
+                        <div class="input-shell"><input type="text" id="p" placeholder="ABC-1234" required></div>
+                    </div>
+                    <div class="campo">
+                        <label for="tipo-carga">Tipo de carga *</label>
+                        <div class="input-shell">
+                            <select id="tipo-carga" onchange="mudarTipoCarga()" required>
+                                <option value="">Selecione o formato...</option>
+                                <option value="Tambor / Container">Tambor / Container</option>
+                                <option value="Bag in Box">Bag in Box</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="campo">
+                        <label for="qtd-volumes">Qtd. volumes *</label>
+                        <div class="input-shell"><input type="number" id="qtd-volumes" min="1" placeholder="Ex: 10" required></div>
+                    </div>
+                    <div class="campo full">
+                        <label for="nota-fiscal">Nº da nota fiscal *</label>
+                        <div class="input-shell"><input type="text" id="nota-fiscal" placeholder="Aguardando faturamento..." required></div>
+                    </div>
+                </div>
+            </section>
+            <section id="secao-caminhao" class="panel" style="display:none;">
+                <div class="header-volume">
+                    <div class="volume-title-wrap">
+                        <span>Etapa 1</span>
+                        <h4>Fotos do veículo</h4>
+                        <p>Essas imagens ocupam a primeira página do PDF, logo após os dados da operação.</p>
+                    </div>
+                </div>
+                <div class="foto-wrapper">
+                    <div class="foto-col">
+                        <label>Lateral do caminhão carregado</label>
+                        <div class="box-imagem">
+                            <span class="msg-camera"><strong>Registrar foto</strong><small>Capture a lateral completa do veículo carregado.</small></span>
+                            <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
+                            <img alt="Foto lateral do caminhão carregado">
+                        </div>
+                    </div>
+                    <div class="foto-col">
+                        <label>Carregamento</label>
+                        <div class="box-imagem">
+                            <span class="msg-camera"><strong>Registrar foto</strong><small>Mostre a disposição da carga no momento do carregamento.</small></span>
+                            <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
+                            <img alt="Foto do carregamento">
+                        </div>
+                    </div>
+                    <div class="foto-col">
+                        <label>Placa</label>
+                        <div class="box-imagem">
+                            <span class="msg-camera"><strong>Registrar foto</strong><small>Garanta a identificação visual da placa do veículo.</small></span>
+                            <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
+                            <img alt="Foto da placa do veículo">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="panel" id="painel-volumes" style="display:none;">
+                <div class="panel-head">
+                    <div>
+                        <div class="panel-kicker">Etapa 2</div>
+                        <h3>Volumes conferidos</h3>
+                        <p>No PDF, os volumes são organizados em pares por página: 1 e 2, depois 3 e 4, e assim por diante.</p>
+                    </div>
+                </div>
+                <div id="container-volumes"></div>
+            </section>
         </div>
-
-        <div id="container-volumes"></div>
-    </div>
-
-    <div id="loading">⌛ Gerando PDF Oficial...</div>
-
+    </main>
     <div class="botoes-fixos">
-        <button type="button" class="btn btn-add" id="btn-add-vol" onclick="addV()" style="display:none;">ADICIONAR VOLUME</button>
-        <button type="button" class="btn btn-standby" onclick="salvarParaDepois()">STANDBY (NF)</button>
-        <button type="button" class="btn btn-save" onclick="gerarPDF()">GERAR PDF</button>
+        <button type="button" class="btn btn-add" id="btn-add-vol" onclick="addV()" style="display:none;">Adicionar volume</button>
+        <button type="button" class="btn btn-standby" onclick="salvarParaDepois()">Standby (NF)</button>
+        <button type="button" class="btn btn-save" onclick="gerarPDF()">Gerar PDF</button>
     </div>
-
     <div id="modal-pendentes">
         <div class="modal-conteudo">
-            <h3 style="color: var(--verde-centro); border-bottom: 2px solid var(--borda); padding-bottom: 10px; margin-bottom: 15px;">Aguardando Nota Fiscal</h3>
-            <div id="lista-pendentes-corpo" style="max-height: 350px; overflow-y: auto;"></div>
-            <button onclick="document.getElementById('modal-pendentes').style.display='none'" style="width:100%; padding:15px; border-radius: 8px; border: 1px solid #ccc; font-weight: bold; background: white; margin-top: 15px; cursor: pointer;">FECHAR</button>
+            <h3>Aguardando nota fiscal</h3>
+            <div id="lista-pendentes-corpo"></div>
+            <button type="button" class="btn btn-add" style="width:100%; margin-top:14px;" onclick="fecharPendentes()">Fechar</button>
         </div>
     </div>
-
+    <div id="loading">
+        <div class="loading-card">
+            <strong>Gerando PDF</strong>
+            <p>Montando a versão final com paginação institucional, capa operacional e volumes organizados em pares.</p>
+            <div class="loading-bar"></div>
+        </div>
+    </div>
+    <div id="pdf-render-root" aria-hidden="true"></div>
     <script>
+        const STORAGE_KEY = 'checklists_pendentes';
         let pendentes = carregarPendentes();
-
         function carregarPendentes() {
             try {
-                const dados = JSON.parse(localStorage.getItem('checklists_pendentes') || '[]');
+                const dados = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
                 return Array.isArray(dados) ? dados : [];
-            } catch (e) {
+            } catch (erro) {
                 return [];
             }
         }
-
         function persistirPendentes() {
-            localStorage.setItem('checklists_pendentes', JSON.stringify(pendentes));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(pendentes));
             atualizarContador();
         }
-
         function atualizarContador() {
             const span = document.getElementById('count-pendentes');
             if (span) {
                 span.innerText = pendentes.length;
             }
         }
-
         function escaparHTML(valor) {
             return String(valor || '')
                 .replace(/&/g, '&amp;')
@@ -548,53 +1253,42 @@
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#39;');
         }
-
-        function obterLabelDinamico() {
-            return document.getElementById('tipo-carga').value === 'Bag in Box' ? 'FOTO CARGA' : 'FOTO LACRE';
+        function formatarDataHora(data = new Date()) {
+            return new Intl.DateTimeFormat('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }).format(data);
         }
-
+        function formatarDataExtensa(data = new Date()) {
+            return new Intl.DateTimeFormat('pt-BR', {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            }).format(data);
+        }
+        function limparNomeArquivo(valor) {
+            return String(valor || 'sem_numero')
+                .trim()
+                .replace(/[\\/:*?"<>|]+/g, '-')
+                .replace(/\s+/g, '_');
+        }
+        function obterLabelSecundario() {
+            return document.getElementById('tipo-carga').value === 'Bag in Box' ? 'Foto carga' : 'Foto lacre';
+        }
         function obterSrcBox(box) {
             const img = box.querySelector('img');
             return img ? (img.getAttribute('src') || '') : '';
         }
-
-        function sincronizarEstadoFotos(root = document) {
-            root.querySelectorAll('.box-imagem').forEach((box) => {
-                const msg = box.querySelector('.msg-camera');
-                const img = box.querySelector('img');
-
-                if (msg && !box.dataset.placeholder) {
-                    box.dataset.placeholder = msg.textContent.trim();
-                }
-
-                if (obterSrcBox(box)) {
-                    img.style.display = 'block';
-                    if (msg) msg.style.display = 'none';
-                    box.classList.add('com-imagem');
-                    box.classList.remove('foto-pendente');
-                } else {
-                    img.removeAttribute('src');
-                    img.style.display = 'none';
-                    if (msg) {
-                        msg.style.display = '';
-                        msg.textContent = box.dataset.placeholder || '📷 Foto';
-                    }
-                    box.classList.remove('com-imagem');
-                    box.classList.remove('foto-pendente');
-                }
-            });
-        }
-
-        function preencherBoxImagem(box, src) {
+        function sincronizarCaixa(box) {
             const msg = box.querySelector('.msg-camera');
             const img = box.querySelector('img');
-
-            if (msg && !box.dataset.placeholder) {
-                box.dataset.placeholder = msg.textContent.trim();
-            }
-
+            const src = obterSrcBox(box);
             if (src) {
-                img.setAttribute('src', src);
                 img.style.display = 'block';
                 if (msg) msg.style.display = 'none';
                 box.classList.add('com-imagem');
@@ -602,58 +1296,64 @@
             } else {
                 img.removeAttribute('src');
                 img.style.display = 'none';
-                if (msg) {
-                    msg.style.display = '';
-                    msg.textContent = box.dataset.placeholder || '📷 Foto';
-                }
+                if (msg) msg.style.display = 'flex';
                 box.classList.remove('com-imagem');
                 box.classList.remove('foto-pendente');
             }
         }
-
+        function sincronizarFotos(root = document) {
+            root.querySelectorAll('.box-imagem').forEach(sincronizarCaixa);
+        }
+        function preencherBoxImagem(box, src) {
+            const img = box.querySelector('img');
+            if (src) {
+                img.setAttribute('src', src);
+            } else {
+                img.removeAttribute('src');
+            }
+            sincronizarCaixa(box);
+        }
         async function comprimirImagem(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (event) => {
+                reader.onload = (evento) => {
                     const img = new Image();
-                    img.src = event.target.result;
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        const MAX_WIDTH = 1600;
-                        const MAX_HEIGHT = 1600;
-                        const scale = Math.min(1, MAX_WIDTH / img.width, MAX_HEIGHT / img.height);
-
-                        canvas.width = Math.round(img.width * scale);
-                        canvas.height = Math.round(img.height * scale);
-
+                        const larguraMaxima = 1600;
+                        const alturaMaxima = 1600;
+                        const escala = Math.min(1, larguraMaxima / img.width, alturaMaxima / img.height);
+                        canvas.width = Math.round(img.width * escala);
+                        canvas.height = Math.round(img.height * escala);
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.85));
+                        resolve(canvas.toDataURL('image/jpeg', 0.88));
                     };
                     img.onerror = reject;
+                    img.src = evento.target.result;
                 };
                 reader.onerror = reject;
+                reader.readAsDataURL(file);
             });
         }
-
         async function preview(input) {
             if (!input.files || !input.files[0]) return;
-
             const box = input.closest('.box-imagem');
-            const msg = box.querySelector('.msg-camera');
-
-            if (msg) msg.textContent = '⌛ Carregando...';
-
+            const msg = box.querySelector('.msg-camera strong');
+            if (msg) msg.innerText = 'Processando...';
             try {
                 const imagemCompacta = await comprimirImagem(input.files[0]);
                 preencherBoxImagem(box, imagemCompacta);
-            } catch (e) {
+            } catch (erro) {
                 preencherBoxImagem(box, '');
                 alert('Não foi possível processar essa foto.');
+            } finally {
+                const resetMsg = box.querySelector('.msg-camera strong');
+                if (resetMsg && !obterSrcBox(box)) {
+                    resetMsg.innerText = 'Registrar foto';
+                }
             }
         }
-
         function coletarCamposFormulario() {
             return {
                 c: document.getElementById('c').value.trim(),
@@ -665,8 +1365,7 @@
                 nf: document.getElementById('nota-fiscal').value.trim()
             };
         }
-
-        function aplicarCamposFormulario(campos) {
+        function aplicarCamposFormulario(campos = {}) {
             document.getElementById('c').value = campos.c || '';
             document.getElementById('t').value = campos.t || '';
             document.getElementById('m').value = campos.m || '';
@@ -675,313 +1374,495 @@
             document.getElementById('qtd-volumes').value = campos.q || '';
             document.getElementById('nota-fiscal').value = campos.nf || '';
         }
-
-        function coletarFotosSecao(selector) {
-            return Array.from(document.querySelectorAll(selector)).map(obterSrcBox);
-        }
-
-        function preencherFotosSecao(selector, fotos) {
-            const boxes = document.querySelectorAll(selector);
-            boxes.forEach((box, index) => preencherBoxImagem(box, (fotos && fotos[index]) || ''));
-        }
-
         function coletarVolumes() {
-            return Array.from(document.querySelectorAll('#container-volumes .volume-box')).map((volume) => ({
-                fotos: Array.from(volume.querySelectorAll('.box-imagem')).map(obterSrcBox)
+            return Array.from(document.querySelectorAll('#container-volumes .volume-box')).map((volumeBox, index) => ({
+                numero: index + 1,
+                fotos: Array.from(volumeBox.querySelectorAll('.box-imagem')).map(obterSrcBox)
             }));
         }
-
-        function salvarParaDepois() {
-            const campos = coletarCamposFormulario();
-
-            if (!campos.p) {
-                alert('Digite a PLACA!');
-                return;
-            }
-
-            const dados = {
-                id: Date.now(),
-                dt: new Date().toLocaleString('pt-BR'),
-                campos,
-                caminhao: coletarFotosSecao('#secao-caminhao .box-imagem'),
+        function coletarEstadoAtual() {
+            return {
+                campos: coletarCamposFormulario(),
+                caminhao: Array.from(document.querySelectorAll('#secao-caminhao .box-imagem')).map(obterSrcBox),
                 volumes: coletarVolumes()
             };
-
+        }
+        function extrairFotosDoHTML(html = '') {
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+            return Array.from(temp.querySelectorAll('.box-imagem img')).map((img) => img.getAttribute('src') || '');
+        }
+        function extrairVolumesLegado(html = '') {
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+            return Array.from(temp.querySelectorAll('.volume-box')).map((volumeBox, index) => ({
+                numero: index + 1,
+                fotos: Array.from(volumeBox.querySelectorAll('.box-imagem img')).map((img) => img.getAttribute('src') || '')
+            }));
+        }
+        function normalizarPendente(item) {
+            if (item && item.snapshot) {
+                return item.snapshot;
+            }
+            if (item && item.campos && Array.isArray(item.volumes)) {
+                return {
+                    campos: item.campos,
+                    caminhao: item.caminhao || [],
+                    volumes: item.volumes || []
+                };
+            }
+            return {
+                campos: {
+                    c: item.c || '',
+                    t: item.t || '',
+                    m: item.m || '',
+                    p: item.p || '',
+                    tp: item.tp || '',
+                    q: item.q || '',
+                    nf: item.nf || ''
+                },
+                caminhao: extrairFotosDoHTML(item.htmlCam || ''),
+                volumes: extrairVolumesLegado(item.htmlVol || '')
+            };
+        }
+        function salvarParaDepois() {
+            const snapshot = coletarEstadoAtual();
+            if (!snapshot.campos.p) {
+                alert('Digite a placa antes de salvar no standby.');
+                return;
+            }
             try {
-                pendentes.unshift(dados);
+                pendentes.unshift({
+                    id: Date.now(),
+                    dt: formatarDataHora(new Date()),
+                    snapshot
+                });
                 persistirPendentes();
-                alert('✅ Salvo no Standby!');
+                alert('Checklist salvo no standby.');
                 window.location.reload();
-            } catch (e) {
-                alert('⚠️ Memória cheia!');
+            } catch (erro) {
+                alert('Não foi possível salvar. O armazenamento do navegador pode estar cheio.');
             }
         }
-
         function abrirPendentes() {
             const corpo = document.getElementById('lista-pendentes-corpo');
-
-            if (pendentes.length === 0) {
-                corpo.innerHTML = '<p style="text-align:center;color:gray;padding:20px;">Vazio</p>';
+            if (!pendentes.length) {
+                corpo.innerHTML = '<p style="text-align:center; color:#617066; padding:24px 10px;">Nenhum checklist aguardando nota fiscal.</p>';
             } else {
                 corpo.innerHTML = pendentes.map((item, index) => {
-                    const campos = item.campos || item;
+                    const snapshot = normalizarPendente(item);
+                    const campos = snapshot.campos || {};
                     const placa = escaparHTML(campos.p || '-');
                     const nf = escaparHTML(campos.nf || 'Sem NF');
-                    const volumes = Array.isArray(item.volumes)
-                        ? item.volumes.length
-                        : (item.htmlVol ? (item.htmlVol.match(/class="volume-box"/g) || []).length : 0);
-
+                    const volumes = Array.isArray(snapshot.volumes) ? snapshot.volumes.length : 0;
                     return `
-                        <div style="background:#f9f9f9; border:1px solid #ddd; padding:12px; border-radius:8px; margin-bottom:10px;">
-                            <strong>Placa: ${placa}</strong><br>
-                            <small>NF: ${nf}</small><br>
-                            <small>${escaparHTML(item.dt || '')} | Volumes: ${volumes}</small>
-                            <div style="margin-top:10px; display:flex; gap:5px;">
-                                <button onclick="recuperar(${index})" style="flex:1; background:#2E7D32; color:white; border:none; padding:8px; border-radius:5px;">RETOMAR</button>
-                                <button onclick="excluirItem(${index})" style="background:#D32F2F; color:white; border:none; padding:8px 12px; border-radius:5px;">X</button>
+                        <div class="pendente-card">
+                            <strong>Placa ${placa}</strong>
+                            <small>NF: ${nf}</small>
+                            <small>${escaparHTML(item.dt || '')} • Volumes cadastrados: ${volumes}</small>
+                            <div class="pendente-acoes">
+                                <button type="button" class="pendente-retomar" onclick="recuperar(${index})">Retomar</button>
+                                <button type="button" class="pendente-excluir" onclick="excluirItem(${index})">X</button>
                             </div>
-                        </div>`;
+                        </div>
+                    `;
                 }).join('');
             }
-
             document.getElementById('modal-pendentes').style.display = 'block';
         }
-
+        function fecharPendentes() {
+            document.getElementById('modal-pendentes').style.display = 'none';
+        }
         function excluirItem(index) {
-            if (!confirm('Excluir?')) return;
-
+            if (!confirm('Deseja excluir este checklist pendente?')) return;
             pendentes.splice(index, 1);
             persistirPendentes();
             abrirPendentes();
         }
-
-        function restaurarPendenteEstruturado(item) {
-            aplicarCamposFormulario(item.campos || {});
+        function aplicarEstadoAtual(snapshot) {
+            aplicarCamposFormulario(snapshot.campos || {});
             document.getElementById('container-volumes').innerHTML = '';
-            mudarTipoCarga();
-
-            if (Array.isArray(item.volumes) && item.volumes.length) {
-                document.getElementById('container-volumes').innerHTML = '';
-                item.volumes.forEach((volume) => addV(volume));
+            mudarTipoCarga(true);
+            if (Array.isArray(snapshot.caminhao)) {
+                document.querySelectorAll('#secao-caminhao .box-imagem').forEach((box, index) => {
+                    preencherBoxImagem(box, snapshot.caminhao[index] || '');
+                });
             }
-
-            preencherFotosSecao('#secao-caminhao .box-imagem', item.caminhao || []);
-            atualizarRotulosVolumes();
+            if (Array.isArray(snapshot.volumes) && snapshot.volumes.length) {
+                document.getElementById('container-volumes').innerHTML = '';
+                snapshot.volumes.forEach((volume) => addV(volume, true));
+            }
             reordenar();
-            sincronizarEstadoFotos();
+            sincronizarFotos();
         }
-
-        function restaurarPendenteLegado(item) {
-            aplicarCamposFormulario(item);
-            document.getElementById('secao-caminhao').innerHTML = item.htmlCam || document.getElementById('secao-caminhao').innerHTML;
-            document.getElementById('container-volumes').innerHTML = item.htmlVol || '';
-            mudarTipoCarga();
-            atualizarRotulosVolumes();
-            reordenar();
-            sincronizarEstadoFotos();
-        }
-
         function recuperar(index) {
             const item = pendentes[index];
             if (!item) return;
-
-            if (item.campos) {
-                restaurarPendenteEstruturado(item);
-            } else {
-                restaurarPendenteLegado(item);
-            }
-
+            aplicarEstadoAtual(normalizarPendente(item));
             pendentes.splice(index, 1);
             persistirPendentes();
-            document.getElementById('modal-pendentes').style.display = 'none';
+            fecharPendentes();
         }
-
-        function atualizarRotulosVolumes() {
-            const labelDinamico = obterLabelDinamico();
-            document.querySelectorAll('#container-volumes .volume-box').forEach((volumeBox) => {
-                const labels = volumeBox.querySelectorAll('.foto-col label');
-                if (labels[1]) labels[1].innerText = labelDinamico;
-            });
-        }
-
-        function mudarTipoCarga() {
+        function mudarTipoCarga(interno = false) {
             const tipo = document.getElementById('tipo-carga').value;
             const mostrar = tipo !== '';
-
             document.getElementById('secao-caminhao').style.display = mostrar ? 'block' : 'none';
+            document.getElementById('painel-volumes').style.display = mostrar ? 'block' : 'none';
             document.getElementById('btn-add-vol').style.display = mostrar ? 'block' : 'none';
-
-            if (!mostrar) return;
-
             atualizarRotulosVolumes();
-
-            if (!document.querySelector('#container-volumes .volume-box')) {
-                addV();
+            if (mostrar && !document.querySelector('#container-volumes .volume-box')) {
+                addV(null, true);
+            }
+            if (!mostrar && !interno) {
+                document.getElementById('container-volumes').innerHTML = '';
             }
         }
-
-        function addV(volumeData) {
+        function atualizarRotulosVolumes() {
+            const labelSecundario = obterLabelSecundario();
+            document.querySelectorAll('#container-volumes .volume-box').forEach((volumeBox, index) => {
+                const span = volumeBox.querySelector('.volume-seq');
+                const titulo = volumeBox.querySelector('.volume-nome');
+                const labels = volumeBox.querySelectorAll('.foto-col label');
+                if (span) span.innerText = `Volume ${index + 1}`;
+                if (titulo) titulo.innerText = `Conferência visual do volume ${index + 1}`;
+                if (labels[1]) labels[1].innerText = labelSecundario;
+            });
+        }
+        function addV(volumeData = null, silencioso = false) {
             const tipo = document.getElementById('tipo-carga').value;
-            if (!tipo) {
-                alert('Selecione o TIPO DE CARGA primeiro.');
+            if (!tipo && !silencioso) {
+                alert('Selecione o tipo de carga primeiro.');
                 return;
             }
-
             const container = document.getElementById('container-volumes');
-            const num = container.querySelectorAll('.volume-box').length + 1;
-            const labelDinamico = obterLabelDinamico();
-
+            const numero = container.querySelectorAll('.volume-box').length + 1;
+            const labelSecundario = obterLabelSecundario();
             const html = `
-                <div class="volume-box">
+                <div class="volume-box panel">
                     <div class="header-volume">
-                        <h4>Volume ${num}</h4>
-                        ${num > 1 ? '<button type="button" class="btn-remover" onclick="this.closest(\'.volume-box\').remove(); reordenar();" style="color:red; background:none; border:none;">REMOVER</button>' : ''}
+                        <div class="volume-title-wrap">
+                            <span class="volume-seq">Volume ${numero}</span>
+                            <h4 class="volume-nome">Conferência visual do volume ${numero}</h4>
+                            <p>Esses cartões são levados em pares para as páginas internas do PDF.</p>
+                        </div>
+                        <button type="button" class="btn-remover" onclick="removerVolume(this)">Remover</button>
                     </div>
                     <div class="foto-wrapper">
                         <div class="foto-col">
-                            <label>FOTO ETIQUETA</label>
+                            <label>Foto etiqueta</label>
                             <div class="box-imagem">
-                                <span class="msg-camera">📷 Foto</span>
+                                <span class="msg-camera"><strong>Registrar foto</strong><small>Mostre a etiqueta do volume de forma legível.</small></span>
                                 <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
-                                <img alt="Pré-visualização da foto da etiqueta">
+                                <img alt="Foto da etiqueta do volume">
                             </div>
                         </div>
                         <div class="foto-col">
-                            <label>${labelDinamico}</label>
+                            <label>${escaparHTML(labelSecundario)}</label>
                             <div class="box-imagem">
-                                <span class="msg-camera">📷 Foto</span>
+                                <span class="msg-camera"><strong>Registrar foto</strong><small>Capture a evidência visual complementar deste volume.</small></span>
                                 <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
-                                <img alt="Pré-visualização da segunda foto do volume">
+                                <img alt="Foto complementar do volume">
                             </div>
                         </div>
                     </div>
-                </div>`;
-
+                </div>
+            `;
             container.insertAdjacentHTML('beforeend', html);
-            const volumeBox = container.lastElementChild;
-
+            const novoVolume = container.lastElementChild;
             if (volumeData && Array.isArray(volumeData.fotos)) {
-                const boxes = volumeBox.querySelectorAll('.box-imagem');
-                boxes.forEach((box, index) => preencherBoxImagem(box, volumeData.fotos[index] || ''));
+                novoVolume.querySelectorAll('.box-imagem').forEach((box, index) => {
+                    preencherBoxImagem(box, volumeData.fotos[index] || '');
+                });
             }
-
-            sincronizarEstadoFotos(volumeBox);
             reordenar();
+            sincronizarFotos(novoVolume);
         }
-
+        function removerVolume(botao) {
+            const volume = botao.closest('.volume-box');
+            if (volume) {
+                volume.remove();
+                reordenar();
+            }
+        }
         function reordenar() {
-            document.querySelectorAll('#container-volumes .volume-box').forEach((volumeBox, index) => {
-                const titulo = volumeBox.querySelector('h4');
-                if (titulo) titulo.innerText = `Volume ${index + 1}`;
+            const volumes = Array.from(document.querySelectorAll('#container-volumes .volume-box'));
+            volumes.forEach((volumeBox, index) => {
+                const span = volumeBox.querySelector('.volume-seq');
+                const titulo = volumeBox.querySelector('.volume-nome');
+                if (span) span.innerText = `Volume ${index + 1}`;
+                if (titulo) titulo.innerText = `Conferência visual do volume ${index + 1}`;
             });
+            document.querySelectorAll('.btn-remover').forEach((botao) => {
+                botao.style.display = volumes.length > 1 ? 'inline-flex' : 'none';
+            });
+            atualizarRotulosVolumes();
         }
-
         function listarFotosFaltantes() {
             const boxesVisiveis = Array.from(document.querySelectorAll('#render-area .box-imagem'))
                 .filter((box) => box.offsetParent !== null);
-
             const faltantes = [];
-
             boxesVisiveis.forEach((box) => {
                 if (obterSrcBox(box)) {
                     box.classList.remove('foto-pendente');
                     return;
                 }
-
                 box.classList.add('foto-pendente');
-                const secao = box.closest('.volume-box');
-                const titulo = secao ? secao.querySelector('h4').innerText.trim() : 'Foto';
+                const secao = box.closest('.volume-box, #secao-caminhao');
+                const titulo = secao && secao.id === 'secao-caminhao'
+                    ? 'Fotos do veículo'
+                    : (secao ? (secao.querySelector('.volume-seq')?.innerText || 'Volume') : 'Foto');
                 const legenda = box.closest('.foto-col').querySelector('label').innerText.trim();
                 faltantes.push(`${titulo} - ${legenda}`);
             });
-
             return faltantes;
         }
-
-        function prepararCamposParaPDF(element) {
-            element.querySelectorAll('input:not([type="file"]), select').forEach((campo) => {
-                if (campo.tagName === 'SELECT') {
-                    Array.from(campo.options).forEach((option) => {
-                        option.selected = option.value === campo.value;
-                    });
-                } else {
-                    campo.setAttribute('value', campo.value);
-                }
-            });
-        }
-
-        function finalizarPDF() {
-            document.body.classList.remove('modo-pdf');
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('data-hora-pdf').style.display = 'none';
-        }
-
-        function gerarPDF() {
-            const element = document.getElementById('render-area');
-            const loading = document.getElementById('loading');
-            const info = document.getElementById('data-hora-pdf');
-            const nf = document.getElementById('nota-fiscal').value.trim();
-
-            document.getElementById('container-campos').classList.add('validar');
-
+        function validarCamposObrigatorios() {
             const camposObrigatorios = Array.from(
                 document.querySelectorAll('#container-campos input[required], #container-campos select[required]')
             );
-
-            const faltamDados = camposObrigatorios.some((campo) => !String(campo.value || '').trim());
-            if (faltamDados) {
-                alert('Preencha os campos em vermelho!');
+            return !camposObrigatorios.some((campo) => !String(campo.value || '').trim());
+        }
+        function validarQuantidadeVolumes() {
+            const qtdInformada = parseInt(document.getElementById('qtd-volumes').value, 10);
+            const qtdCadastrada = document.querySelectorAll('#container-volumes .volume-box').length;
+            if (!qtdInformada || qtdInformada < 1) {
+                alert('Informe uma quantidade de volumes válida antes de gerar o PDF.');
+                return false;
+            }
+            if (qtdInformada !== qtdCadastrada) {
+                alert(`A quantidade informada é ${qtdInformada}, mas existem ${qtdCadastrada} volumes cadastrados. Ajuste antes de gerar o PDF.`);
+                return false;
+            }
+            return true;
+        }
+        function dividirEmGrupos(lista, tamanho) {
+            const grupos = [];
+            for (let i = 0; i < lista.length; i += tamanho) {
+                grupos.push(lista.slice(i, i + tamanho));
+            }
+            return grupos;
+        }
+        function renderizarFotoPDF(label, src, classeExtra = '') {
+            return `
+                <article class="pdf-photo-card ${classeExtra}">
+                    <span>${escaparHTML(label)}</span>
+                    <div class="pdf-photo-frame">
+                        <img src="${src || ''}" alt="${escaparHTML(label)}">
+                    </div>
+                </article>
+            `;
+        }
+        function renderizarPainelVolumePDF(label, src) {
+            return `
+                <div class="pdf-volume-panel">
+                    <span>${escaparHTML(label)}</span>
+                    <div class="pdf-photo-frame">
+                        <img src="${src || ''}" alt="${escaparHTML(label)}">
+                    </div>
+                </div>
+            `;
+        }
+        function renderizarPaginaInicialPDF(snapshot, paginaAtual, totalPaginas, geradoEm) {
+            const campos = snapshot.campos;
+            return `
+                <section class="pdf-page">
+                    <div class="pdf-topline">
+                        <div class="pdf-brandline">Centrosucar • Checklist de carregamento</div>
+                        <div class="pdf-pagecount">Página ${paginaAtual} de ${totalPaginas}</div>
+                    </div>
+                    <div class="pdf-hero">
+                        <div>
+                            <div class="pdf-hero-kicker">Relatório fotográfico oficial</div>
+                            <h1>Checklist institucional de carregamento</h1>
+                            <p>Documento consolidado para expedição, conferência visual, rastreabilidade operacional e compartilhamento com a equipe responsável.</p>
+                        </div>
+                        <div class="pdf-hero-side">
+                            <div class="pdf-highlight">
+                                <span>Nota fiscal</span>
+                                <strong>${escaparHTML(campos.nf || '-')}</strong>
+                            </div>
+                            <div class="pdf-highlight">
+                                <span>Placa</span>
+                                <strong>${escaparHTML(campos.p || '-')}</strong>
+                            </div>
+                            <div class="pdf-highlight">
+                                <span>Gerado em</span>
+                                <strong>${escaparHTML(geradoEm)}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <section class="pdf-section">
+                        <div class="pdf-section-head">
+                            <div>
+                                <span>Resumo operacional</span>
+                                <h2>Informações do carregamento</h2>
+                            </div>
+                            <p>Página inicial reservada aos dados principais e à conferência visual do veículo, conforme o fluxo definido.</p>
+                        </div>
+                        <div class="pdf-meta-grid">
+                            <div class="pdf-meta-card">
+                                <span>Cliente</span>
+                                <p>${escaparHTML(campos.c || '-')}</p>
+                            </div>
+                            <div class="pdf-meta-card">
+                                <span>Transportadora</span>
+                                <p>${escaparHTML(campos.t || '-')}</p>
+                            </div>
+                            <div class="pdf-meta-card">
+                                <span>Motorista</span>
+                                <p>${escaparHTML(campos.m || '-')}</p>
+                            </div>
+                            <div class="pdf-meta-card">
+                                <span>Tipo de carga</span>
+                                <p>${escaparHTML(campos.tp || '-')}</p>
+                            </div>
+                            <div class="pdf-meta-card">
+                                <span>Quantidade de volumes</span>
+                                <p>${escaparHTML(campos.q || '-')}</p>
+                            </div>
+                            <div class="pdf-meta-card">
+                                <span>Placa do veículo</span>
+                                <p>${escaparHTML(campos.p || '-')}</p>
+                            </div>
+                            <div class="pdf-meta-card is-wide">
+                                <span>Número da nota fiscal</span>
+                                <strong>${escaparHTML(campos.nf || '-')}</strong>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="pdf-section">
+                        <div class="pdf-section-head">
+                            <div>
+                                <span>Conferência visual</span>
+                                <h2>Fotos do veículo</h2>
+                            </div>
+                            <p>Sequência obrigatória para validar a saída do carregamento com rastreabilidade visual.</p>
+                        </div>
+                        <div class="pdf-truck-grid">
+                            ${renderizarFotoPDF('Lateral do caminhão carregado', snapshot.caminhao[0])}
+                            ${renderizarFotoPDF('Carregamento', snapshot.caminhao[1])}
+                            ${renderizarFotoPDF('Placa', snapshot.caminhao[2])}
+                        </div>
+                    </section>
+                    <div class="pdf-footer">
+                        <span>Documento gerado automaticamente para uso interno e conferência operacional.</span>
+                        <strong>Centrosucar</strong>
+                    </div>
+                </section>
+            `;
+        }
+        function renderizarPaginaVolumesPDF(volumes, paginaAtual, totalPaginas, snapshot) {
+            const campos = snapshot.campos;
+            const labelSecundario = campos.tp === 'Bag in Box' ? 'Foto carga' : 'Foto lacre';
+            return `
+                <section class="pdf-page">
+                    <div class="pdf-topline">
+                        <div class="pdf-brandline">Centrosucar • Evidências por volume</div>
+                        <div class="pdf-pagecount">Página ${paginaAtual} de ${totalPaginas}</div>
+                    </div>
+                    <div class="pdf-page-header">
+                        <div>
+                            <h2>Volumes conferidos</h2>
+                            <p>Distribuição fixa em pares por página, para leitura limpa e uniforme no PDF final.</p>
+                        </div>
+                        <div class="pdf-page-tags">
+                            <div class="pdf-tag">NF ${escaparHTML(campos.nf || '-')}</div>
+                            <div class="pdf-tag">${escaparHTML(campos.tp || '-')}</div>
+                        </div>
+                    </div>
+                    <div class="pdf-volumes-list">
+                        ${volumes.map((volume, index) => `
+                            <article class="pdf-volume-card">
+                                <div class="pdf-volume-top">
+                                    <div>
+                                        <h3>Volume ${volume.numero || (index + 1)}</h3>
+                                        <p>Registro visual individual para conferência da expedição.</p>
+                                    </div>
+                                    <div class="pdf-volume-badge">Checklist visual</div>
+                                </div>
+                                <div class="pdf-volume-photos">
+                                    ${renderizarPainelVolumePDF('Foto etiqueta', volume.fotos[0])}
+                                    ${renderizarPainelVolumePDF(labelSecundario, volume.fotos[1])}
+                                </div>
+                            </article>
+                        `).join('')}
+                    </div>
+                    <div class="pdf-footer">
+                        <span>Volumes organizados em blocos de 2 por página para evitar cortes e desalinhamentos.</span>
+                        <strong>Centrosucar</strong>
+                    </div>
+                </section>
+            `;
+        }
+        function montarDocumentoPDF(snapshot) {
+            const gruposVolumes = dividirEmGrupos(snapshot.volumes, 2);
+            const totalPaginas = 1 + gruposVolumes.length;
+            const geradoEm = formatarDataExtensa(new Date());
+            const paginas = [
+                renderizarPaginaInicialPDF(snapshot, 1, totalPaginas, geradoEm),
+                ...gruposVolumes.map((grupo, indice) => renderizarPaginaVolumesPDF(grupo, indice + 2, totalPaginas, snapshot))
+            ];
+            return `<div class="pdf-document">${paginas.join('')}</div>`;
+        }
+        async function gerarPDF() {
+            document.getElementById('container-campos').classList.add('validar');
+            if (!validarCamposObrigatorios()) {
+                alert('Preencha todos os campos obrigatórios antes de gerar o PDF.');
                 return;
             }
-
+            if (!validarQuantidadeVolumes()) {
+                return;
+            }
             const fotosFaltantes = listarFotosFaltantes();
             if (fotosFaltantes.length) {
-                const preview = fotosFaltantes.slice(0, 6).join('\n- ');
-                const sufixo = fotosFaltantes.length > 6 ? '\n- ...' : '';
-                alert(`Tire todas as fotos obrigatórias antes de gerar o PDF.\n\nFaltando:\n- ${preview}${sufixo}`);
+                const resumo = fotosFaltantes.slice(0, 8).join('\n- ');
+                const restante = fotosFaltantes.length > 8 ? '\n- ...' : '';
+                alert(`Tire todas as fotos obrigatórias antes de gerar o PDF.\n\nFaltando:\n- ${resumo}${restante}`);
                 return;
             }
-
-            window.scrollTo(0, 0);
+            const snapshot = coletarEstadoAtual();
+            const loading = document.getElementById('loading');
+            const pdfRoot = document.getElementById('pdf-render-root');
             loading.style.display = 'block';
-            info.innerText = `Gerado em: ${new Date().toLocaleString('pt-BR')}`;
-            info.style.display = 'block';
-
-            document.body.classList.add('modo-pdf');
-            prepararCamposParaPDF(element);
-
-            const opcoes = {
-                margin: [6, 6, 8, 6],
-                filename: `Checklist_NF_${nf || 'sem_numero'}.pdf`,
-                image: { type: 'jpeg', quality: 0.95 },
-                html2canvas: {
-                    scale: 2,
-                    useCORS: true,
-                    scrollX: 0,
-                    scrollY: 0,
-                    windowWidth: 760,
-                    backgroundColor: '#FFFFFF'
-                },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: {
-                    mode: ['css', 'legacy'],
-                    avoid: '.volume-box, .foto-wrapper, .foto-col, .box-imagem'
+            pdfRoot.innerHTML = montarDocumentoPDF(snapshot);
+            try {
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
                 }
-            };
-
-            setTimeout(() => {
-                html2pdf().set(opcoes).from(element).save()
-                    .then(finalizarPDF)
-                    .catch(() => {
-                        finalizarPDF();
-                        alert('Não foi possível gerar o PDF.');
-                    });
-            }, 250);
+                await new Promise((resolve) => setTimeout(resolve, 180));
+                const documento = pdfRoot.querySelector('.pdf-document');
+                await html2pdf().set({
+                    margin: 0,
+                    filename: `Checklist_NF_${limparNomeArquivo(snapshot.campos.nf)}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: {
+                        scale: 2,
+                        useCORS: true,
+                        backgroundColor: '#EAF1EC',
+                        windowWidth: 794,
+                        scrollX: 0,
+                        scrollY: 0
+                    },
+                    jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' },
+                    pagebreak: { mode: ['css'] }
+                }).from(documento).save();
+            } catch (erro) {
+                console.error(erro);
+                alert('Não foi possível gerar o PDF. Tente novamente.');
+            } finally {
+                pdfRoot.innerHTML = '';
+                loading.style.display = 'none';
+            }
         }
-
+        document.getElementById('modal-pendentes').addEventListener('click', (evento) => {
+            if (evento.target.id === 'modal-pendentes') {
+                fecharPendentes();
+            }
+        });
         window.onload = () => {
             atualizarContador();
-            sincronizarEstadoFotos();
+            sincronizarFotos();
+            reordenar();
         };
     </script>
 </body>
