@@ -948,17 +948,17 @@
     function obterConfiguracaoFotos() {
       const ambiente = detectarAmbientePDF();
       return {
-        larguraMaximaFoto: ambiente.mobile ? 900 : 1400,
-        alturaMaximaFoto: ambiente.mobile ? 900 : 1400,
-        qualidadeFoto: ambiente.mobile ? 0.68 : 0.86
+        larguraMaximaFoto: ambiente.mobile ? 2200 : 2600,
+        alturaMaximaFoto: ambiente.mobile ? 2200 : 2600,
+        qualidadeFoto: ambiente.mobile ? 0.92 : 0.96
       };
     }
 
     function obterConfiguracaoPDF() {
       const ambiente = detectarAmbientePDF();
       return {
-        escalaCanvas: ambiente.mobile ? 1.05 : 1.5,
-        qualidadeImagem: ambiente.mobile ? 0.82 : 0.92
+        escalaCanvas: ambiente.mobile ? 1.9 : 2.4,
+        qualidadeImagem: ambiente.mobile ? 0.94 : 0.98
       };
     }
 
@@ -1049,23 +1049,32 @@
 
         reader.onload = (evento) => {
           const img = new Image();
+
           img.onload = () => {
             const config = obterConfiguracaoFotos();
             const canvas = document.createElement('canvas');
-            const larguraMaxima = config.larguraMaximaFoto;
-            const alturaMaxima = config.alturaMaximaFoto;
-            const escala = Math.min(1, larguraMaxima / img.width, alturaMaxima / img.height);
+
+            const escala = Math.min(
+              1,
+              config.larguraMaximaFoto / img.width,
+              config.alturaMaximaFoto / img.height
+            );
 
             canvas.width = Math.max(1, Math.round(img.width * escala));
             canvas.height = Math.max(1, Math.round(img.height * escala));
 
             const ctx = canvas.getContext('2d', { alpha: false });
+
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
             resolve(canvas.toDataURL('image/jpeg', config.qualidadeFoto));
           };
+
           img.onerror = reject;
           img.src = evento.target.result;
         };
@@ -1673,6 +1682,12 @@
         windowHeight: pagina.scrollHeight
       });
 
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+      }
+
       return canvas.toDataURL('image/jpeg', qualidadeImagem);
     }
 
@@ -1711,7 +1726,7 @@
         atualizarStatusLoading('Montando as páginas do checklist...');
         const root = construirPaginasPDF();
 
-        await esperar(200);
+        await esperar(250);
         await aguardarImagensCarregadas(root);
 
         const paginas = Array.from(root.querySelectorAll('.pdf-page'));
@@ -1741,7 +1756,7 @@
           );
 
           if (i > 0) doc.addPage('a4', 'portrait');
-          doc.addImage(imagem, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+          doc.addImage(imagem, 'JPEG', 0, 0, 210, 297, undefined, 'MEDIUM');
         }
 
         atualizarStatusLoading('Salvando arquivo PDF...');
