@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checklist de Carregamento - Centrosucar</title>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
@@ -15,14 +14,14 @@
       --verde-900:#184B35;
       --verde-800:#256246;
       --verde-700:#3A7A58;
-      --verde-600:#5A9872;
-      --verde-500:#7EB48D;
+      --verde-600:#5E9B76;
+      --verde-500:#86B998;
       --verde-100:#EAF5EE;
-      --verde-050:#F6FBF7;
+      --verde-050:#F7FBF8;
       --dourado-500:#C69A2B;
-      --dourado-200:#F3E6BF;
+      --dourado-100:#F6ECD0;
       --grafite:#233129;
-      --texto-suave:#6A7A70;
+      --texto-suave:#6D7C73;
       --borda:#DCE9E0;
       --branco:#FFFFFF;
       --erro:#C53939;
@@ -39,9 +38,9 @@
       color:var(--grafite);
       font-family:'Source Sans 3',sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(198,154,43,.08), transparent 36%),
-        radial-gradient(circle at top right, rgba(58,122,88,.10), transparent 34%),
-        linear-gradient(180deg,#F7FBF8 0%, #FBFDFC 48%, #F4F9F6 100%);
+        radial-gradient(circle at top left, rgba(198,154,43,.06), transparent 36%),
+        radial-gradient(circle at top right, rgba(58,122,88,.08), transparent 34%),
+        linear-gradient(180deg,#F8FCF9 0%, #FCFEFD 50%, #F5FAF7 100%);
     }
 
     #btn-abrir-pendentes{
@@ -62,15 +61,15 @@
 
     #render-area{
       max-width:980px;margin:0 auto;border:1px solid rgba(255,255,255,.72);
-      border-radius:34px;overflow:hidden;background:rgba(255,255,255,.95);
+      border-radius:34px;overflow:hidden;background:rgba(255,255,255,.96);
       box-shadow:var(--sombra-forte);backdrop-filter:blur(12px);
     }
 
     .hero-app{
       padding:30px 30px 26px;color:#fff;
       background:
-        radial-gradient(circle at top right, rgba(243,230,191,.24), transparent 28%),
-        linear-gradient(135deg,var(--verde-800),var(--verde-700) 56%,#90B46C 100%);
+        radial-gradient(circle at top right, rgba(246,236,208,.22), transparent 28%),
+        linear-gradient(135deg,var(--verde-800),var(--verde-700) 56%,#97B97A 100%);
     }
 
     .hero-brand{
@@ -131,7 +130,7 @@
     .android-banner{
       display:none;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px;
       padding:18px 20px;border-radius:22px;border:1px solid rgba(198,154,43,.20);
-      background:linear-gradient(135deg,rgba(243,230,191,.50),rgba(255,255,255,.98));
+      background:linear-gradient(135deg,rgba(246,236,208,.50),rgba(255,255,255,.98));
       box-shadow:0 14px 26px rgba(24,75,53,.06);
     }
 
@@ -151,7 +150,7 @@
 
     .panel{
       margin-bottom:22px;padding:24px;border-radius:28px;border:1px solid var(--borda);
-      background:linear-gradient(180deg,rgba(255,255,255,.99),rgba(246,251,247,.99));
+      background:linear-gradient(180deg,rgba(255,255,255,.99),rgba(247,251,248,.99));
       box-shadow:var(--sombra-media);
     }
 
@@ -313,7 +312,7 @@
       box-shadow:0 12px 24px rgba(198,154,43,.12);
     }
 
-    .btn-share{
+    .btn-pdf{
       color:#fff;background:linear-gradient(135deg,var(--verde-700),var(--verde-600));
       box-shadow:0 16px 28px rgba(24,75,53,.16);
     }
@@ -401,18 +400,18 @@
 
     .pdf-document{
       width:794px;
-      background:#F3F8F5;
+      background:#FFFFFF;
     }
 
     .pdf-page{
-      position:relative;
       width:794px;
       height:1122px;
-      padding:26px 28px 18px;
+      padding:22px 24px 18px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
       overflow:hidden;
-      background:
-        radial-gradient(circle at top right, rgba(243,230,191,.14), transparent 24%),
-        linear-gradient(180deg,#FBFDFC 0%,#FFFFFF 30%,#F7FBF8 100%);
+      background:#FFFFFF;
       page-break-after:always;
       break-after:page;
     }
@@ -422,13 +421,15 @@
       break-after:auto;
     }
 
-    .pdf-page::before{
-      content:'';
-      position:absolute;
-      inset:14px;
-      border-radius:26px;
-      border:1px solid rgba(58,122,88,.08);
-      pointer-events:none;
+    .pdf-sheet{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+      border:1px solid #DDE8E0;
+      border-radius:24px;
+      background:#FFFFFF;
+      padding:14px 16px 12px;
     }
 
     .pdf-topline{
@@ -448,29 +449,32 @@
 
     .pdf-pagecount{
       display:inline-flex;align-items:center;padding:7px 12px;border-radius:999px;
-      background:rgba(58,122,88,.08);color:var(--verde-700);
+      background:#F0F7F2;color:var(--verde-700);
       font:700 9px/1 'Montserrat',sans-serif;letter-spacing:.12em;text-transform:uppercase;
     }
 
+    .pdf-main{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+      gap:10px;
+    }
+
     .pdf-hero{
-      position:relative;
       display:grid;
-      grid-template-columns:minmax(0,1.35fr) 220px;
-      gap:16px;
-      margin-bottom:14px;
-      padding:18px 18px 16px;
-      border-radius:24px;
+      grid-template-columns:minmax(0,1.35fr) 210px;
+      gap:14px;
+      padding:16px;
+      border-radius:20px;
       color:#fff;
-      background:
-        radial-gradient(circle at top right, rgba(243,230,191,.20), transparent 24%),
-        linear-gradient(135deg,var(--verde-800),var(--verde-700) 60%,#8FB36E 100%);
-      box-shadow:0 16px 26px rgba(24,75,53,.12);
+      background:linear-gradient(135deg,#3F7A5A,#6EA381);
     }
 
     .pdf-hero-kicker{
-      display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;padding:7px 10px;border-radius:999px;
-      background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.12);
-      font:700 9px/1 'Montserrat',sans-serif;letter-spacing:.16em;text-transform:uppercase;
+      display:inline-flex;align-items:center;gap:8px;margin-bottom:8px;padding:6px 10px;border-radius:999px;
+      background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.14);
+      font:700 8px/1 'Montserrat',sans-serif;letter-spacing:.16em;text-transform:uppercase;
     }
 
     .pdf-hero h1{
@@ -478,17 +482,17 @@
     }
 
     .pdf-hero p{
-      max-width:390px;font-size:13px;line-height:1.42;color:rgba(255,255,255,.88);
+      max-width:390px;font-size:13px;line-height:1.42;color:rgba(255,255,255,.92);
     }
 
     .pdf-hero-side{display:grid;gap:8px;align-content:start}
 
     .pdf-highlight{
-      padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.14);
+      padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14);
     }
 
     .pdf-highlight span{
-      display:block;margin-bottom:4px;color:rgba(255,255,255,.78);
+      display:block;margin-bottom:4px;color:rgba(255,255,255,.82);
       font:700 8px/1 'Montserrat',sans-serif;letter-spacing:.14em;text-transform:uppercase;
     }
 
@@ -497,18 +501,14 @@
     }
 
     .pdf-section{
-      margin-bottom:12px;
-      padding:14px;
-      border-radius:20px;
-      border:1px solid rgba(58,122,88,.10);
-      background:rgba(255,255,255,.90);
-      box-shadow:0 10px 18px rgba(24,75,53,.05);
+      padding:12px;
+      border-radius:18px;
+      border:1px solid #E2ECE5;
+      background:#FCFEFC;
     }
 
-    .pdf-section:last-of-type{margin-bottom:0}
-
     .pdf-section-head{
-      display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:10px;
+      display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:8px;
     }
 
     .pdf-section-head span{
@@ -531,23 +531,20 @@
     }
 
     .pdf-meta-grid{
-      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;
+      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
     }
 
     .pdf-meta-card{
-      min-height:68px;
+      min-height:62px;
       padding:10px 12px;
-      border-radius:16px;
-      border:1px solid rgba(58,122,88,.08);
-      background:linear-gradient(180deg,#FFFFFF 0%,#F7FBF8 100%);
+      border-radius:14px;
+      border:1px solid #E5EEE8;
+      background:#FFFFFF;
     }
 
     .pdf-meta-card.is-wide{
       grid-column:1 / -1;
-      min-height:72px;
-      background:
-        radial-gradient(circle at right top, rgba(243,230,191,.14), transparent 28%),
-        linear-gradient(135deg,rgba(58,122,88,.04),rgba(255,255,255,.98));
+      min-height:66px;
     }
 
     .pdf-meta-card span{
@@ -556,40 +553,38 @@
     }
 
     .pdf-meta-card strong{
-      display:block;color:var(--grafite);font:700 16px/1.18 'Montserrat',sans-serif;
+      display:block;color:var(--grafite);font:700 15px/1.15 'Montserrat',sans-serif;
     }
 
     .pdf-meta-card p{
-      color:var(--grafite);font-size:14px;line-height:1.28;font-weight:600;
+      color:var(--grafite);font-size:14px;line-height:1.25;font-weight:600;
     }
 
     .pdf-truck-grid{
-      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;
+      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;
     }
 
     .pdf-photo-card{
-      padding:10px;border-radius:16px;border:1px solid rgba(58,122,88,.08);
-      background:linear-gradient(180deg,#FFFFFF 0%,#F7FBF8 100%);
+      padding:9px;border-radius:14px;border:1px solid #E5EEE8;background:#FFFFFF;
     }
 
     .pdf-photo-card span{
-      display:block;margin-bottom:8px;text-align:center;color:var(--texto-suave);
+      display:block;margin-bottom:7px;text-align:center;color:var(--texto-suave);
       font:700 8px/1 'Montserrat',sans-serif;letter-spacing:.11em;text-transform:uppercase;
     }
 
     .pdf-photo-frame{
-      overflow:hidden;display:flex;align-items:center;justify-content:center;height:122px;border-radius:12px;
-      background:linear-gradient(180deg,rgba(58,122,88,.05),rgba(58,122,88,.02)),#F5FAF7;
-      border:1px solid rgba(58,122,88,.08);
+      overflow:hidden;display:flex;align-items:center;justify-content:center;height:118px;border-radius:10px;
+      background:#F7FBF8;border:1px solid #E6EFE8;
     }
 
     .pdf-photo-frame img{
-      width:100%;height:100%;object-fit:contain;background:linear-gradient(180deg,#FBFDFC 0%,#F2F8F4 100%);
+      width:100%;height:100%;object-fit:contain;background:#FFFFFF;
     }
 
     .pdf-page-header{
       display:flex;align-items:flex-start;justify-content:space-between;gap:18px;
-      margin-bottom:14px;padding:6px 2px 12px;border-bottom:1px solid rgba(58,122,88,.12);
+      margin-bottom:10px;padding:4px 2px 10px;border-bottom:1px solid #E0EAE3;
     }
 
     .pdf-page-header h2{
@@ -606,30 +601,27 @@
 
     .pdf-tag{
       display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:0 12px;border-radius:999px;
-      background:rgba(58,122,88,.08);color:var(--verde-700);
+      background:#F0F7F2;color:var(--verde-700);
       font:700 9px/1 'Montserrat',sans-serif;letter-spacing:.10em;text-transform:uppercase;
     }
 
     .pdf-volumes-list{
       display:grid;
-      gap:12px;
+      gap:10px;
       align-content:start;
     }
 
     .pdf-volume-card{
-      padding:14px;
-      border-radius:20px;
-      border:1px solid rgba(58,122,88,.10);
-      background:
-        radial-gradient(circle at top right, rgba(243,230,191,.10), transparent 22%),
-        linear-gradient(180deg,#FFFFFF 0%,#F8FBF9 100%);
-      box-shadow:0 10px 18px rgba(24,75,53,.05);
+      padding:12px;
+      border-radius:18px;
+      border:1px solid #E2ECE5;
+      background:#FCFEFC;
       break-inside:avoid;
       page-break-inside:avoid;
     }
 
     .pdf-volume-top{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:9px;
     }
 
     .pdf-volume-top h3{
@@ -642,7 +634,7 @@
 
     .pdf-volume-badge{
       display:inline-flex;align-items:center;justify-content:center;min-height:30px;padding:0 12px;border-radius:999px;
-      background:linear-gradient(135deg,rgba(58,122,88,.08),rgba(198,154,43,.10));
+      background:#F0F7F2;
       color:var(--verde-700);font:700 9px/1 'Montserrat',sans-serif;letter-spacing:.12em;text-transform:uppercase;
     }
 
@@ -651,20 +643,23 @@
     }
 
     .pdf-volume-panel{
-      padding:10px;border-radius:16px;border:1px solid rgba(58,122,88,.08);
-      background:linear-gradient(180deg,rgba(255,255,255,.96),rgba(244,249,246,.96));
+      padding:9px;border-radius:14px;border:1px solid #E5EEE8;background:#FFFFFF;
     }
 
     .pdf-volume-panel span{
-      display:block;margin-bottom:8px;color:var(--texto-suave);text-align:center;
+      display:block;margin-bottom:7px;color:var(--texto-suave);text-align:center;
       font:700 8px/1 'Montserrat',sans-serif;letter-spacing:.12em;text-transform:uppercase;
     }
 
-    .pdf-volume-panel .pdf-photo-frame{height:140px}
+    .pdf-volume-panel .pdf-photo-frame{height:136px}
 
     .pdf-footer{
-      position:absolute;left:28px;right:28px;bottom:14px;display:flex;align-items:center;justify-content:space-between;
+      margin-top:10px;
+      padding-top:8px;
+      border-top:1px solid #E0EAE3;
+      display:flex;align-items:center;justify-content:space-between;
       gap:12px;color:var(--texto-suave);font-size:10px;
+      flex-shrink:0;
     }
 
     .pdf-footer strong{
@@ -690,18 +685,45 @@
       .btn{height:52px;font-size:11px}
     }
 
+    @page{
+      size:A4 portrait;
+      margin:8mm;
+    }
+
     @media print{
-      body{background:#fff!important;padding:0!important}
-      body > *:not(#pdf-render-root){display:none!important}
-      #pdf-render-root{
-        position:static!important;left:auto!important;width:auto!important;
-        z-index:9999!important;pointer-events:auto!important;visibility:visible!important;
+      html,body{
+        background:#fff!important;
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
       }
-      .pdf-document{width:100%!important;background:#fff!important}
+
+      body{
+        padding:0!important;
+      }
+
+      body > *:not(#pdf-render-root){
+        display:none!important;
+      }
+
+      #pdf-render-root{
+        position:static!important;
+        left:auto!important;
+        width:auto!important;
+        z-index:9999!important;
+        pointer-events:auto!important;
+        visibility:visible!important;
+      }
+
+      .pdf-document{
+        width:100%!important;
+        background:#fff!important;
+      }
+
       .pdf-page{
         page-break-after:always!important;
         break-after:page!important;
       }
+
       .pdf-page:last-child{
         page-break-after:auto!important;
         break-after:auto!important;
@@ -741,8 +763,8 @@
     <div class="content-shell">
       <div class="android-banner" id="android-banner">
         <div>
-          <strong>Abra no Chrome para compartilhar o PDF</strong>
-          <p>Se este link estiver aberto dentro do WhatsApp, toque no botão ao lado para abrir no Chrome do Android. Esse é o modo mais confiável para gerar e compartilhar o PDF.</p>
+          <strong>Abra no Chrome para salvar o PDF</strong>
+          <p>Se este link estiver aberto dentro do WhatsApp, toque no botão ao lado para abrir no Chrome do Android. Esse é o modo mais confiável para salvar em PDF.</p>
         </div>
         <button type="button" onclick="abrirNoChromeAndroid()">Abrir no Chrome</button>
       </div>
@@ -860,7 +882,7 @@
   <div class="botoes-fixos">
     <button type="button" class="btn btn-add" id="btn-add-vol" onclick="addV()" style="display:none;">Adicionar volume</button>
     <button type="button" class="btn btn-standby" onclick="salvarParaDepois()">Standby (NF)</button>
-    <button type="button" class="btn btn-share" onclick="compartilharPDF()">Compartilhar PDF</button>
+    <button type="button" class="btn btn-pdf" onclick="salvarComoPDF()">Salvar como PDF</button>
   </div>
 
   <div id="modal-pendentes">
@@ -873,8 +895,8 @@
 
   <div id="loading">
     <div class="loading-card">
-      <strong>Preparando arquivo</strong>
-      <p>Montando a versão final com paginação institucional, capa operacional e volumes organizados em pares.</p>
+      <strong>Preparando impressão</strong>
+      <p>Montando o layout final para salvar em PDF.</p>
       <div class="loading-bar"></div>
     </div>
   </div>
@@ -933,13 +955,6 @@
       return `${dia} ${mes} ${ano} - ${hora}:${minuto}`;
     }
 
-    function limparNomeArquivo(valor) {
-      return String(valor || 'sem_numero')
-        .trim()
-        .replace(/[\\/:*?"<>|]+/g, '-')
-        .replace(/\s+/g, '_');
-    }
-
     function detectarAmbientePDF() {
       const userAgent = navigator.userAgent || '';
       return {
@@ -951,19 +966,16 @@
       };
     }
 
-    function obterConfiguracaoGeracaoPDF() {
+    function obterConfiguracaoFotos() {
       const ambiente = detectarAmbientePDF();
       return {
-        ...ambiente,
-        escalaCanvas: ambiente.mobile ? 1 : 1.35,
-        qualidadePDF: ambiente.mobile ? 0.72 : 0.90,
-        larguraMaximaFoto: ambiente.mobile ? 800 : 1400,
-        alturaMaximaFoto: ambiente.mobile ? 800 : 1400,
-        qualidadeFoto: ambiente.mobile ? 0.64 : 0.84
+        larguraMaximaFoto: ambiente.mobile ? 900 : 1400,
+        alturaMaximaFoto: ambiente.mobile ? 900 : 1400,
+        qualidadeFoto: ambiente.mobile ? 0.68 : 0.86
       };
     }
 
-    function atualizarStatusLoading(texto, titulo = 'Preparando arquivo') {
+    function atualizarStatusLoading(texto, titulo = 'Preparando impressão') {
       const tituloEl = document.querySelector('#loading .loading-card strong');
       const statusEl = document.querySelector('#loading .loading-card p');
       if (tituloEl) tituloEl.innerText = titulo;
@@ -992,12 +1004,6 @@
           img.addEventListener('error', finalizar, { once: true });
         });
       }));
-    }
-
-    function obterDependenciasPDF() {
-      return {
-        html2pdfFn: window.html2pdf || null
-      };
     }
 
     function abrirNoChromeAndroid() {
@@ -1057,7 +1063,7 @@
         reader.onload = (evento) => {
           const img = new Image();
           img.onload = () => {
-            const config = obterConfiguracaoGeracaoPDF();
+            const config = obterConfiguracaoFotos();
             const canvas = document.createElement('canvas');
             const larguraMaxima = config.larguraMaximaFoto;
             const alturaMaxima = config.alturaMaximaFoto;
@@ -1097,9 +1103,7 @@
         alert('Não foi possível processar essa foto.');
       } finally {
         const resetMsg = box.querySelector('.msg-camera strong');
-        if (resetMsg && !obterSrcBox(box)) {
-          resetMsg.innerText = 'Registrar foto';
-        }
+        if (resetMsg && !obterSrcBox(box)) resetMsg.innerText = 'Registrar foto';
       }
     }
 
@@ -1514,73 +1518,77 @@
 
       paginas.push(`
         <section class="pdf-page">
-          <div class="pdf-topline">
-            <div class="pdf-brandline">Centrosucar • Checklist fotográfico</div>
-            <div class="pdf-pagecount">Página 1 / ${totalPaginas}</div>
-          </div>
-
-          <div class="pdf-hero">
-            <div>
-              <div class="pdf-hero-kicker">Relatório operacional</div>
-              <h1>Checklist de carregamento com evidência visual.</h1>
-              <p>Documento gerado com os dados do carregamento, imagens do veículo e comprovação fotográfica dos volumes conferidos.</p>
+          <div class="pdf-sheet">
+            <div class="pdf-topline">
+              <div class="pdf-brandline">Centrosucar • Checklist fotográfico</div>
+              <div class="pdf-pagecount">Página 1 / ${totalPaginas}</div>
             </div>
 
-            <div class="pdf-hero-side">
-              <div class="pdf-highlight">
-                <span>Tipo de carga</span>
-                <strong>${escaparHTML(campos.tp || '-')}</strong>
+            <div class="pdf-main">
+              <div class="pdf-hero">
+                <div>
+                  <div class="pdf-hero-kicker">Relatório operacional</div>
+                  <h1>Checklist de carregamento com evidência visual.</h1>
+                  <p>Documento gerado com os dados do carregamento, imagens do veículo e comprovação fotográfica dos volumes conferidos.</p>
+                </div>
+
+                <div class="pdf-hero-side">
+                  <div class="pdf-highlight">
+                    <span>Tipo de carga</span>
+                    <strong>${escaparHTML(campos.tp || '-')}</strong>
+                  </div>
+                  <div class="pdf-highlight">
+                    <span>Qtd. volumes</span>
+                    <strong>${escaparHTML(campos.q || '0')}</strong>
+                  </div>
+                  <div class="pdf-highlight">
+                    <span>Emitido em</span>
+                    <strong>${escaparHTML(geradoEm)}</strong>
+                  </div>
+                </div>
               </div>
-              <div class="pdf-highlight">
-                <span>Qtd. volumes</span>
-                <strong>${escaparHTML(campos.q || '0')}</strong>
-              </div>
-              <div class="pdf-highlight">
-                <span>Emitido em</span>
-                <strong>${escaparHTML(geradoEm)}</strong>
-              </div>
-            </div>
-          </div>
 
-          <section class="pdf-section">
-            <div class="pdf-section-head">
-              <div>
-                <span>Dados principais</span>
-                <h2>Informações da operação</h2>
-              </div>
-              <p>Os dados abaixo compõem a identificação principal deste carregamento.</p>
-            </div>
+              <section class="pdf-section">
+                <div class="pdf-section-head">
+                  <div>
+                    <span>Dados principais</span>
+                    <h2>Informações da operação</h2>
+                  </div>
+                  <p>Os dados abaixo compõem a identificação principal deste carregamento.</p>
+                </div>
 
-            <div class="pdf-meta-grid">
-              ${montarMetaCard('Cliente', campos.c)}
-              ${montarMetaCard('Transportadora', campos.t)}
-              ${montarMetaCard('Motorista', campos.m)}
-              ${montarMetaCard('Placa do veículo', campos.p)}
-              ${montarMetaCard('Tipo de carga', campos.tp)}
-              ${montarMetaCard('Qtd. volumes', campos.q)}
-              ${montarMetaCard('Número da nota fiscal', campos.nf, true)}
-            </div>
-          </section>
+                <div class="pdf-meta-grid">
+                  ${montarMetaCard('Cliente', campos.c)}
+                  ${montarMetaCard('Transportadora', campos.t)}
+                  ${montarMetaCard('Motorista', campos.m)}
+                  ${montarMetaCard('Placa do veículo', campos.p)}
+                  ${montarMetaCard('Tipo de carga', campos.tp)}
+                  ${montarMetaCard('Qtd. volumes', campos.q)}
+                  ${montarMetaCard('Número da nota fiscal', campos.nf, true)}
+                </div>
+              </section>
 
-          <section class="pdf-section">
-            <div class="pdf-section-head">
-              <div>
-                <span>Registro fotográfico</span>
-                <h2>Fotos do veículo</h2>
-              </div>
-              <p>Essas imagens identificam o veículo e registram o momento do carregamento.</p>
+              <section class="pdf-section">
+                <div class="pdf-section-head">
+                  <div>
+                    <span>Registro fotográfico</span>
+                    <h2>Fotos do veículo</h2>
+                  </div>
+                  <p>Essas imagens identificam o veículo e registram o momento do carregamento.</p>
+                </div>
+
+                <div class="pdf-truck-grid">
+                  ${montarFotoPDF('Lateral do caminhão carregado', caminhao[0] || '')}
+                  ${montarFotoPDF('Carregamento', caminhao[1] || '')}
+                  ${montarFotoPDF('Placa', caminhao[2] || '')}
+                </div>
+              </section>
             </div>
 
-            <div class="pdf-truck-grid">
-              ${montarFotoPDF('Lateral do caminhão carregado', caminhao[0] || '')}
-              ${montarFotoPDF('Carregamento', caminhao[1] || '')}
-              ${montarFotoPDF('Placa', caminhao[2] || '')}
+            <div class="pdf-footer">
+              <span>Relatório de carregamento</span>
+              <strong>Centrosucar</strong>
             </div>
-          </section>
-
-          <div class="pdf-footer">
-            <span>Relatório de carregamento</span>
-            <strong>Centrosucar</strong>
           </div>
         </section>
       `);
@@ -1591,30 +1599,34 @@
 
         paginas.push(`
           <section class="pdf-page">
-            <div class="pdf-topline">
-              <div class="pdf-brandline">Centrosucar • Volumes conferidos</div>
-              <div class="pdf-pagecount">Página ${paginaAtual} / ${totalPaginas}</div>
-            </div>
-
-            <div class="pdf-page-header">
-              <div>
-                <h2>Volumes conferidos</h2>
-                <p>Volumes organizados em pares por página para facilitar visualização e conferência operacional.</p>
+            <div class="pdf-sheet">
+              <div class="pdf-topline">
+                <div class="pdf-brandline">Centrosucar • Volumes conferidos</div>
+                <div class="pdf-pagecount">Página ${paginaAtual} / ${totalPaginas}</div>
               </div>
-              <div class="pdf-page-tags">
-                <div class="pdf-tag">${escaparHTML(campos.tp || '-')}</div>
-                <div class="pdf-tag">NF ${escaparHTML(campos.nf || '-')}</div>
-                <div class="pdf-tag">Placa ${escaparHTML(campos.p || '-')}</div>
+
+              <div class="pdf-main">
+                <div class="pdf-page-header">
+                  <div>
+                    <h2>Volumes conferidos</h2>
+                    <p>Volumes organizados em pares por página para facilitar visualização e conferência operacional.</p>
+                  </div>
+                  <div class="pdf-page-tags">
+                    <div class="pdf-tag">${escaparHTML(campos.tp || '-')}</div>
+                    <div class="pdf-tag">NF ${escaparHTML(campos.nf || '-')}</div>
+                    <div class="pdf-tag">Placa ${escaparHTML(campos.p || '-')}</div>
+                  </div>
+                </div>
+
+                <div class="pdf-volumes-list">
+                  ${dupla.map(volume => montarVolumePDF(volume, campos.tp)).join('')}
+                </div>
               </div>
-            </div>
 
-            <div class="pdf-volumes-list">
-              ${dupla.map(volume => montarVolumePDF(volume, campos.tp)).join('')}
-            </div>
-
-            <div class="pdf-footer">
-              <span>Volumes ${i + 1}${dupla.length === 2 ? ` e ${i + 2}` : ''}</span>
-              <strong>Centrosucar</strong>
+              <div class="pdf-footer">
+                <span>Volumes ${i + 1}${dupla.length === 2 ? ` e ${i + 2}` : ''}</span>
+                <strong>Centrosucar</strong>
+              </div>
             </div>
           </section>
         `);
@@ -1624,143 +1636,49 @@
       return root;
     }
 
-    function abrirModoImpressaoPDF() {
-      const root = document.getElementById('pdf-render-root');
-      root.setAttribute('data-print-open', '1');
-      setTimeout(() => {
-        window.print();
-        setTimeout(() => {
-          root.removeAttribute('data-print-open');
-        }, 800);
-      }, 200);
-    }
-
-    async function gerarBlobPDF(root, nomeArquivo) {
-      const deps = obterDependenciasPDF();
-      if (!deps.html2pdfFn) {
-        throw new Error('Biblioteca html2pdf não carregou.');
-      }
-
-      const config = obterConfiguracaoGeracaoPDF();
-
-      const worker = deps.html2pdfFn().set({
-        margin: 0,
-        filename: nomeArquivo,
-        image: { type: 'jpeg', quality: config.qualidadePDF },
-        html2canvas: {
-          scale: config.escalaCanvas,
-          useCORS: true,
-          allowTaint: true,
-          backgroundColor: '#F3F8F5',
-          logging: false,
-          scrollX: 0,
-          scrollY: 0
-        },
-        jsPDF: {
-          unit: 'px',
-          format: [794, 1122],
-          orientation: 'portrait'
-        },
-        pagebreak: {
-          mode: ['css', 'legacy']
-        }
-      }).from(root.querySelector('.pdf-document'));
-
-      return await worker.outputPdf('blob');
-    }
-
-    async function compartilharArquivoPDF(blob, nomeArquivo) {
-      const arquivo = new File([blob], nomeArquivo, { type: 'application/pdf' });
-
-      if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
-        await navigator.share({
-          title: 'Checklist de Carregamento',
-          text: 'Segue o checklist em PDF.',
-          files: [arquivo]
-        });
-        return true;
-      }
-
-      return false;
-    }
-
-    function baixarBlob(blob, nomeArquivo) {
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = nomeArquivo;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 1500);
-    }
-
-    async function prepararPDFParaSaida() {
+    async function prepararPDFParaImpressao() {
       if (!validarCamposObrigatorios()) {
         alert('Preencha todos os campos obrigatórios.');
-        return null;
+        return false;
       }
 
       if (!validarQuantidadeVolumes()) {
         alert('A quantidade de volumes informada deve ser igual à quantidade de volumes cadastrados.');
-        return null;
+        return false;
       }
 
       const faltantes = listarFotosFaltantes();
       if (faltantes.length) {
         alert('Ainda faltam fotos obrigatórias:\n\n' + faltantes.join('\n'));
-        return null;
+        return false;
       }
 
-      const campos = coletarCamposFormulario();
-      const nomeArquivo = `Checklist_${limparNomeArquivo(campos.nf || campos.p || 'sem_numero')}.pdf`;
-
-      atualizarStatusLoading('Preparando as páginas do PDF...');
+      atualizarStatusLoading('Montando as páginas para impressão...');
       const root = construirPaginasPDF();
 
-      await esperar(180);
+      await esperar(200);
       await aguardarImagensCarregadas(root);
-
-      return { root, campos, nomeArquivo };
+      return true;
     }
 
-    async function compartilharPDF() {
+    async function salvarComoPDF() {
       const loading = document.getElementById('loading');
       loading.style.display = 'block';
 
       try {
-        const preparado = await prepararPDFParaSaida();
-        if (!preparado) return;
+        const pronto = await prepararPDFParaImpressao();
+        if (!pronto) return;
 
-        const { root, nomeArquivo } = preparado;
-
-        atualizarStatusLoading('Gerando arquivo PDF...', 'Gerando PDF');
-        const blob = await gerarBlobPDF(root, nomeArquivo);
-
-        atualizarStatusLoading('Tentando compartilhar o arquivo...', 'Compartilhando PDF');
-        const compartilhou = await compartilharArquivoPDF(blob, nomeArquivo);
-
-        if (compartilhou) return;
-
-        atualizarStatusLoading('Seu navegador não abriu o compartilhamento. Baixando arquivo...', 'Baixando PDF');
-        baixarBlob(blob, nomeArquivo);
-        alert('O compartilhamento direto não está disponível neste navegador. O PDF foi baixado no aparelho/computador.');
+        atualizarStatusLoading('Abrindo modo de impressão para salvar em PDF...');
+        await esperar(300);
+        window.print();
       } catch (erro) {
-        console.error('Falha ao gerar/compartilhar PDF:', erro);
-
-        try {
-          atualizarStatusLoading('Falha na geração automática. Abrindo modo de impressão...', 'Modo alternativo');
-          await esperar(250);
-          abrirModoImpressaoPDF();
-          alert('O compartilhamento automático falhou neste navegador. Abrimos o modo de impressão para você salvar como PDF.');
-        } catch (erroPrint) {
-          console.error('Falha no modo impressão:', erroPrint);
-          alert('Não foi possível gerar o PDF neste navegador. Tente no Chrome, de preferência fora do WhatsApp.');
-        }
+        console.error(erro);
+        alert('Não foi possível abrir o modo de impressão. Tente novamente no Chrome.');
       } finally {
         setTimeout(() => {
           loading.style.display = 'none';
-        }, 600);
+        }, 700);
       }
     }
 
