@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Checklist de Carregamento - Centrosucar</title>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
@@ -395,7 +398,14 @@
     }
 
     #pdf-render-root{
-      position:fixed;left:-100000px;top:0;width:794px;z-index:-1;pointer-events:none;visibility:visible;opacity:1;
+      position:fixed;
+      left:-100000px;
+      top:0;
+      width:794px;
+      z-index:-1;
+      pointer-events:none;
+      visibility:visible;
+      opacity:1;
     }
 
     .pdf-document{
@@ -409,13 +419,11 @@
       padding:14px;
       overflow:hidden;
       background:#FFFFFF;
-      page-break-after:always;
-      break-after:page;
+      margin:0;
     }
 
-    .pdf-page:last-child{
-      page-break-after:auto;
-      break-after:auto;
+    .pdf-page + .pdf-page{
+      margin-top:0;
     }
 
     .pdf-sheet{
@@ -692,57 +700,6 @@
       .botoes-fixos{width:calc(100% - 12px);padding:10px;gap:10px;border-radius:22px}
       .btn{height:52px;font-size:11px}
     }
-
-    @page{
-      size:A4 portrait;
-      margin:0;
-    }
-
-    @media print{
-      html,body{
-        background:#fff!important;
-        -webkit-print-color-adjust:exact;
-        print-color-adjust:exact;
-      }
-
-      body{
-        padding:0!important;
-        margin:0!important;
-      }
-
-      body > *:not(#pdf-render-root){
-        display:none!important;
-      }
-
-      #pdf-render-root{
-        position:static!important;
-        left:auto!important;
-        width:auto!important;
-        z-index:9999!important;
-        pointer-events:auto!important;
-        visibility:visible!important;
-      }
-
-      .pdf-document{
-        width:100%!important;
-        background:#fff!important;
-      }
-
-      .pdf-page{
-        width:210mm!important;
-        height:297mm!important;
-        min-height:297mm!important;
-        max-height:297mm!important;
-        margin:0!important;
-        page-break-after:always!important;
-        break-after:page!important;
-      }
-
-      .pdf-page:last-child{
-        page-break-after:auto!important;
-        break-after:auto!important;
-      }
-    }
   </style>
 </head>
 <body>
@@ -778,7 +735,7 @@
       <div class="android-banner" id="android-banner">
         <div>
           <strong>Abra no Chrome para salvar o PDF</strong>
-          <p>Se este link estiver aberto dentro do WhatsApp, toque no botão ao lado para abrir no Chrome do Android. Esse é o modo mais confiável para salvar em PDF.</p>
+          <p>Se este link estiver aberto dentro do WhatsApp, toque no botão ao lado para abrir no Chrome do Android. Esse é o modo mais confiável para gerar o PDF no celular.</p>
         </div>
         <button type="button" onclick="abrirNoChromeAndroid()">Abrir no Chrome</button>
       </div>
@@ -896,7 +853,7 @@
   <div class="botoes-fixos">
     <button type="button" class="btn btn-add" id="btn-add-vol" onclick="addV()" style="display:none;">Adicionar volume</button>
     <button type="button" class="btn btn-standby" onclick="salvarParaDepois()">Standby (NF)</button>
-    <button type="button" class="btn btn-pdf" onclick="salvarComoPDF()">Salvar como PDF</button>
+    <button type="button" class="btn btn-pdf" onclick="gerarPDF()">Salvar PDF</button>
   </div>
 
   <div id="modal-pendentes">
@@ -909,8 +866,8 @@
 
   <div id="loading">
     <div class="loading-card">
-      <strong>Preparando impressão</strong>
-      <p>Montando o layout final para salvar em PDF.</p>
+      <strong>Gerando PDF</strong>
+      <p>Montando as páginas finais do checklist.</p>
       <div class="loading-bar"></div>
     </div>
   </div>
@@ -920,8 +877,7 @@
   <script>
     const STORAGE_KEY = 'checklists_pendentes';
     let pendentes = carregarPendentes();
-    let aguardandoPosImpressao = false;
-    let ignorarPrimeiroAfterPrint = false;
+    const { jsPDF } = window.jspdf;
 
     function carregarPendentes() {
       try {
@@ -971,6 +927,13 @@
       return `${dia} ${mes} ${ano} - ${hora}:${minuto}`;
     }
 
+    function limparNomeArquivo(valor) {
+      return String(valor || 'sem_numero')
+        .trim()
+        .replace(/[\\/:*?"<>|]+/g, '-')
+        .replace(/\s+/g, '_');
+    }
+
     function detectarAmbientePDF() {
       const userAgent = navigator.userAgent || '';
       return {
@@ -991,7 +954,15 @@
       };
     }
 
-    function atualizarStatusLoading(texto, titulo = 'Preparando impressão') {
+    function obterConfiguracaoPDF() {
+      const ambiente = detectarAmbientePDF();
+      return {
+        escalaCanvas: ambiente.mobile ? 1.05 : 1.5,
+        qualidadeImagem: ambiente.mobile ? 0.82 : 0.92
+      };
+    }
+
+    function atualizarStatusLoading(texto, titulo = 'Gerando PDF') {
       const tituloEl = document.querySelector('#loading .loading-card strong');
       const statusEl = document.querySelector('#loading .loading-card p');
       if (tituloEl) tituloEl.innerText = titulo;
@@ -1652,31 +1623,6 @@
       return root;
     }
 
-    async function prepararPDFParaImpressao() {
-      if (!validarCamposObrigatorios()) {
-        alert('Preencha todos os campos obrigatórios.');
-        return false;
-      }
-
-      if (!validarQuantidadeVolumes()) {
-        alert('A quantidade de volumes informada deve ser igual à quantidade de volumes cadastrados.');
-        return false;
-      }
-
-      const faltantes = listarFotosFaltantes();
-      if (faltantes.length) {
-        alert('Ainda faltam fotos obrigatórias:\n\n' + faltantes.join('\n'));
-        return false;
-      }
-
-      atualizarStatusLoading('Montando as páginas para impressão...');
-      const root = construirPaginasPDF();
-
-      await esperar(200);
-      await aguardarImagensCarregadas(root);
-      return true;
-    }
-
     function limparChecklist(confirmarMensagem = true) {
       aplicarCamposFormulario({
         c: '',
@@ -1712,46 +1658,112 @@
       }
     }
 
-    async function salvarComoPDF() {
+    async function renderizarPaginaParaImagem(pagina, escalaCanvas, qualidadeImagem) {
+      const canvas = await html2canvas(pagina, {
+        scale: escalaCanvas,
+        useCORS: true,
+        allowTaint: true,
+        backgroundColor: '#FFFFFF',
+        logging: false,
+        scrollX: 0,
+        scrollY: 0,
+        width: pagina.offsetWidth,
+        height: pagina.offsetHeight,
+        windowWidth: pagina.scrollWidth,
+        windowHeight: pagina.scrollHeight
+      });
+
+      return canvas.toDataURL('image/jpeg', qualidadeImagem);
+    }
+
+    function baixarBlob(blob, nomeArquivo) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = nomeArquivo;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 2000);
+    }
+
+    async function gerarPDF() {
       const loading = document.getElementById('loading');
       loading.style.display = 'block';
 
       try {
-        const pronto = await prepararPDFParaImpressao();
-        if (!pronto) return;
+        if (!validarCamposObrigatorios()) {
+          alert('Preencha todos os campos obrigatórios.');
+          return;
+        }
 
-        atualizarStatusLoading('Abrindo modo de impressão para salvar em PDF...');
+        if (!validarQuantidadeVolumes()) {
+          alert('A quantidade de volumes informada deve ser igual à quantidade de volumes cadastrados.');
+          return;
+        }
 
-        aguardandoPosImpressao = true;
-        ignorarPrimeiroAfterPrint = true;
+        const faltantes = listarFotosFaltantes();
+        if (faltantes.length) {
+          alert('Ainda faltam fotos obrigatórias:\n\n' + faltantes.join('\n'));
+          return;
+        }
 
-        await esperar(250);
-        window.print();
-      } catch (erro) {
-        console.error(erro);
-        alert('Não foi possível abrir o modo de impressão. Tente novamente no Chrome.');
-        aguardandoPosImpressao = false;
-      } finally {
-        setTimeout(() => {
-          loading.style.display = 'none';
-        }, 700);
-      }
-    }
+        atualizarStatusLoading('Montando as páginas do checklist...');
+        const root = construirPaginasPDF();
 
-    window.addEventListener('afterprint', () => {
-      if (!aguardandoPosImpressao) return;
+        await esperar(200);
+        await aguardarImagensCarregadas(root);
 
-      if (ignorarPrimeiroAfterPrint) {
-        ignorarPrimeiroAfterPrint = false;
+        const paginas = Array.from(root.querySelectorAll('.pdf-page'));
+        if (!paginas.length) {
+          throw new Error('Nenhuma página foi montada.');
+        }
+
+        const configPDF = obterConfiguracaoPDF();
+        const campos = coletarCamposFormulario();
+        const nomeArquivo = `Checklist_${limparNomeArquivo(campos.nf || campos.p || 'sem_numero')}.pdf`;
+
+        atualizarStatusLoading('Convertendo páginas em PDF...');
+        const doc = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4',
+          compress: true
+        });
+
+        for (let i = 0; i < paginas.length; i++) {
+          atualizarStatusLoading(`Gerando página ${i + 1} de ${paginas.length}...`);
+
+          const imagem = await renderizarPaginaParaImagem(
+            paginas[i],
+            configPDF.escalaCanvas,
+            configPDF.qualidadeImagem
+          );
+
+          if (i > 0) doc.addPage('a4', 'portrait');
+          doc.addImage(imagem, 'JPEG', 0, 0, 210, 297, undefined, 'FAST');
+        }
+
+        atualizarStatusLoading('Salvando arquivo PDF...');
+        const blob = doc.output('blob');
+        baixarBlob(blob, nomeArquivo);
+
         setTimeout(() => {
           const desejaNovo = confirm('Deseja fazer um novo check list?');
           if (desejaNovo) {
             limparChecklist(true);
           }
-          aguardandoPosImpressao = false;
-        }, 250);
+        }, 450);
+
+      } catch (erro) {
+        console.error('Erro ao gerar PDF:', erro);
+        alert('Não foi possível gerar o PDF neste aparelho. Tente novamente no Chrome do celular.');
+      } finally {
+        setTimeout(() => {
+          loading.style.display = 'none';
+        }, 600);
       }
-    });
+    }
 
     document.getElementById('qtd-volumes').addEventListener('change', () => {
       const qtd = parseInt(document.getElementById('qtd-volumes').value || '0', 10);
