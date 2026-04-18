@@ -22,11 +22,9 @@
       --verde-100:#EAF5EE;
       --verde-050:#F7FBF8;
       --dourado-500:#C69A2B;
-      --dourado-100:#F6ECD0;
       --grafite:#233129;
       --texto-suave:#6D7C73;
       --borda:#DCE9E0;
-      --branco:#FFFFFF;
       --erro:#C53939;
       --sombra-forte:0 30px 60px rgba(24,75,53,.10);
       --sombra-media:0 18px 32px rgba(24,75,53,.08);
@@ -122,6 +120,7 @@
       display:flex;align-items:flex-start;gap:10px;padding:11px 12px;border-radius:16px;
       background:rgba(255,255,255,.10);font-size:14px;color:rgba(255,255,255,.90);
     }
+
     .hero-guide li span{
       display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;
       border-radius:10px;background:rgba(232,211,155,.22);color:#FFF6DA;
@@ -241,8 +240,13 @@
     }
 
     .box-imagem img{
-      position:absolute;inset:0;width:100%;height:100%;z-index:2;display:none;
-      object-fit:contain;background:linear-gradient(180deg,#FDFEFD 0%,#F1F7F3 100%);
+      position:absolute;inset:0;margin:auto;
+      max-width:100%;max-height:100%;
+      width:auto;height:auto;
+      z-index:2;display:none;
+      object-fit:contain;
+      object-position:center center;
+      background:linear-gradient(180deg,#FDFEFD 0%,#F1F7F3 100%);
     }
 
     .msg-camera{
@@ -359,6 +363,7 @@
       height:42px;border:none;border-radius:14px;cursor:pointer;
       font:700 12px/1 'Montserrat',sans-serif;letter-spacing:.05em;
     }
+
     .pendente-retomar{flex:1;color:#fff;background:linear-gradient(135deg,var(--verde-700),var(--verde-600))}
     .pendente-excluir{
       width:48px;color:var(--erro);background:rgba(197,57,57,.10);
@@ -416,15 +421,13 @@
     .pdf-page{
       width:794px;
       height:1122px;
-      padding:14px;
+      padding:10px;
       overflow:hidden;
       background:#FFFFFF;
       margin:0;
     }
 
-    .pdf-page + .pdf-page{
-      margin-top:0;
-    }
+    .pdf-page + .pdf-page{margin-top:0}
 
     .pdf-sheet{
       width:100%;
@@ -433,30 +436,30 @@
       grid-template-rows:auto 1fr auto;
       min-height:0;
       border:1px solid #DDE8E0;
-      border-radius:20px;
+      border-radius:18px;
       background:#FFFFFF;
-      padding:12px 12px 10px;
+      padding:10px 10px 8px;
       overflow:hidden;
     }
 
     .pdf-topline{
-      display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;
+      display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;
       min-height:0;
     }
 
     .pdf-brandline{
-      display:inline-flex;align-items:center;gap:9px;color:var(--verde-700);
+      display:inline-flex;align-items:center;gap:8px;color:var(--verde-700);
       font:700 8px/1 'Montserrat',sans-serif;letter-spacing:.18em;text-transform:uppercase;
     }
 
     .pdf-brandline::before{
       content:'';
-      width:24px;height:2px;border-radius:999px;
+      width:22px;height:2px;border-radius:999px;
       background:linear-gradient(90deg,var(--verde-700),rgba(58,122,88,.12));
     }
 
     .pdf-pagecount{
-      display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;
+      display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;
       background:#F0F7F2;color:var(--verde-700);
       font:700 8px/1 'Montserrat',sans-serif;letter-spacing:.12em;text-transform:uppercase;
     }
@@ -466,63 +469,63 @@
       overflow:hidden;
       display:flex;
       flex-direction:column;
-      gap:8px;
+      gap:6px;
     }
 
     .pdf-hero{
       display:grid;
-      grid-template-columns:minmax(0,1.35fr) 190px;
-      gap:12px;
-      padding:12px;
-      border-radius:16px;
+      grid-template-columns:minmax(0,1.4fr) 180px;
+      gap:10px;
+      padding:10px;
+      border-radius:14px;
       color:#fff;
       background:linear-gradient(135deg,#3F7A5A,#6EA381);
       flex-shrink:0;
     }
 
     .pdf-hero-kicker{
-      display:inline-flex;align-items:center;gap:8px;margin-bottom:6px;padding:5px 9px;border-radius:999px;
+      display:inline-flex;align-items:center;gap:8px;margin-bottom:5px;padding:5px 8px;border-radius:999px;
       background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.14);
-      font:700 8px/1 'Montserrat',sans-serif;letter-spacing:.16em;text-transform:uppercase;
+      font:700 7px/1 'Montserrat',sans-serif;letter-spacing:.16em;text-transform:uppercase;
     }
 
     .pdf-hero h1{
-      max-width:360px;margin-bottom:6px;font:800 20px/1.02 'Montserrat',sans-serif;
+      max-width:360px;margin-bottom:5px;font:800 18px/1.02 'Montserrat',sans-serif;
     }
 
     .pdf-hero p{
-      max-width:360px;font-size:11px;line-height:1.35;color:rgba(255,255,255,.92);
+      max-width:360px;font-size:10px;line-height:1.3;color:rgba(255,255,255,.92);
     }
 
-    .pdf-hero-side{display:grid;gap:6px;align-content:start}
+    .pdf-hero-side{display:grid;gap:5px;align-content:start}
 
     .pdf-highlight{
-      padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14);
+      padding:7px 9px;border-radius:11px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.14);
     }
 
     .pdf-highlight span{
-      display:block;margin-bottom:4px;color:rgba(255,255,255,.82);
+      display:block;margin-bottom:3px;color:rgba(255,255,255,.82);
       font:700 7px/1 'Montserrat',sans-serif;letter-spacing:.14em;text-transform:uppercase;
     }
 
     .pdf-highlight strong{
-      display:block;font:700 12px/1.16 'Montserrat',sans-serif;
+      display:block;font:700 11px/1.15 'Montserrat',sans-serif;
     }
 
     .pdf-section{
-      padding:10px;
-      border-radius:14px;
+      padding:8px;
+      border-radius:13px;
       border:1px solid #E2ECE5;
       background:#FCFEFC;
       flex-shrink:0;
     }
 
     .pdf-section-head{
-      display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:7px;
+      display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:6px;
     }
 
     .pdf-section-head span{
-      display:inline-flex;align-items:center;gap:7px;margin-bottom:4px;color:var(--verde-700);
+      display:inline-flex;align-items:center;gap:7px;margin-bottom:3px;color:var(--verde-700);
       font:700 7px/1 'Montserrat',sans-serif;letter-spacing:.16em;text-transform:uppercase;
     }
 
@@ -533,103 +536,132 @@
     }
 
     .pdf-section-head h2{
-      color:var(--verde-900);font:800 15px/1.04 'Montserrat',sans-serif;
+      color:var(--verde-900);font:800 14px/1.04 'Montserrat',sans-serif;
     }
 
     .pdf-section-head p{
-      color:var(--texto-suave);font-size:10px;line-height:1.25;max-width:210px;text-align:right;
+      color:var(--texto-suave);font-size:9px;line-height:1.2;max-width:190px;text-align:right;
     }
 
     .pdf-meta-grid{
-      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;
+      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;
     }
 
     .pdf-meta-card{
-      min-height:52px;
-      padding:8px 10px;
-      border-radius:12px;
+      min-height:46px;
+      padding:7px 9px;
+      border-radius:11px;
       border:1px solid #E5EEE8;
       background:#FFFFFF;
     }
 
     .pdf-meta-card.is-wide{
       grid-column:1 / -1;
-      min-height:56px;
+      min-height:50px;
     }
 
     .pdf-meta-card span{
-      display:block;margin-bottom:5px;color:var(--texto-suave);
+      display:block;margin-bottom:4px;color:var(--texto-suave);
       font:700 7px/1 'Montserrat',sans-serif;letter-spacing:.14em;text-transform:uppercase;
     }
 
     .pdf-meta-card strong{
-      display:block;color:var(--grafite);font:700 13px/1.12 'Montserrat',sans-serif;
+      display:block;color:var(--grafite);font:700 12px/1.1 'Montserrat',sans-serif;
     }
 
     .pdf-meta-card p{
-      color:var(--grafite);font-size:12px;line-height:1.20;font-weight:600;
+      color:var(--grafite);font-size:11px;line-height:1.15;font-weight:600;
     }
 
-    .pdf-truck-grid{
-      display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;
+    /* PADRÃO ÚNICO PARA TODAS AS FOTOS DO PDF */
+    .pdf-photo-stack{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:8px;
     }
 
     .pdf-photo-card{
-      padding:8px;border-radius:12px;border:1px solid #E5EEE8;background:#FFFFFF;
-    }
-
-    .pdf-photo-card span{
-      display:block;margin-bottom:6px;text-align:center;color:var(--texto-suave);
-      font:700 7px/1 'Montserrat',sans-serif;letter-spacing:.11em;text-transform:uppercase;
-    }
-
-    .pdf-photo-frame{
-      overflow:hidden;display:flex;align-items:center;justify-content:center;height:118px;border-radius:10px;
-      background:#F7FBF8;border:1px solid #E6EFE8;
-    }
-
-    .pdf-photo-frame img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
+      padding:7px;
+      border-radius:12px;
+      border:1px solid #E5EEE8;
       background:#FFFFFF;
     }
 
+    .pdf-photo-card span{
+      display:block;
+      margin-bottom:5px;
+      text-align:center;
+      color:var(--texto-suave);
+      font:700 7px/1 'Montserrat',sans-serif;
+      letter-spacing:.11em;
+      text-transform:uppercase;
+    }
+
+    .pdf-photo-frame{
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:140px;
+      border-radius:10px;
+      background:#F7FBF8;
+      border:1px solid #E6EFE8;
+      padding:10px;
+    }
+
+    .pdf-photo-frame img{
+      display:block;
+      max-width:100%;
+      max-height:100%;
+      width:auto;
+      height:auto;
+      object-fit:contain;
+      object-position:center center;
+      background:#FFFFFF;
+      image-rendering:auto;
+    }
+
+    /* VEÍCULO COM O MESMO PADRÃO DOS VOLUMES, MAS UM POUCO MAIOR */
+    .pdf-truck-stack .pdf-photo-frame{
+      height:150px;
+      padding:12px;
+    }
+
     .pdf-page-header{
-      display:flex;align-items:flex-start;justify-content:space-between;gap:14px;
-      margin-bottom:8px;padding:4px 2px 8px;border-bottom:1px solid #E0EAE3;
+      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
+      margin-bottom:6px;padding:2px 2px 6px;border-bottom:1px solid #E0EAE3;
       flex-shrink:0;
     }
 
     .pdf-page-header h2{
-      margin-bottom:4px;color:var(--verde-900);font:800 18px/1.02 'Montserrat',sans-serif;
+      margin-bottom:3px;color:var(--verde-900);font:800 17px/1.02 'Montserrat',sans-serif;
     }
 
     .pdf-page-header p{
-      color:var(--texto-suave);font-size:10px;line-height:1.25;max-width:300px;
+      color:var(--texto-suave);font-size:9px;line-height:1.2;max-width:280px;
     }
 
     .pdf-page-tags{
-      display:grid;gap:6px;min-width:150px;
+      display:grid;gap:5px;min-width:140px;
     }
 
     .pdf-tag{
-      display:inline-flex;align-items:center;justify-content:center;min-height:26px;padding:0 10px;border-radius:999px;
+      display:inline-flex;align-items:center;justify-content:center;min-height:24px;padding:0 10px;border-radius:999px;
       background:#F0F7F2;color:var(--verde-700);
-      font:700 8px/1 'Montserrat',sans-serif;letter-spacing:.10em;text-transform:uppercase;
+      font:700 7px/1 'Montserrat',sans-serif;letter-spacing:.10em;text-transform:uppercase;
     }
 
     .pdf-volumes-list{
       display:grid;
-      gap:8px;
+      gap:6px;
       align-content:start;
       min-height:0;
       overflow:hidden;
     }
 
     .pdf-volume-card{
-      padding:10px;
-      border-radius:14px;
+      padding:8px;
+      border-radius:13px;
       border:1px solid #E2ECE5;
       background:#FCFEFC;
       break-inside:avoid;
@@ -637,49 +669,40 @@
     }
 
     .pdf-volume-top{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;
+      display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;
     }
 
     .pdf-volume-top h3{
-      color:var(--verde-900);font:800 15px/1.03 'Montserrat',sans-serif;
+      color:var(--verde-900);font:800 14px/1.03 'Montserrat',sans-serif;
     }
 
     .pdf-volume-top p{
-      margin-top:3px;color:var(--texto-suave);font-size:10px;
+      margin-top:2px;color:var(--texto-suave);font-size:9px;
     }
 
     .pdf-volume-badge{
-      display:inline-flex;align-items:center;justify-content:center;min-height:26px;padding:0 10px;border-radius:999px;
+      display:inline-flex;align-items:center;justify-content:center;min-height:24px;padding:0 10px;border-radius:999px;
       background:#F0F7F2;
-      color:var(--verde-700);font:700 8px/1 'Montserrat',sans-serif;letter-spacing:.12em;text-transform:uppercase;
+      color:var(--verde-700);font:700 7px/1 'Montserrat',sans-serif;letter-spacing:.12em;text-transform:uppercase;
     }
 
     .pdf-volume-photos{
-      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:8px;
     }
-
-    .pdf-volume-panel{
-      padding:8px;border-radius:12px;border:1px solid #E5EEE8;background:#FFFFFF;
-    }
-
-    .pdf-volume-panel span{
-      display:block;margin-bottom:6px;color:var(--texto-suave);text-align:center;
-      font:700 7px/1 'Montserrat',sans-serif;letter-spacing:.12em;text-transform:uppercase;
-    }
-
-    .pdf-volume-panel .pdf-photo-frame{height:118px}
 
     .pdf-footer{
-      margin-top:6px;
-      padding-top:7px;
+      margin-top:5px;
+      padding-top:6px;
       border-top:1px solid #E0EAE3;
       display:flex;align-items:center;justify-content:space-between;
-      gap:12px;color:var(--texto-suave);font-size:9px;
+      gap:12px;color:var(--texto-suave);font-size:8px;
       min-height:0;
     }
 
     .pdf-footer strong{
-      color:var(--verde-700);font:700 9px/1 'Montserrat',sans-serif;letter-spacing:.10em;text-transform:uppercase;
+      color:var(--verde-700);font:700 8px/1 'Montserrat',sans-serif;letter-spacing:.10em;text-transform:uppercase;
     }
 
     @media (max-width: 860px){
@@ -717,15 +740,15 @@
       <div class="hero-main">
         <div class="hero-copy">
           <h1>Checklist operacional com evidência visual e PDF institucional.</h1>
-          <p>Preencha os dados da operação, registre as fotos obrigatórias e gere um documento com paginação fixa: capa operacional na primeira página e volumes organizados em duplas nas páginas seguintes.</p>
+          <p>Preencha os dados da operação, registre as fotos obrigatórias e gere um documento com paginação fixa: capa operacional na primeira página e 2 volumes por folha nas páginas internas.</p>
         </div>
 
         <div class="hero-guide">
           <strong>Estrutura do PDF</strong>
           <ul>
             <li><span>01</span> Página 1 com informações gerais e fotos do veículo.</li>
-            <li><span>02</span> Página 2 com Volume 1 e Volume 2.</li>
-            <li><span>03</span> Páginas seguintes sempre com 2 volumes por folha.</li>
+            <li><span>02</span> Páginas internas com 2 volumes por folha.</li>
+            <li><span>03</span> Todas as fotos seguem o mesmo padrão visual.</li>
           </ul>
         </div>
       </div>
@@ -779,7 +802,10 @@
             <div class="input-shell">
               <select id="tipo-carga" onchange="mudarTipoCarga()" required>
                 <option value="">Selecione o formato...</option>
-                <option value="Tambor / Container">Tambor / Container</option>
+                <option value="Tambor">Tambor</option>
+                <option value="Container">Container</option>
+                <option value="Tambor do Cliente">Tambor do Cliente</option>
+                <option value="Container do Cliente">Container do Cliente</option>
                 <option value="Bag in Box">Bag in Box</option>
               </select>
             </div>
@@ -802,7 +828,7 @@
           <div class="volume-title-wrap">
             <span>Etapa 1</span>
             <h4>Fotos do veículo</h4>
-            <p>Essas imagens ocupam a primeira página do PDF, logo após os dados da operação.</p>
+            <p>Essas imagens ocupam a primeira página do PDF.</p>
           </div>
         </div>
 
@@ -828,7 +854,7 @@
           <div class="foto-col">
             <label>Placa</label>
             <div class="box-imagem">
-              <span class="msg-camera"><strong>Registrar foto</strong><small>Garanta a identificação visual da placa do veículo.</small></span>
+              <span class="msg-camera"><strong>Registrar foto</strong><small>Garanta a identificação visual completa da placa.</small></span>
               <input type="file" accept="image/*" capture="environment" onchange="preview(this)">
               <img alt="Foto da placa do veículo">
             </div>
@@ -841,7 +867,7 @@
           <div>
             <div class="panel-kicker">Etapa 2</div>
             <h3>Volumes conferidos</h3>
-            <p>No PDF, os volumes são organizados em pares por página: 1 e 2, depois 3 e 4, e assim por diante.</p>
+            <p>No PDF, os volumes saem em duplas por página, com fotos em sequência vertical.</p>
           </div>
         </div>
 
@@ -948,17 +974,16 @@
     function obterConfiguracaoFotos() {
       const ambiente = detectarAmbientePDF();
       return {
-        larguraMaximaFoto: ambiente.mobile ? 2200 : 2600,
-        alturaMaximaFoto: ambiente.mobile ? 2200 : 2600,
-        qualidadeFoto: ambiente.mobile ? 0.92 : 0.96
+        larguraMaximaFoto: ambiente.mobile ? 3600 : 4200,
+        alturaMaximaFoto: ambiente.mobile ? 3600 : 4200,
+        qualidadeFoto: ambiente.mobile ? 0.985 : 0.995
       };
     }
 
     function obterConfiguracaoPDF() {
       const ambiente = detectarAmbientePDF();
       return {
-        escalaCanvas: ambiente.mobile ? 1.9 : 2.4,
-        qualidadeImagem: ambiente.mobile ? 0.94 : 0.98
+        escalaCanvas: ambiente.mobile ? 3.0 : 3.8
       };
     }
 
@@ -1064,7 +1089,6 @@
             canvas.height = Math.max(1, Math.round(img.height * escala));
 
             const ctx = canvas.getContext('2d', { alpha: false });
-
             ctx.imageSmoothingEnabled = true;
             ctx.imageSmoothingQuality = 'high';
 
@@ -1463,9 +1487,9 @@
       `;
     }
 
-    function montarFotoPDF(label, src) {
+    function montarFotoPDF(label, src, extraClass = '') {
       return `
-        <div class="pdf-photo-card">
+        <div class="pdf-photo-card ${extraClass}">
           <span>${escaparHTML(label)}</span>
           <div class="pdf-photo-frame">
             ${src ? `<img src="${src}" alt="${escaparHTML(label)}">` : ''}
@@ -1487,20 +1511,9 @@
             <div class="pdf-volume-badge">Volume ${volume.numero}</div>
           </div>
 
-          <div class="pdf-volume-photos">
-            <div class="pdf-volume-panel">
-              <span>Foto etiqueta</span>
-              <div class="pdf-photo-frame">
-                ${volume.fotos?.[0] ? `<img src="${volume.fotos[0]}" alt="Foto etiqueta volume ${volume.numero}">` : ''}
-              </div>
-            </div>
-
-            <div class="pdf-volume-panel">
-              <span>${escaparHTML(labelSecundario)}</span>
-              <div class="pdf-photo-frame">
-                ${volume.fotos?.[1] ? `<img src="${volume.fotos[1]}" alt="Foto complementar volume ${volume.numero}">` : ''}
-              </div>
-            </div>
+          <div class="pdf-volume-photos pdf-photo-stack">
+            ${montarFotoPDF('Foto etiqueta', volume.fotos?.[0] || '')}
+            ${montarFotoPDF(labelSecundario, volume.fotos?.[1] || '')}
           </div>
         </article>
       `;
@@ -1570,13 +1583,13 @@
                     <span>Registro fotográfico</span>
                     <h2>Fotos do veículo</h2>
                   </div>
-                  <p>Essas imagens identificam o veículo e registram o momento do carregamento.</p>
+                  <p>As fotos do veículo seguem o mesmo padrão visual das fotos dos volumes.</p>
                 </div>
 
-                <div class="pdf-truck-grid">
-                  ${montarFotoPDF('Lateral do caminhão carregado', caminhao[0] || '')}
-                  ${montarFotoPDF('Carregamento', caminhao[1] || '')}
-                  ${montarFotoPDF('Placa', caminhao[2] || '')}
+                <div class="pdf-photo-stack pdf-truck-stack">
+                  ${montarFotoPDF('Lateral do caminhão carregado', caminhao[0] || '', 'pdf-truck-card')}
+                  ${montarFotoPDF('Carregamento', caminhao[1] || '', 'pdf-truck-card')}
+                  ${montarFotoPDF('Placa', caminhao[2] || '', 'pdf-truck-card')}
                 </div>
               </section>
             </div>
@@ -1605,7 +1618,7 @@
                 <div class="pdf-page-header">
                   <div>
                     <h2>Volumes conferidos</h2>
-                    <p>Volumes organizados em pares por página para facilitar visualização e conferência operacional.</p>
+                    <p>Volumes organizados em pares por página, com fotos em sequência vertical para melhor leitura.</p>
                   </div>
                   <div class="pdf-page-tags">
                     <div class="pdf-tag">${escaparHTML(campos.tp || '-')}</div>
@@ -1667,7 +1680,7 @@
       }
     }
 
-    async function renderizarPaginaParaImagem(pagina, escalaCanvas, qualidadeImagem) {
+    async function renderizarPaginaParaImagem(pagina, escalaCanvas) {
       const canvas = await html2canvas(pagina, {
         scale: escalaCanvas,
         useCORS: true,
@@ -1688,7 +1701,7 @@
         ctx.imageSmoothingQuality = 'high';
       }
 
-      return canvas.toDataURL('image/jpeg', qualidadeImagem);
+      return canvas.toDataURL('image/png');
     }
 
     function baixarBlob(blob, nomeArquivo) {
@@ -1726,7 +1739,7 @@
         atualizarStatusLoading('Montando as páginas do checklist...');
         const root = construirPaginasPDF();
 
-        await esperar(250);
+        await esperar(350);
         await aguardarImagensCarregadas(root);
 
         const paginas = Array.from(root.querySelectorAll('.pdf-page'));
@@ -1743,7 +1756,7 @@
           orientation: 'portrait',
           unit: 'mm',
           format: 'a4',
-          compress: true
+          compress: false
         });
 
         for (let i = 0; i < paginas.length; i++) {
@@ -1751,12 +1764,11 @@
 
           const imagem = await renderizarPaginaParaImagem(
             paginas[i],
-            configPDF.escalaCanvas,
-            configPDF.qualidadeImagem
+            configPDF.escalaCanvas
           );
 
           if (i > 0) doc.addPage('a4', 'portrait');
-          doc.addImage(imagem, 'JPEG', 0, 0, 210, 297, undefined, 'MEDIUM');
+          doc.addImage(imagem, 'PNG', 0, 0, 210, 297);
         }
 
         atualizarStatusLoading('Salvando arquivo PDF...');
@@ -1776,7 +1788,7 @@
       } finally {
         setTimeout(() => {
           loading.style.display = 'none';
-        }, 600);
+        }, 700);
       }
     }
 
