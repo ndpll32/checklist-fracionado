@@ -421,7 +421,7 @@
     .pdf-page{
       width:794px;
       height:1122px;
-      padding:8px;
+      padding:10px;
       overflow:hidden;
       background:#FFFFFF;
       margin:0;
@@ -494,7 +494,7 @@
     }
 
     .pdf-hero p{
-      max-width:360px;font-size:9px;line-height:1.28;color:rgba(255,255,255,.92);
+      max-width:360px;font-size:9px;line-height:1.25;color:rgba(255,255,255,.92);
     }
 
     .pdf-hero-side{display:grid;gap:5px;align-content:start}
@@ -540,7 +540,7 @@
     }
 
     .pdf-section-head p{
-      color:var(--texto-suave);font-size:8px;line-height:1.15;max-width:180px;text-align:right;
+      color:var(--texto-suave);font-size:8px;line-height:1.12;max-width:180px;text-align:right;
     }
 
     .pdf-meta-grid{
@@ -548,7 +548,7 @@
     }
 
     .pdf-meta-card{
-      min-height:42px;
+      min-height:40px;
       padding:6px 8px;
       border-radius:11px;
       border:1px solid #E5EEE8;
@@ -557,7 +557,7 @@
 
     .pdf-meta-card.is-wide{
       grid-column:1 / -1;
-      min-height:46px;
+      min-height:44px;
     }
 
     .pdf-meta-card span{
@@ -570,7 +570,7 @@
     }
 
     .pdf-meta-card p{
-      color:var(--grafite);font-size:10px;line-height:1.12;font-weight:600;
+      color:var(--grafite);font-size:10px;line-height:1.1;font-weight:600;
     }
 
     .pdf-photo-stack{
@@ -580,7 +580,7 @@
     }
 
     .pdf-photo-card{
-      padding:5px;
+      padding:6px;
       border-radius:12px;
       border:1px solid #E5EEE8;
       background:#FFFFFF;
@@ -596,30 +596,24 @@
       text-transform:uppercase;
     }
 
-    /* A BOX AGORA SEGUE MELHOR A FOTO */
     .pdf-photo-frame{
-      --foto-ar: 1.33;
-      --foto-max-h: 215px;
       overflow:hidden;
       display:flex;
       align-items:center;
       justify-content:center;
-      width:100%;
-      aspect-ratio: var(--foto-ar);
-      max-height:var(--foto-max-h);
-      min-height:110px;
+      height:112px;
       border-radius:10px;
       background:#F7FBF8;
       border:1px solid #E6EFE8;
-      padding:4px;
+      padding:6px;
     }
 
     .pdf-photo-frame img{
       display:block;
-      width:100%;
-      height:100%;
-      max-width:100%;
-      max-height:100%;
+      max-width:100% !important;
+      max-height:100% !important;
+      width:auto !important;
+      height:auto !important;
       object-fit:contain !important;
       object-position:center center !important;
       background:#FFFFFF;
@@ -627,15 +621,7 @@
     }
 
     .pdf-truck-stack .pdf-photo-frame{
-      --foto-max-h: 230px;
-      min-height:126px;
-      padding:4px;
-    }
-
-    .pdf-volume-card .pdf-photo-frame{
-      --foto-max-h: 220px;
-      min-height:122px;
-      padding:4px;
+      height:118px;
     }
 
     .pdf-page-header{
@@ -645,11 +631,11 @@
     }
 
     .pdf-page-header h2{
-      margin-bottom:2px;color:var(--verde-900);font:800 16px/1.02 'Montserrat',sans-serif;
+      margin-bottom:2px;color:var(--verde-900);font:800 15px/1.02 'Montserrat',sans-serif;
     }
 
     .pdf-page-header p{
-      color:var(--texto-suave);font-size:8px;line-height:1.15;max-width:260px;
+      color:var(--texto-suave);font-size:8px;line-height:1.12;max-width:260px;
     }
 
     .pdf-page-tags{
@@ -701,6 +687,10 @@
       display:grid;
       grid-template-columns:1fr;
       gap:6px;
+    }
+
+    .pdf-volume-card .pdf-photo-frame{
+      height:112px;
     }
 
     .pdf-footer{
@@ -759,7 +749,7 @@
           <ul>
             <li><span>01</span> Página 1 com informações gerais e fotos do veículo.</li>
             <li><span>02</span> Páginas internas com 2 volumes por folha.</li>
-            <li><span>03</span> A moldura da foto acompanha melhor a proporção da imagem.</li>
+            <li><span>03</span> Fotos ajustadas para não cortar nem esticar.</li>
           </ul>
         </div>
       </div>
@@ -985,16 +975,16 @@
     function obterConfiguracaoFotos() {
       const ambiente = detectarAmbientePDF();
       return {
-        larguraMaximaFoto: ambiente.mobile ? 4200 : 5000,
-        alturaMaximaFoto: ambiente.mobile ? 4200 : 5000,
-        qualidadeFoto: ambiente.mobile ? 0.992 : 0.997
+        larguraMaximaFoto: ambiente.mobile ? 3200 : 3800,
+        alturaMaximaFoto: ambiente.mobile ? 3200 : 3800,
+        qualidadeFoto: ambiente.mobile ? 0.96 : 0.98
       };
     }
 
     function obterConfiguracaoPDF() {
       const ambiente = detectarAmbientePDF();
       return {
-        escalaCanvas: ambiente.mobile ? 3.2 : 4.0
+        escalaCanvas: ambiente.mobile ? 2.4 : 3.0
       };
     }
 
@@ -1489,67 +1479,6 @@
       };
     }
 
-    async function obterDimensoesImagem(src) {
-      if (!src) {
-        return { largura: 4, altura: 3, razao: (4/3).toFixed(4) };
-      }
-
-      return new Promise((resolve) => {
-        const img = new Image();
-
-        img.onload = () => {
-          const largura = img.naturalWidth || 4;
-          const altura = img.naturalHeight || 3;
-          const razao = largura / altura;
-
-          resolve({
-            largura,
-            altura,
-            razao: Number(Math.max(0.45, Math.min(2.4, razao))).toFixed(4)
-          });
-        };
-
-        img.onerror = () => {
-          resolve({ largura: 4, altura: 3, razao: (4/3).toFixed(4) });
-        };
-
-        img.src = src;
-      });
-    }
-
-    async function enriquecerFotosComMetadados(lista = []) {
-      const resultado = [];
-      for (const src of lista) {
-        const meta = await obterDimensoesImagem(src || '');
-        resultado.push({
-          src: src || '',
-          razao: meta.razao
-        });
-      }
-      return resultado;
-    }
-
-    async function obterDadosPDFPreparados() {
-      const dados = obterDadosPDF();
-
-      const caminhao = await enriquecerFotosComMetadados(dados.caminhao || []);
-
-      const volumes = [];
-      for (const volume of dados.volumes || []) {
-        const fotos = await enriquecerFotosComMetadados(volume.fotos || []);
-        volumes.push({
-          numero: volume.numero,
-          fotos
-        });
-      }
-
-      return {
-        ...dados,
-        caminhao,
-        volumes
-      };
-    }
-
     function montarMetaCard(titulo, valor, larga = false) {
       return `
         <div class="pdf-meta-card ${larga ? 'is-wide' : ''}">
@@ -1559,14 +1488,11 @@
       `;
     }
 
-    function montarFotoPDF(label, foto = {}, extraClass = '') {
-      const src = foto?.src || '';
-      const razao = foto?.razao || (4/3).toFixed(4);
-
+    function montarFotoPDF(label, src = '') {
       return `
-        <div class="pdf-photo-card ${extraClass}">
+        <div class="pdf-photo-card">
           <span>${escaparHTML(label)}</span>
-          <div class="pdf-photo-frame" style="--foto-ar:${razao};">
+          <div class="pdf-photo-frame">
             ${src ? `<img src="${src}" alt="${escaparHTML(label)}">` : ''}
           </div>
         </div>
@@ -1587,15 +1513,15 @@
           </div>
 
           <div class="pdf-volume-photos pdf-photo-stack">
-            ${montarFotoPDF('Foto etiqueta', volume.fotos?.[0] || {})}
-            ${montarFotoPDF(labelSecundario, volume.fotos?.[1] || {})}
+            ${montarFotoPDF('Foto etiqueta', volume.fotos?.[0] || '')}
+            ${montarFotoPDF(labelSecundario, volume.fotos?.[1] || '')}
           </div>
         </article>
       `;
     }
 
-    async function construirPaginasPDF() {
-      const { campos, caminhao, volumes, geradoEm } = await obterDadosPDFPreparados();
+    function construirPaginasPDF() {
+      const { campos, caminhao, volumes, geradoEm } = obterDadosPDF();
       const root = document.getElementById('pdf-render-root');
       const paginas = [];
       const totalPaginas = 1 + Math.ceil(volumes.length / 2);
@@ -1658,13 +1584,13 @@
                     <span>Registro fotográfico</span>
                     <h2>Fotos do veículo</h2>
                   </div>
-                  <p>Agora a moldura acompanha melhor a proporção da foto e evita corte.</p>
+                  <p>Fotos ajustadas para não cortar e não esticar.</p>
                 </div>
 
                 <div class="pdf-photo-stack pdf-truck-stack">
-                  ${montarFotoPDF('Lateral do caminhão carregado', caminhao[0] || {}, 'pdf-truck-card')}
-                  ${montarFotoPDF('Carregamento', caminhao[1] || {}, 'pdf-truck-card')}
-                  ${montarFotoPDF('Placa', caminhao[2] || {}, 'pdf-truck-card')}
+                  ${montarFotoPDF('Lateral do caminhão carregado', caminhao[0] || '')}
+                  ${montarFotoPDF('Carregamento', caminhao[1] || '')}
+                  ${montarFotoPDF('Placa', caminhao[2] || '')}
                 </div>
               </section>
             </div>
@@ -1812,9 +1738,9 @@
         }
 
         atualizarStatusLoading('Montando as páginas do checklist...');
-        const root = await construirPaginasPDF();
+        const root = construirPaginasPDF();
 
-        await esperar(350);
+        await esperar(250);
         await aguardarImagensCarregadas(root);
 
         const paginas = Array.from(root.querySelectorAll('.pdf-page'));
@@ -1863,7 +1789,7 @@
       } finally {
         setTimeout(() => {
           loading.style.display = 'none';
-        }, 700);
+        }, 600);
       }
     }
 
