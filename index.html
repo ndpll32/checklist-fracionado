@@ -580,7 +580,7 @@
     }
 
     .pdf-photo-card{
-      padding:6px;
+      padding:5px;
       border-radius:12px;
       border:1px solid #E5EEE8;
       background:#FFFFFF;
@@ -596,34 +596,46 @@
       text-transform:uppercase;
     }
 
+    /* A BOX AGORA SEGUE MELHOR A FOTO */
     .pdf-photo-frame{
+      --foto-ar: 1.33;
+      --foto-max-h: 215px;
       overflow:hidden;
       display:flex;
       align-items:center;
       justify-content:center;
-      height:190px;
+      width:100%;
+      aspect-ratio: var(--foto-ar);
+      max-height:var(--foto-max-h);
+      min-height:110px;
       border-radius:10px;
       background:#F7FBF8;
       border:1px solid #E6EFE8;
-      padding:8px;
+      padding:4px;
     }
 
     .pdf-photo-frame img{
       display:block;
+      width:100%;
+      height:100%;
       max-width:100%;
       max-height:100%;
-      width:auto;
-      height:auto;
-      object-fit:contain;
-      object-position:center center;
+      object-fit:contain !important;
+      object-position:center center !important;
       background:#FFFFFF;
       image-rendering:auto;
     }
 
-    /* FOTOS DO VEÍCULO AINDA MAIORES */
     .pdf-truck-stack .pdf-photo-frame{
-      height:205px;
-      padding:10px;
+      --foto-max-h: 230px;
+      min-height:126px;
+      padding:4px;
+    }
+
+    .pdf-volume-card .pdf-photo-frame{
+      --foto-max-h: 220px;
+      min-height:122px;
+      padding:4px;
     }
 
     .pdf-page-header{
@@ -659,7 +671,7 @@
     }
 
     .pdf-volume-card{
-      padding:7px;
+      padding:6px;
       border-radius:13px;
       border:1px solid #E2ECE5;
       background:#FCFEFC;
@@ -689,12 +701,6 @@
       display:grid;
       grid-template-columns:1fr;
       gap:6px;
-    }
-
-    /* FOTOS DOS VOLUMES MAIORES */
-    .pdf-volume-card .pdf-photo-frame{
-      height:205px;
-      padding:10px;
     }
 
     .pdf-footer{
@@ -753,7 +759,7 @@
           <ul>
             <li><span>01</span> Página 1 com informações gerais e fotos do veículo.</li>
             <li><span>02</span> Páginas internas com 2 volumes por folha.</li>
-            <li><span>03</span> Fotos maiores para melhor leitura no mobile.</li>
+            <li><span>03</span> A moldura da foto acompanha melhor a proporção da imagem.</li>
           </ul>
         </div>
       </div>
@@ -1483,6 +1489,67 @@
       };
     }
 
+    async function obterDimensoesImagem(src) {
+      if (!src) {
+        return { largura: 4, altura: 3, razao: (4/3).toFixed(4) };
+      }
+
+      return new Promise((resolve) => {
+        const img = new Image();
+
+        img.onload = () => {
+          const largura = img.naturalWidth || 4;
+          const altura = img.naturalHeight || 3;
+          const razao = largura / altura;
+
+          resolve({
+            largura,
+            altura,
+            razao: Number(Math.max(0.45, Math.min(2.4, razao))).toFixed(4)
+          });
+        };
+
+        img.onerror = () => {
+          resolve({ largura: 4, altura: 3, razao: (4/3).toFixed(4) });
+        };
+
+        img.src = src;
+      });
+    }
+
+    async function enriquecerFotosComMetadados(lista = []) {
+      const resultado = [];
+      for (const src of lista) {
+        const meta = await obterDimensoesImagem(src || '');
+        resultado.push({
+          src: src || '',
+          razao: meta.razao
+        });
+      }
+      return resultado;
+    }
+
+    async function obterDadosPDFPreparados() {
+      const dados = obterDadosPDF();
+
+      const caminhao = await enriquecerFotosComMetadados(dados.caminhao || []);
+
+      const volumes = [];
+      for (const volume of dados.volumes || []) {
+        const fotos = await enriquecerFotosComMetadados(volume.fotos || []);
+        volumes.push({
+          numero: volume.numero,
+          fotos
+        });
+      }
+
+      return {
+        ...dados,
+        caminhao,
+        volumes
+      };
+    }
+
     function montarMetaCard(titulo, valor, larga = false) {
       return `
         <div class="pdf-meta-card ${larga ? 'is-wide' : ''}">
@@ -1492,11 +1559,14 @@
       `;
     }
 
-    function montarFotoPDF(label, src, extraClass = '') {
+    function montarFotoPDF(label, foto = {}, extraClass = '') {
+      const src = foto?.src || '';
+      const razao = foto?.razao || (4/3).toFixed(4);
+
       return `
         <div class="pdf-photo-card ${extraClass}">
           <span>${escaparHTML(label)}</span>
-          <div class="pdf-photo-frame">
+          <div class="pdf-photo-frame" style="--foto-ar:${razao};">
             ${src ? `<img src="${src}" alt="${escaparHTML(label)}">` : ''}
           </div>
         </div>
@@ -1517,15 +1587,15 @@
           </div>
 
           <div class="pdf-volume-photos pdf-photo-stack">
-            ${montarFotoPDF('Foto etiqueta', volume.fotos?.[0] || '')}
-            ${montarFotoPDF(labelSecundario, volume.fotos?.[1] || '')}
+            ${montarFotoPDF('Foto etiqueta', volume.fotos?.[0] || {})}
+            ${montarFotoPDF(labelSecundario, volume.fotos?.[1] || {})}
           </div>
         </article>
       `;
     }
 
-    function construirPaginasPDF() {
-      const { campos, caminhao, volumes, geradoEm } = obterDadosPDF();
+    async function construirPaginasPDF() {
+      const { campos, caminhao, volumes, geradoEm } = await obterDadosPDFPreparados();
       const root = document.getElementById('pdf-render-root');
       const paginas = [];
       const totalPaginas = 1 + Math.ceil(volumes.length / 2);
@@ -1588,13 +1658,13 @@
                     <span>Registro fotográfico</span>
                     <h2>Fotos do veículo</h2>
                   </div>
-                  <p>Fotos maiores para melhorar a leitura no PDF.</p>
+                  <p>Agora a moldura acompanha melhor a proporção da foto e evita corte.</p>
                 </div>
 
                 <div class="pdf-photo-stack pdf-truck-stack">
-                  ${montarFotoPDF('Lateral do caminhão carregado', caminhao[0] || '', 'pdf-truck-card')}
-                  ${montarFotoPDF('Carregamento', caminhao[1] || '', 'pdf-truck-card')}
-                  ${montarFotoPDF('Placa', caminhao[2] || '', 'pdf-truck-card')}
+                  ${montarFotoPDF('Lateral do caminhão carregado', caminhao[0] || {}, 'pdf-truck-card')}
+                  ${montarFotoPDF('Carregamento', caminhao[1] || {}, 'pdf-truck-card')}
+                  ${montarFotoPDF('Placa', caminhao[2] || {}, 'pdf-truck-card')}
                 </div>
               </section>
             </div>
@@ -1623,7 +1693,7 @@
                 <div class="pdf-page-header">
                   <div>
                     <h2>Volumes conferidos</h2>
-                    <p>Volumes organizados em pares por página, com fotos maiores em sequência vertical.</p>
+                    <p>Volumes organizados em pares por página, com prioridade total para as fotos.</p>
                   </div>
                   <div class="pdf-page-tags">
                     <div class="pdf-tag">${escaparHTML(campos.tp || '-')}</div>
@@ -1742,7 +1812,7 @@
         }
 
         atualizarStatusLoading('Montando as páginas do checklist...');
-        const root = construirPaginasPDF();
+        const root = await construirPaginasPDF();
 
         await esperar(350);
         await aguardarImagensCarregadas(root);
