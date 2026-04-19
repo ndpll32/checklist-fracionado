@@ -601,7 +601,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      height:112px;
+      height:124px;
       border-radius:10px;
       background:#F7FBF8;
       border:1px solid #E6EFE8;
@@ -621,7 +621,7 @@
     }
 
     .pdf-truck-stack .pdf-photo-frame{
-      height:118px;
+      height:132px;
     }
 
     .pdf-page-header{
@@ -690,7 +690,7 @@
     }
 
     .pdf-volume-card .pdf-photo-frame{
-      height:112px;
+      height:126px;
     }
 
     .pdf-footer{
@@ -749,7 +749,7 @@
           <ul>
             <li><span>01</span> Página 1 com informações gerais e fotos do veículo.</li>
             <li><span>02</span> Páginas internas com 2 volumes por folha.</li>
-            <li><span>03</span> Fotos ajustadas para não cortar nem esticar.</li>
+            <li><span>03</span> Fotos maiores e com mais nitidez no zoom.</li>
           </ul>
         </div>
       </div>
@@ -975,16 +975,16 @@
     function obterConfiguracaoFotos() {
       const ambiente = detectarAmbientePDF();
       return {
-        larguraMaximaFoto: ambiente.mobile ? 3200 : 3800,
-        alturaMaximaFoto: ambiente.mobile ? 3200 : 3800,
-        qualidadeFoto: ambiente.mobile ? 0.96 : 0.98
+        larguraMaximaFoto: ambiente.mobile ? 3800 : 4600,
+        alturaMaximaFoto: ambiente.mobile ? 3800 : 4600,
+        qualidadeFoto: ambiente.mobile ? 0.985 : 0.992
       };
     }
 
     function obterConfiguracaoPDF() {
       const ambiente = detectarAmbientePDF();
       return {
-        escalaCanvas: ambiente.mobile ? 2.4 : 3.0
+        escalaCanvas: ambiente.mobile ? 2.8 : 3.4
       };
     }
 
@@ -1584,7 +1584,7 @@
                     <span>Registro fotográfico</span>
                     <h2>Fotos do veículo</h2>
                   </div>
-                  <p>Fotos ajustadas para não cortar e não esticar.</p>
+                  <p>Fotos maiores para melhorar a leitura sem cortar a imagem.</p>
                 </div>
 
                 <div class="pdf-photo-stack pdf-truck-stack">
@@ -1619,7 +1619,7 @@
                 <div class="pdf-page-header">
                   <div>
                     <h2>Volumes conferidos</h2>
-                    <p>Volumes organizados em pares por página, com prioridade total para as fotos.</p>
+                    <p>Volumes organizados em pares por página, com fotos maiores e legíveis no zoom.</p>
                   </div>
                   <div class="pdf-page-tags">
                     <div class="pdf-tag">${escaparHTML(campos.tp || '-')}</div>
